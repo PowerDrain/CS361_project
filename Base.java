@@ -1,15 +1,14 @@
-//Tom
-
 package entity;
 import java.awt.Point;
 
+import entity.Ship;
 
 public class Base {
    
    private int[] _damage;
-   private Player _owner;    
+   private Player _owner;
    
-   public Base(Player owner){
+   public Base(Player owner, char startingSide){
        this._owner=owner;
        _damage = new int[10];
        for(int i=0; i<10; i++){
