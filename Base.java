@@ -85,6 +85,7 @@ public class Base {
    }
    
    public boolean canRepairBase(){
+	   //TODO add the case that the base is fully repaired which returns false
        for(int i=0; i<_damage.length; i++){
            if(_damage[i]==1){
                return true;

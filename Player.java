@@ -25,6 +25,9 @@ public class Player {
    public Ship _torpedoBoat3;
    public Ship _dredger1;
    public Ship _dredger2;
+   
+   //TODO add method to check if ship is docked by checking array of points of
+   //base and currentShip
 
    public Player(String name, String playerId, char startingSide){
        this._name=name;
