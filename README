@@ -1,0 +1,31 @@
+1. Introduction
+The project consists of developing software which allows two users to play battleships against each
+other, according to rules’ appreciably more advanced than those of the traditional game.
+
+2. Presentation of the problem
+Battleships is a game which is played by two and consists in trying to sink the ships of the enemy
+while guarding against their attacks. A session is usually played on a sheet of paper which represents
+the fleet of ships laid out in a squared zone, on which one keeps trace of the hits by the enemy and the
+hits to ones own fleet, whose location is initially hidden to the opposition. The goal of the game is to
+sink all the opposing fleet.
+The project consists of the realization of a game inspired by the original battleships, but which makes
+use of computerization to include additional aspects which makes the game more interesting, in that
+a fleet is made up of various structures to which particular characteristics are given (size, function,
+mobility, range of shooting, shooting characteristic, radar range).
+The rules of the game (see later) detail these characteristics and describe the make-up of a session,
+without giving indications on the interface or the detailed functions that the software should offer in
+order to make the game more attractive to players.
+The computerized realization of the game must be easy to use, and help the player to manage the information
+enabling him to fight his adversary effectively.
+
+3. Application to develop
+The application to be developed must make it possible for two users to play together, each one on a
+different station. The rules of the game are such that they are given in the appendix and must be respected
+by the application.They do not fix however certain details, which are left upto the designer.
+In particular, these rules do not determine the representation to adopt for the elements of the game,
+the interactions between the software and the user, the help functions, or the facilities offered to the
+players.
+In addition to the rules of the game, the application must provide the following functions:
+• To provide a help for user.
+• To be able to back up a started session.
+• To be able to continue a previously started session.
