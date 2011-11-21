@@ -1,7 +1,5 @@
-package entity;
-import java.awt.Point;
 
-import entity.Ship;
+import java.awt.Point;
 
 public class Base {
    
