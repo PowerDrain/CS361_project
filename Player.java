@@ -1,5 +1,3 @@
-
-
 import java.awt.Point;     
 
 public class Player {
@@ -35,7 +33,7 @@ public class Player {
        this._playerId=playerId;
        this._startingSide=startingSide;
        _base = new Base(this, startingSide);        //passes THIS player as the argument for owner of the base
-       this.makeShips(startingSide);
+       this.makeShips();
        _currentShip = _cruiser1;
    }
    
@@ -88,9 +86,9 @@ public class Player {
        --_shipCount;
    }
    
-   public boolean makeShips(char startingSide){
+   public boolean makeShips(){
 	   Point shipPoint = new Point();
-	   if (startingSide == 'w') {
+	   if (this._startingSide == 'w') {
 			shipPoint.setLocation(4, 10);
 			_cruiser1 = new Cruiser(shipPoint ,'e');
 			shipPoint.setLocation(4, 11);

@@ -5,12 +5,25 @@ public class Base {
    
    private int[] _damage;
    private Player _owner;
+   private Point[] _location;
+   private char _startingSide;
    
    public Base(Player owner, char startingSide){
        this._owner=owner;
+       this._startingSide=startingSide;
        _damage = new int[10];
        for(int i=0; i<10; i++){
            _damage[i]=1;        //1=untouched, 0=damaged
+       }
+       if(this._startingSide=='w'){
+    	   for(int i=0; i<_location.length; i++){
+    		   _location[i].setLocation(0, i+10);
+    	   }
+       }
+       else{
+    	   for(int i=0; i<_location.length; i++){
+    		   _location[i].setLocation(29, i+10);
+    	   }
        }
    }
    
@@ -82,8 +95,18 @@ public class Base {
            return false;
    }
    
+   public boolean isFullyRepaired(){
+	   for(int i=0; i<_damage.length; i++){
+		   if(_damage[i]==0){
+			   return false;
+		   }
+	   }
+	   return true;
+   }
+   
    public boolean canRepairBase(){
-	   //TODO add the case that the base is fully repaired which returns false
+	   if(this.isFullyRepaired())  //the case that the base is fully repaired which returns false
+		   return false;
        for(int i=0; i<_damage.length; i++){
            if(_damage[i]==1){
                return true;
@@ -99,6 +122,10 @@ public class Base {
            }
        }
        return false;
+   }
+   
+   public Point[] location(){
+	   return _location;
    }
    
 }
