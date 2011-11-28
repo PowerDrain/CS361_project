@@ -152,7 +152,6 @@ public abstract class Ship {
 
 	public void receiveDamage(Point damLoc, char type){
 		//TODO   
-		//stuff
 	}
 
 	public void repairDamage(){
