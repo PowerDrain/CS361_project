@@ -275,6 +275,8 @@ public abstract class Ship {
 	}
 
 	void moveShip(Point location){
+		//Needs to be more robust so it moves right, left, forward, back
+		//TODO
 		this.setPosition(location);
 	}
 
