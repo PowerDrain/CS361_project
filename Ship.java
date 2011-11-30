@@ -3,45 +3,35 @@ import java.util.ArrayList;;
 
 
 public abstract class Ship {
-
+	
 	// Data Fields
 	private int shipSize;		// Size of ship, ex: Cruiser = 5, Torpedo boat = 4. . .
 	private Point position;		// Coordinate of the bow of the ship
 	private char direction;    	// cardinal direction of the ship: n, e, s, w
 	private int[] shipDamage;	// holds the damage of each square of the ship
-	private String owner;		// holds the owner of the ship either P1 or P2
 	private int maxHealth;		// maximum health a ship box can have, 1 or 2
-
+	
 	// Class Methods
-
+	
 	// No argument constructor
 	public Ship(){
 	}
-
+	
 	// Sets the size of the ship, ex: Cruiser = 5, Torpedo boat = 4. . .
 	public void setSize(int size){
 		this.shipSize = size;
 	}
-
+	
 	// Returns the size of the ship
 	public int getSize(){
 		return shipSize;
 	}
-
-	// Takes a point as the new position, checks validity and then sets the point of the new bow
-	private void setPosition(Point pos)throws IllegalArgumentException {
-		if (pos.x < 0 || pos.y < 0 || pos.x > 30 || pos.y > 30){
-			throw new IllegalArgumentException();
-		} else {
-			this.position = pos;
-		}
-	}
-
+	
 	// Returns the position of the ship's bow
 	public Point getPosition(){
 		return position;
 	}
-
+	
 	// Takes the direction as an argument and checks for validity and sets then sets the direction
 	public void setDirection(char dir) throws IllegalArgumentException {
 		if (dir == 'N' || dir == 'n'){
@@ -56,12 +46,12 @@ public abstract class Ship {
 			throw new IllegalArgumentException();
 		}
 	}
-
+	
 	// Returns the direction of the ship, in lower case
 	public char getDirection(){
 		return direction;
 	}
-
+	
 	// Takes no argument and sets the damage of each block to 1 (untouched)
 	public void resetDamage(int value){
 		this.maxHealth = value;
@@ -70,28 +60,12 @@ public abstract class Ship {
 			this.shipDamage[i] = value;
 		}
 	}
-
+	
 	// Takes no arguments and returns an array containing the states of each block of the ship
 	public int[] getDamage(){
 		return shipDamage;
 	}
-
-	// Takes a string player and checks to verify it is a valid argument then sets the ship owner
-	public void setOwner(String player)throws IllegalArgumentException {
-		if (player.equalsIgnoreCase("P1")){
-			this.owner = "P1";
-		} else if (player.equalsIgnoreCase("P2")){
-			this.owner = "P2";
-		} else {
-			throw new IllegalArgumentException();
-		}
-	}
-
-	// Returns the owner of the ship
-	public String getOwner(){
-		return owner;
-	}
-
+	
 	public Point[] getRadarRange() throws IllegalStateException {
 		ArrayList<Point> temp = new ArrayList<Point>();
 		switch (this.direction) {
@@ -150,7 +124,7 @@ public abstract class Ship {
 		retVal = temp.toArray(retVal);
 		return retVal;
 	}
-
+	
 	public Point[] getGunRange() throws IllegalStateException {
 		ArrayList<Point> temp = new ArrayList<Point>();
 		Point cornerOfRange;
@@ -196,8 +170,8 @@ public abstract class Ship {
 		retVal = temp.toArray(retVal);
 		return retVal;
 	}
-
-
+	
+	
 	public Point[] getShipCoordinates() throws IllegalStateException {
 		Point[] retVal = new Point[this.shipSize];
 		switch (this.direction){
@@ -226,187 +200,7 @@ public abstract class Ship {
 		}
 		return retVal;
 	}
-
-	boolean aFloat(){
-		int temp = 0;
-		for (int i = 0; i < this.shipDamage.length; i++){
-			temp = temp + this.shipDamage[i];
-		}
-		return (temp != 0);
-	}
-
-	public void receiveDamage(Point damLoc, char type) throws IllegalArgumentException {
-		Point[] shipCoordinates = this.getShipCoordinates();
-		for (int i = 0; i < this.shipSize; i++){
-			if (shipCoordinates[i].equals(damLoc)){
-				switch(type){
-				case 't':
-					this.applyDamage(damLoc, type);
-					break;
-				case 'g':
-					this.applyDamage(damLoc, type);
-					break;
-				default:
-					throw new IllegalArgumentException ();
-				}
-			}
-		}
-		
-	}
-	private void applyDamage(Point damLoc, char type){
-		//TODO
-	}
-
-	public void repairDamage(){
-		boolean repaired = false;
-		for (int i = 0; i < this.shipDamage.length; i++){
-			if (this.shipDamage[i] == 0 && repaired == false){
-				this.shipDamage[i] = maxHealth;
-				repaired = true;
-			} else if (this.shipDamage[i] == 1 && repaired == false){
-				this.shipDamage[i] = maxHealth;
-				repaired = true;
-			}
-
-		}
-		if (repaired == false){
-			error ("repairDamage called on but the ship has no damage to repair.");
-		}
-	}
-
-	void moveShip(Point location){
-		//Needs to be more robust so it moves right, left, forward, back
-		//TODO
-		this.setPosition(location);
-	}
-
-	private Point[] getRightMobility() throws IllegalStateException {
-		ArrayList<Point> temp = new ArrayList<Point>();
-		switch (this.direction){
-		case 'n':
-			for (int i = 0; i < this.shipSize; i++){
-				temp.add(new Point(this.position.x + 1, this.position.y + i));
-			}
-			break;
-		case 'e':
-			for (int i = 0; i < this.shipSize; i++){
-				temp.add(new Point(this.position.x - i, this.position.y + 1));
-			}
-			break;
-		case 's':
-			for (int i = 0; i < this.shipSize; i++){
-				temp.add(new Point(this.position.x - 1, this.position.y - i));
-			}
-			break;
-		case 'w':
-			for (int i = 0; i < this.shipSize; i++){
-				temp.add(new Point(this.position.x + i, this.position.y - 1));
-			}
-			break;
-		default:
-			throw new IllegalStateException();
-		}
-
-		// Clean up array list, change into regular array and then return
-		temp.trimToSize();
-		Point[] retVal = new Point[temp.size()];
-		retVal = temp.toArray(retVal);
-		return retVal;
-	}
-
-	private Point[] getLeftMobility(){
-		ArrayList<Point> temp = new ArrayList<Point>();
-		switch (this.direction){
-		case 'n':
-			for (int i = 0; i < this.shipSize; i++){
-				temp.add(new Point(this.position.x - 1, this.position.y + i));
-			}
-			break;
-		case 'e':
-			for (int i = 0; i < this.shipSize; i++){
-				temp.add(new Point(this.position.x - i, this.position.y - 1));
-			}
-			break;
-		case 's':
-			for (int i = 0; i < this.shipSize; i++){
-				temp.add(new Point(this.position.x + 1, this.position.y - i));
-			}
-			break;
-		case 'w':
-			for (int i = 0; i < this.shipSize; i++){
-				temp.add(new Point(this.position.x + i, this.position.y + 1));
-			}
-			break;
-		default:
-			throw new IllegalStateException();
-		}
-
-		// Clean up array list, change into regular array and then return
-		temp.trimToSize();
-		Point[] retVal = new Point[temp.size()];
-		retVal = temp.toArray(retVal);
-		return retVal;
-	}
-
-	private Point[] getForwardMobility(){
-		ArrayList<Point> temp = new ArrayList<Point>();
-		int stillGood = 0;
-		for (int i = 0; i < this.shipDamage.length; i++){
-			stillGood = stillGood + this.shipDamage[i];
-		}
-		switch (this.direction){
-		case 'n':
-			for (int i = 1; i <= stillGood * 2; i++){
-				temp.add(new Point(this.position.x, this.position.y - 1));
-			}
-			break;
-		case 'e':
-			for (int i = 1; i <= stillGood * 2; i++){
-				temp.add(new Point(this.position.x + 1, this.position.y));
-			}
-			break;
-		case 's':
-			for (int i = 1; i <= stillGood * 2; i++){
-				temp.add(new Point(this.position.x , this.position.y + i));
-			}
-			break;
-		case 'w':
-			for (int i = 1; i <= stillGood * 2; i++){
-				temp.add(new Point(this.position.x - i, this.position.y));
-			}
-			break;
-		default:
-			throw new IllegalStateException();
-		}
-
-		// Clean up array list, change into regular array and then return
-		temp.trimToSize();
-		Point[] retVal = new Point[temp.size()];
-		retVal = temp.toArray(retVal);
-		return retVal;
-	}
-
-	private Point getBackwardMobility(){
-		Point retVal = new Point();
-		switch (this.direction){
-		case 'n':
-			retVal = new Point(this.position.x, this.position.y + this.shipSize);
-			break;
-		case 'e':
-			retVal = new Point(this.position.x - this.shipSize, this.position.y);
-			break;
-		case 's':
-			retVal = new Point(this.position.x, this.position.y - this.shipSize);
-			break;
-		case 'w':
-			retVal = new Point(this.position.x + this.shipSize, this.position.y);
-			break;
-		default:
-			throw new IllegalStateException();
-		}
-		return retVal;
-	}
-
+	
 	public Point[] getMoveMobility(){
 		Point[] left = this.getLeftMobility();
 		Point[] right = this.getRightMobility();
@@ -421,7 +215,35 @@ public abstract class Ship {
 		System.arraycopy(back, 0, retVal, left.length + right.length + front.length, back.length);
 		return retVal;
 	}
-
+	
+	public boolean aFloat(){
+		int temp = 0;
+		for (int i = 0; i < this.shipDamage.length; i++){
+			temp = temp + this.shipDamage[i];
+		}
+		return (temp != 0);
+	}
+	
+	public boolean receiveDamage(Point damLoc, char type) throws IllegalArgumentException {
+		Point[] shipCoordinates = this.getShipCoordinates();
+		boolean shipDamaged = false;
+		for (int i = 0; i < this.shipSize; i++){
+			if (shipCoordinates[i].equals(damLoc)){
+				switch(type){
+				case 't':
+					shipDamaged = this.applyTorDamage(i);
+					break;
+				case 'g':
+					shipDamaged = this.applyGunDamage(i);
+					break;
+				default:
+					throw new IllegalArgumentException ();
+				}
+			}
+		}
+		return shipDamaged;
+	}
+	
 	public void rotateShip(Point position) throws IllegalArgumentException, IllegalStateException {
 		Point[] currentRotateMobility = this.getRotationalMobility();
 		boolean foundPoint = false;
@@ -474,7 +296,7 @@ public abstract class Ship {
 			throw new IllegalStateException();
 		}
 	}
-
+	
 	public Point[] getRotationalMobility() throws IllegalStateException {
 		ArrayList<Point> temp = new ArrayList<Point>();
 		int offset = 0;
@@ -535,19 +357,290 @@ public abstract class Ship {
 				
 			}
 			break;
-			default:		
-		throw new IllegalStateException();
+		default:		
+			throw new IllegalStateException();
 		}
-
+		
 		// Clean up array list, change into regular array and then return
 		temp.trimToSize();
 		Point[] retVal = new Point[temp.size()];
 		retVal = temp.toArray(retVal);
 		return retVal;
 	}
+	
+	public void repairDamage(){
+		boolean repaired = false;
+		for (int i = 0; i < this.shipDamage.length; i++){
+			if (this.shipDamage[i] == 0 && repaired == false){
+				this.shipDamage[i] = maxHealth;
+				repaired = true;
+			} else if (this.shipDamage[i] == 1 && repaired == false){
+				this.shipDamage[i] = maxHealth;
+				repaired = true;
+			}
+			
+		}
+		if (repaired == false){
+			error ("repairDamage called on but the ship has no damage to repair.");
+		}
+	}
+	
+	public void moveShip(Point location){
+		Point[] rightMove = this.getRightMobility();
+		Point[] leftMove = this.getLeftMobility();
+		Point[] forwardMove = this.getForwardMobility();
+		Point backMove = this.getBackwardMobility();
+		
+		for (int i = 0; i < rightMove.length; i++){
+			if (rightMove[i].equals(location)){
+				this.moveRight();
+			}
+		}
+		for (int i = 0; i < leftMove.length; i++){
+			if (leftMove[i].equals(location)){
+				this.moveLeft();
+			}
+		}
+		for (int i = 0; i < forwardMove.length; i++){
+			if (forwardMove[i].equals(location)){
+				this.setPosition(location);
+			}
+		}
+		if (backMove.equals(location)){
+			this.moveBack();
+		}
+	}
+	
+	// Takes a point as the new position, checks validity and then sets the point of the new bow
+	private void setPosition(Point pos)throws IllegalArgumentException {
+		if (pos.x < 0 || pos.y < 0 || pos.x > 30 || pos.y > 30){
+			throw new IllegalArgumentException();
+		} else {
+			this.position = pos;
+		}
+	}
+	
+	private boolean applyTorDamage(int shipDamLoc){
+		boolean shipDamaged = false;
+		if (this.shipDamage[shipDamLoc] > 0){
+			this.shipDamage[shipDamLoc] = this.shipDamage[shipDamLoc] - 1;
+			shipDamaged = true;
+		}
+		if (shipDamLoc == 0){
+			for (int i = 1; i < this.shipSize; i++){
+				if (this.shipDamage[i] > 0){
+					this.shipDamage[shipDamLoc] = this.shipDamage[shipDamLoc] - 1;
+					shipDamaged = true;
+					break;
+				}
+			}
+		} else {
+			for (int i = shipDamLoc; i >= 0; i--){
+				if (this.shipDamage[i] > 0){
+					this.shipDamage[shipDamLoc] = this.shipDamage[shipDamLoc] - 1;
+					shipDamaged = true;
+					break;
+				}
+			}
+		}
+		return shipDamaged;
+	}
+	
+	private boolean applyGunDamage(int shipDamLoc){
+		boolean shipDamaged = false;
+		if (this.shipDamage[shipDamLoc] > 0){
+			this.shipDamage[shipDamLoc] = this.shipDamage[shipDamLoc] - 1;
+			shipDamaged = true;
+		}
+		return shipDamaged;
+	}
+	
+	private void moveRight() throws IllegalStateException {
+		switch (this.direction){
+		case 'n':
+			this.setPosition(new Point(this.position.x + 1, this.position.y));
+			break;
+		case 'e':
+			this.setPosition(new Point(this.position.x, this.position.y + 1));
+			break;
+		case 's':
+			this.setPosition(new Point(this.position.x - 1, this.position.y));
+			break;
+		case 'w':
+			this.setPosition(new Point(this.position.x, this.position.y - 1));
+			break;
+		default:
+			throw new IllegalStateException();
+		}
+	}
+	private void moveLeft() throws IllegalStateException {
+		switch (this.direction){
+		case 'n':
+			this.setPosition(new Point(this.position.x - 1, this.position.y));
+			break;
+		case 'e':
+			this.setPosition(new Point(this.position.x, this.position.y - 1));
+			break;
+		case 's':
+			this.setPosition(new Point(this.position.x + 1, this.position.y));
+			break;
+		case 'w':
+			this.setPosition(new Point(this.position.x, this.position.y + 1));
+			break;
+		default:
+			throw new IllegalStateException();
+		}
+	}
+	
+	private void moveBack() throws IllegalStateException {
+		switch (this.direction){
+		case 'n':
+			this.setPosition(new Point(this.position.x, this.position.y + 1));
+			break;
+		case 'e':
+			this.setPosition(new Point(this.position.x - 1, this.position.y));
+			break;
+		case 's':
+			this.setPosition(new Point(this.position.x, this.position.y - 1));
+			break;
+		case 'w':
+			this.setPosition(new Point(this.position.x + 1, this.position.y));
+			break;
+		default:
+			throw new IllegalStateException();
+		}
+	}
+	
+	private Point[] getRightMobility() throws IllegalStateException {
+		ArrayList<Point> temp = new ArrayList<Point>();
+		switch (this.direction){
+		case 'n':
+			for (int i = 0; i < this.shipSize; i++){
+				temp.add(new Point(this.position.x + 1, this.position.y + i));
+			}
+			break;
+		case 'e':
+			for (int i = 0; i < this.shipSize; i++){
+				temp.add(new Point(this.position.x - i, this.position.y + 1));
+			}
+			break;
+		case 's':
+			for (int i = 0; i < this.shipSize; i++){
+				temp.add(new Point(this.position.x - 1, this.position.y - i));
+			}
+			break;
+		case 'w':
+			for (int i = 0; i < this.shipSize; i++){
+				temp.add(new Point(this.position.x + i, this.position.y - 1));
+			}
+			break;
+		default:
+			throw new IllegalStateException();
+		}
+		
+		// Clean up array list, change into regular array and then return
+		temp.trimToSize();
+		Point[] retVal = new Point[temp.size()];
+		retVal = temp.toArray(retVal);
+		return retVal;
+	}
+	
+	private Point[] getLeftMobility(){
+		ArrayList<Point> temp = new ArrayList<Point>();
+		switch (this.direction){
+		case 'n':
+			for (int i = 0; i < this.shipSize; i++){
+				temp.add(new Point(this.position.x - 1, this.position.y + i));
+			}
+			break;
+		case 'e':
+			for (int i = 0; i < this.shipSize; i++){
+				temp.add(new Point(this.position.x - i, this.position.y - 1));
+			}
+			break;
+		case 's':
+			for (int i = 0; i < this.shipSize; i++){
+				temp.add(new Point(this.position.x + 1, this.position.y - i));
+			}
+			break;
+		case 'w':
+			for (int i = 0; i < this.shipSize; i++){
+				temp.add(new Point(this.position.x + i, this.position.y + 1));
+			}
+			break;
+		default:
+			throw new IllegalStateException();
+		}
+		
+		// Clean up array list, change into regular array and then return
+		temp.trimToSize();
+		Point[] retVal = new Point[temp.size()];
+		retVal = temp.toArray(retVal);
+		return retVal;
+	}
+	
+	private Point[] getForwardMobility(){
+		ArrayList<Point> temp = new ArrayList<Point>();
+		int stillGood = 0;
+		for (int i = 0; i < this.shipDamage.length; i++){
+			stillGood = stillGood + this.shipDamage[i];
+		}
+		switch (this.direction){
+		case 'n':
+			for (int i = 1; i <= stillGood * 2; i++){
+				temp.add(new Point(this.position.x, this.position.y - 1));
+			}
+			break;
+		case 'e':
+			for (int i = 1; i <= stillGood * 2; i++){
+				temp.add(new Point(this.position.x + 1, this.position.y));
+			}
+			break;
+		case 's':
+			for (int i = 1; i <= stillGood * 2; i++){
+				temp.add(new Point(this.position.x , this.position.y + i));
+			}
+			break;
+		case 'w':
+			for (int i = 1; i <= stillGood * 2; i++){
+				temp.add(new Point(this.position.x - i, this.position.y));
+			}
+			break;
+		default:
+			throw new IllegalStateException();
+		}
+		
+		// Clean up array list, change into regular array and then return
+		temp.trimToSize();
+		Point[] retVal = new Point[temp.size()];
+		retVal = temp.toArray(retVal);
+		return retVal;
+	}
+	
+	private Point getBackwardMobility(){
+		Point retVal = new Point();
+		switch (this.direction){
+		case 'n':
+			retVal = new Point(this.position.x, this.position.y + this.shipSize);
+			break;
+		case 'e':
+			retVal = new Point(this.position.x - this.shipSize, this.position.y);
+			break;
+		case 's':
+			retVal = new Point(this.position.x, this.position.y - this.shipSize);
+			break;
+		case 'w':
+			retVal = new Point(this.position.x + this.shipSize, this.position.y);
+			break;
+		default:
+			throw new IllegalStateException();
+		}
+		return retVal;
+	}
+	
 	private void error(String error){
 		System.out.println(error);
 	}
-
+	
 }
 
