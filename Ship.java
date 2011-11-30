@@ -92,9 +92,58 @@ public abstract class Ship {
 		return owner;
 	}
 
-	public Point[] getRadarRange(){
+	public Point[] getRadarRange() throws IllegalStateException {
 		ArrayList<Point> temp = new ArrayList<Point>();
-		//TODO
+		switch (this.direction) {
+		case 'n':
+			for (int i = 1; i <= this.shipSize + 1; i++){
+				temp.add(new Point(this.position.x, this.position.y - i));
+				temp.add(new Point(this.position.x - 1, this.position.y - i));
+				temp.add(new Point(this.position.x + 1, this.position.y - i));
+			}
+			for (int i = 0; i < this.shipSize - 1; i++){
+				temp.add(new Point(this.position.x - 1, this.position.y + i));
+				temp.add(new Point(this.position.x + 1, this.position.y + i));
+			}
+			
+			break;
+		case 'e':
+			for (int i = 1; i <= this.shipSize + 1; i++){
+				temp.add(new Point(this.position.x + i, this.position.y));
+				temp.add(new Point(this.position.x + i, this.position.y - 1));
+				temp.add(new Point(this.position.x + i, this.position.y + 1));
+			}
+			for (int i = 0; i < this.shipSize - 1; i++){
+				temp.add(new Point(this.position.x - i, this.position.y + 1));
+				temp.add(new Point(this.position.x - i, this.position.y - 1));
+			}
+			break;
+		case 's':
+			for (int i = 1; i <= this.shipSize + 1; i++){
+				temp.add(new Point(this.position.x, this.position.y));
+				temp.add(new Point(this.position.x - 1, this.position.y + i));
+				temp.add(new Point(this.position.x + 1, this.position.y + i));
+			}
+			for (int i = 0; i < this.shipSize - 1; i++){
+				temp.add(new Point(this.position.x - 1, this.position.y - i));
+				temp.add(new Point(this.position.x + 1, this.position.y - i));
+			}
+			break;
+		case 'w':
+			for (int i = 1; i <= this.shipSize + 1; i++){
+				temp.add(new Point(this.position.x - i, this.position.y));
+				temp.add(new Point(this.position.x - i, this.position.y - 1));
+				temp.add(new Point(this.position.x - i, this.position.y + 1));
+			}
+			for (int i = 0; i < this.shipSize - 1; i++){
+				temp.add(new Point(this.position.x + i, this.position.y + 1));
+				temp.add(new Point(this.position.x + i, this.position.y - 1));
+			}
+			break;
+		default:
+			throw new IllegalStateException();
+		}
+		
 		// Clean up array list, change into regular array and then return
 		temp.trimToSize();
 		Point[] retVal = new Point[temp.size()];
@@ -102,9 +151,45 @@ public abstract class Ship {
 		return retVal;
 	}
 
-	public Point[] getGunRange(){
+	public Point[] getGunRange() throws IllegalStateException {
 		ArrayList<Point> temp = new ArrayList<Point>();
-		//TODO
+		Point cornerOfRange;
+		switch (this.direction) {
+		case 'n':
+			cornerOfRange = new Point(this.position.x - this.shipSize, this.position.y - this.shipSize);
+			for (int i = 0; i < (this.shipSize*3); i++){
+				for (int j = 0; j < (this.shipSize*2 + 1); j++){
+					temp.add(new Point(cornerOfRange.x + j, cornerOfRange.y + i));
+				}
+			}
+			break;
+		case 'e':
+			cornerOfRange = new Point(this.position.x + this.shipSize, this.position.y - this.shipSize);
+			for (int i = 0; i < (this.shipSize*3); i++){
+				for (int j = 0; j < (this.shipSize*2 + 1); j++){
+					temp.add(new Point(cornerOfRange.x - i, cornerOfRange.y + j));
+				}
+			}
+			break;
+		case 's':
+			cornerOfRange = new Point(this.position.x + this.shipSize, this.position.y + this.shipSize);
+			for (int i = 0; i < (this.shipSize*3); i++){
+				for (int j = 0; j < (this.shipSize*2 + 1); j++){
+					temp.add(new Point(cornerOfRange.x - j, cornerOfRange.y - i));
+				}
+			}
+			break;
+		case 'w':
+			cornerOfRange = new Point(this.position.x - this.shipSize, this.position.y + this.shipSize);
+			for (int i = 0; i < (this.shipSize*3); i++){
+				for (int j = 0; j < (this.shipSize*2 + 1); j++){
+					temp.add(new Point(cornerOfRange.x + i, cornerOfRange.y - j));
+				}
+			}
+			break;
+		default:
+			throw new IllegalStateException();
+		}
 		// Clean up array list, change into regular array and then return
 		temp.trimToSize();
 		Point[] retVal = new Point[temp.size()];
@@ -118,7 +203,7 @@ public abstract class Ship {
 		switch (this.direction){
 		case 'n':
 			for (int i = 0; i < this.shipSize; i++){
-				retVal[i] = new Point(this.position.x, this.position.y - i);
+				retVal[i] = new Point(this.position.x, this.position.y + i);
 			}
 			break;
 		case 'e':
@@ -128,7 +213,7 @@ public abstract class Ship {
 			break;
 		case 's':
 			for (int i = 0; i < this.shipSize; i++){
-				retVal[i] = new Point(this.position.x, this.position.y + i);
+				retVal[i] = new Point(this.position.x, this.position.y - i);
 			}
 			break;
 		case 'w':
@@ -175,27 +260,27 @@ public abstract class Ship {
 		this.setPosition(location);
 	}
 
-	private Point[] getRightMobility() {
+	private Point[] getRightMobility() throws IllegalStateException {
 		ArrayList<Point> temp = new ArrayList<Point>();
 		switch (this.direction){
 		case 'n':
 			for (int i = 0; i < this.shipSize; i++){
-				temp.add(new Point(this.position.x + 1, this.position.y - i));
+				temp.add(new Point(this.position.x + 1, this.position.y + i));
 			}
 			break;
 		case 'e':
 			for (int i = 0; i < this.shipSize; i++){
-				temp.add(new Point(this.position.x - i, this.position.y - 1));
+				temp.add(new Point(this.position.x - i, this.position.y + 1));
 			}
 			break;
 		case 's':
 			for (int i = 0; i < this.shipSize; i++){
-				temp.add(new Point(this.position.x - 1, this.position.y + i));
+				temp.add(new Point(this.position.x - 1, this.position.y - i));
 			}
 			break;
 		case 'w':
 			for (int i = 0; i < this.shipSize; i++){
-				temp.add(new Point(this.position.x + i, this.position.y + 1));
+				temp.add(new Point(this.position.x + i, this.position.y - 1));
 			}
 			break;
 		default:
@@ -214,22 +299,22 @@ public abstract class Ship {
 		switch (this.direction){
 		case 'n':
 			for (int i = 0; i < this.shipSize; i++){
-				temp.add(new Point(this.position.x - 1, this.position.y - i));
+				temp.add(new Point(this.position.x - 1, this.position.y + i));
 			}
 			break;
 		case 'e':
 			for (int i = 0; i < this.shipSize; i++){
-				temp.add(new Point(this.position.x - i, this.position.y + 1));
+				temp.add(new Point(this.position.x - i, this.position.y - 1));
 			}
 			break;
 		case 's':
 			for (int i = 0; i < this.shipSize; i++){
-				temp.add(new Point(this.position.x + 1, this.position.y + i));
+				temp.add(new Point(this.position.x + 1, this.position.y - i));
 			}
 			break;
 		case 'w':
 			for (int i = 0; i < this.shipSize; i++){
-				temp.add(new Point(this.position.x + i, this.position.y - 1));
+				temp.add(new Point(this.position.x + i, this.position.y + 1));
 			}
 			break;
 		default:
@@ -252,7 +337,7 @@ public abstract class Ship {
 		switch (this.direction){
 		case 'n':
 			for (int i = 1; i <= stillGood * 2; i++){
-				temp.add(new Point(this.position.x, this.position.y + 1));
+				temp.add(new Point(this.position.x, this.position.y - 1));
 			}
 			break;
 		case 'e':
@@ -262,7 +347,7 @@ public abstract class Ship {
 			break;
 		case 's':
 			for (int i = 1; i <= stillGood * 2; i++){
-				temp.add(new Point(this.position.x , this.position.y - i));
+				temp.add(new Point(this.position.x , this.position.y + i));
 			}
 			break;
 		case 'w':
@@ -285,13 +370,13 @@ public abstract class Ship {
 		Point retVal = new Point();
 		switch (this.direction){
 		case 'n':
-			retVal = new Point(this.position.x, this.position.y - this.shipSize);
+			retVal = new Point(this.position.x, this.position.y + this.shipSize);
 			break;
 		case 'e':
 			retVal = new Point(this.position.x - this.shipSize, this.position.y);
 			break;
 		case 's':
-			retVal = new Point(this.position.x, this.position.y + this.shipSize);
+			retVal = new Point(this.position.x, this.position.y - this.shipSize);
 			break;
 		case 'w':
 			retVal = new Point(this.position.x + this.shipSize, this.position.y);
@@ -317,19 +402,128 @@ public abstract class Ship {
 		return retVal;
 	}
 
-	public void rotateShip(Point position){
-		//TODO
+	public void rotateShip(Point position) throws IllegalArgumentException, IllegalStateException {
+		Point[] currentRotateMobility = this.getRotationalMobility();
+		boolean foundPoint = false;
+		for (int i = 0; i < currentRotateMobility.length; i++){
+			if (currentRotateMobility[i].x == position.x && currentRotateMobility[i].y == position.y){
+				foundPoint = true;
+			}
+		}
+		if (!foundPoint){
+			throw new IllegalArgumentException();
+		}
+		switch (this.direction) {
+		case 'n':
+			if (position.x < this.position.x){
+				this.setPosition(new Point(this.position.x - (this.shipSize - 1), this.position.y + (this.shipSize - 1)));
+				this.setDirection('w');
+			} else {
+				this.setPosition(new Point(this.position.x + (this.shipSize - 1), this.position.y + (this.shipSize - 1)));
+				this.setDirection('e');
+			}
+			break;
+		case 'e':
+			if (position.y < this.position.y){
+				this.setPosition(new Point(this.position.x - (this.shipSize - 1), this.position.y + (this.shipSize - 1)));
+				this.setDirection('s');
+			} else {
+				this.setPosition(new Point(this.position.x - (this.shipSize - 1), this.position.y - (this.shipSize - 1)));
+				this.setDirection('n');
+			}
+			break;
+		case 's':
+			if (position.x < this.position.x){
+				this.setPosition(new Point(this.position.x - (this.shipSize - 1), this.position.y - (this.shipSize - 1)));
+				this.setDirection('w');
+			} else {
+				this.setPosition(new Point(this.position.x + (this.shipSize - 1), this.position.y - (this.shipSize - 1)));
+				this.setDirection('e');
+			}
+			break;
+		case 'w':
+			if (position.y < this.position.y){
+				this.setPosition(new Point(this.position.x + (this.shipSize - 1), this.position.y + (this.shipSize - 1)));
+				this.setDirection('s');
+			} else {
+				this.setPosition(new Point(this.position.x + (this.shipSize - 1), this.position.y - (this.shipSize - 1)));
+				this.setDirection('n');
+			}
+			break;
+		default:
+			throw new IllegalStateException();
+		}
 	}
 
-	public Point[] getRotationalMobility(){
+	public Point[] getRotationalMobility() throws IllegalStateException {
 		ArrayList<Point> temp = new ArrayList<Point>();
+		int offset = 0;
+		switch (this.direction) {
+		case 'n':
+			for (int i = 1; i <= this.shipSize; i++){
+				if (i < this.shipSize){
+					offset = i;
+				} else {
+					offset = i - 1;
+				}
+				for (int j = 1; j <= offset; j++){
+					temp.add(new Point(this.position.x - j, this.position.y + (i - 1)));
+					temp.add(new Point(this.position.x + j, this.position.y + (i - 1)));
+				}
+				
+			}
+			break;
+		case 'e':
+			for (int i = 1; i <= this.shipSize; i++){
+				if (i < this.shipSize){
+					offset = i;
+				} else {
+					offset = i - 1;
+				}
+				for (int j = 1; j <= offset; j++){
+					temp.add(new Point(this.position.x - (i - 1), this.position.y - j));
+					temp.add(new Point(this.position.x - (i - 1), this.position.y + j));
+				}
+				
+			}
+			break;
+		case 's':
+			for (int i = 1; i <= this.shipSize; i++){
+				if (i < this.shipSize){
+					offset = i;
+				} else {
+					offset = i - 1;
+				}
+				for (int j = 1; j <= offset; j++){
+					temp.add(new Point(this.position.x - j, this.position.y - (i - 1)));
+					temp.add(new Point(this.position.x + j, this.position.y - (i - 1)));
+				}
+				
+			}
+			break;
+		case 'w':
+			for (int i = 1; i <= this.shipSize; i++){
+				if (i < this.shipSize){
+					offset = i;
+				} else {
+					offset = i - 1;
+				}
+				for (int j = 1; j <= offset; j++){
+					temp.add(new Point(this.position.x + (i - 1), this.position.y - j));
+					temp.add(new Point(this.position.x + (i - 1), this.position.y + j));
+				}
+				
+			}
+			break;
+			default:		
+		throw new IllegalStateException();
+		}
 
 		// Clean up array list, change into regular array and then return
 		temp.trimToSize();
 		Point[] retVal = new Point[temp.size()];
 		retVal = temp.toArray(retVal);
 		return retVal;
-		//TODO
 	}
 	private void error(String error){
 		System.out.println(error);
