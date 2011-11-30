@@ -1,4 +1,3 @@
-
 import java.awt.Point;
 
 public class Base {
@@ -128,6 +127,32 @@ public class Base {
 	   return _location;
    }
    
+   public String toString(){
+	   StringBuilder result = new StringBuilder();
+	   result.append("{[Damage:]");
+	   for(int i=0; i<this._damage.length; i++){
+		   result.append(this._damage[i] + ",");
+	   }
+	   result.append("[Owner:]" + this._owner.name());
+	   result.append("[Location:]");
+	   for(int i=0; i<this._location.length; i++){
+		   result.append(this._location.toString() + ",");
+	   }
+	   result.append("[Side:]" + this._startingSide);
+	   result.append("}");
+       return result.toString();
+   }
+   
+   //TODO
+   public Base fromString(String s) throws Exception{
+	   Base tempBase = new Base(null, 'w');
+
+       int i = s.indexOf('{');
+       int j = s.indexOf('}');
+       if(i == -1 || j == -1) throw new Exception("String must include '{' and '}' to be converted to Player: " + s);
+	   
+	   return tempBase;
+   }
 }
 
 

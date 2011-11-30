@@ -1,15 +1,13 @@
-import java.awt.Point;     
+import java.awt.Point;    
 
 public class Player {
    
    private String _name;
    private int _mines;
-   private int _turnNum;
    private int _shipCount;
    private int _score;
    private Base _base;
    private Ship _currentShip;
-   private String _playerId;
    private char _startingSide;
 
    public Ship _cruiser1;
@@ -21,16 +19,11 @@ public class Player {
    public Ship _torpedoBoat3;
    public Ship _dredger1;
    public Ship _dredger2;
-   
-   //TODO add method to check if ship is docked by checking array of points of
-   //base and currentShip
 
-   public Player(String name, String playerId, char startingSide){
+   public Player(String name, char startingSide){
        this._name=name;
        this._mines=10;
-       this._turnNum=1;
        this._score=0;
-       this._playerId=playerId;
        this._startingSide=startingSide;
        _base = new Base(this, startingSide);        //passes THIS player as the argument for owner of the base
        this.makeShips();
@@ -62,20 +55,8 @@ public class Player {
 	   return _currentShip;
    }
    
-   public String playerId(){
-       return _playerId;
-   }
-   
    public char getStartingSide(){
 	   return _startingSide;
-   }
-   
-   public int turnNumber(){
-       return _turnNum;
-   }
-   
-   public void incrementTurn(){
-       ++_turnNum;
    }
    
    public int shipCount(){
@@ -146,12 +127,68 @@ public class Player {
        return _score;
    }
    
-   public String toString(){
-       return "";
+   //TODO
+   public boolean isDocked(Ship ship){
+	   boolean result = false;
+	   for(int i=0; i<ship.getSize(); i++){
+		   
+	   }
+	   return result;
    }
    
-   public Player fromString(){
-       Player tempPlayer = new Player(null, null, 'w');
+   public boolean isPlayersShip(Ship ship){
+	   boolean result = false;
+	   if(ship.equals(_cruiser1))
+		   result = true;
+	   else if(ship.equals(_cruiser2))
+		   result = true;
+	   else if(ship.equals(_destroyer1))
+		   result = true;
+	   else if(ship.equals(_destroyer2))
+		   result = true;
+	   else if(ship.equals(_torpedoBoat1))
+		   result = true;
+	   else if(ship.equals(_torpedoBoat2))
+		   result = true;
+	   else if(ship.equals(_torpedoBoat3))
+		   result = true;
+	   else if(ship.equals(_dredger1))
+		   result = true;
+	   else if(ship.equals(_dredger2))
+		   result = true;
+	   return result;
+   }
+   
+   //TODO
+   public Point[] getRadarVisibility(){
+	   
+   }
+   
+   //TODO
+   public Point[] getSonarVisibility(){
+	   
+   }
+   
+   public String toString(){
+	   StringBuilder result = new StringBuilder();
+	   result.append("{[Name:]" + this._name);
+	   result.append(",[Score:]" + this._score);
+	   result.append(",[Mines:]" + this._mines);
+	   result.append(",[Side:]" + this._startingSide);
+	   result.append(",[Ships:]" + this._shipCount);
+	   result.append("}");
+       return result.toString();
+   }
+   
+   //TODO
+   public Player fromString(String s) throws Exception{
+       Player tempPlayer = new Player(null, 'w');
+       
+       int i = s.indexOf('{');
+       int j = s.indexOf('}');
+       if(i == -1 || j == -1) throw new Exception("String must include '{' and '}' to be converted to Player: " + s);
+       
+       
        return tempPlayer;
    }
    
