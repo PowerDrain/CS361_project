@@ -1,4 +1,5 @@
 import java.awt.Point;    
+import java.util.ArrayList;
 
 public class Player {
    
@@ -20,12 +21,16 @@ public class Player {
    public Ship _dredger1;
    public Ship _dredger2;
 
+   public Player(){
+	   this("Player", 'w');
+   }
+   
    public Player(String name, char startingSide){
        this._name=name;
        this._mines=10;
        this._score=0;
        this._startingSide=startingSide;
-       _base = new Base(this, startingSide);        //passes THIS player as the argument for owner of the base
+       _base = new Base(startingSide);        //passes THIS player as the argument for owner of the base
        this.makeShips();
        _currentShip = _cruiser1;
    }
@@ -127,11 +132,15 @@ public class Player {
        return _score;
    }
    
-   //TODO
    public boolean isDocked(Ship ship){
 	   boolean result = false;
+	   Point shipPoints[] = ship.getShipCoordinates();
+	   Point basePoints[] = _base.location();
 	   for(int i=0; i<ship.getSize(); i++){
-		   
+		   for(int j=0; j<11; j++){
+			   if(shipPoints[i].equals(basePoints[j]))
+				   result = true;
+		   }
 	   }
 	   return result;
    }
@@ -159,14 +168,53 @@ public class Player {
 	   return result;
    }
    
-   //TODO
    public Point[] getRadarVisibility(){
-	   
+	ArrayList<Point> points = new ArrayList<Point>();
+	
+	for(int i=0; i<_cruiser1.getSize(); i++){
+		Point[] cruiser1Radar = _cruiser1.getRadarRange();
+		points.add(cruiser1Radar[i]);
+	}
+	for(int i=0; i<_cruiser2.getSize(); i++){
+		Point[] cruiser2Radar = _cruiser2.getRadarRange();
+		points.add(cruiser2Radar[i]);
+	}
+	for(int i=0; i<_destroyer1.getSize(); i++){
+		Point[] destroyer1Radar = _destroyer1.getRadarRange();
+		points.add(destroyer1Radar[i]);
+	}
+	for(int i=0; i<_destroyer2.getSize(); i++){
+		Point[] destroyer2Radar = _destroyer2.getRadarRange();
+		points.add(destroyer2Radar[i]);
+	}
+	for(int i=0; i<_torpedoBoat1.getSize(); i++){
+		Point[] torpedoBoat1Radar = _torpedoBoat1.getRadarRange();
+		points.add(torpedoBoat1Radar[i]);
+	}
+	for(int i=0; i<_torpedoBoat2.getSize(); i++){
+		Point[] torpedoBoat2Radar = _torpedoBoat2.getRadarRange();
+		points.add(torpedoBoat2Radar[i]);
+	}
+	for(int i=0; i<_torpedoBoat3.getSize(); i++){
+		Point[] torpedoBoat3Radar = _torpedoBoat3.getRadarRange();
+		points.add(torpedoBoat3Radar[i]);
+	}
+	points.trimToSize();
+	return  (Point[]) points.toArray();
    }
-   
-   //TODO
+
    public Point[] getSonarVisibility(){
-	   
+		ArrayList<Point> points = new ArrayList<Point>();
+		for(int i=0; i<_dredger1.getSize(); i++){
+			Point[] dredger1Radar = _dredger1.getRadarRange();
+			points.add(dredger1Radar[i]);
+		}
+		for(int i=0; i<_dredger2.getSize(); i++){
+			Point[] dredger2Radar = _dredger2.getRadarRange();
+			points.add(dredger2Radar[i]);
+		}
+		points.trimToSize();
+		return (Point[]) points.toArray();
    }
    
    public String toString(){
@@ -184,9 +232,9 @@ public class Player {
    public Player fromString(String s) throws Exception{
        Player tempPlayer = new Player(null, 'w');
        
-       int i = s.indexOf('{');
-       int j = s.indexOf('}');
-       if(i == -1 || j == -1) throw new Exception("String must include '{' and '}' to be converted to Player: " + s);
+       int initialIndex = s.indexOf('{');
+       int finalIndex = s.indexOf('}');
+       if(initialIndex == -1 || finalIndex == -1) throw new Exception("String must include '{' and '}' to be converted to Player: " + s);
        
        
        return tempPlayer;

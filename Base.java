@@ -3,12 +3,14 @@ import java.awt.Point;
 public class Base {
    
    private int[] _damage;
-   private Player _owner;
    private Point[] _location;
    private char _startingSide;
    
-   public Base(Player owner, char startingSide){
-       this._owner=owner;
+   public Base(){
+	   this('w');
+   }
+   
+   public Base(char startingSide){
        this._startingSide=startingSide;
        _damage = new int[10];
        for(int i=0; i<10; i++){
@@ -51,10 +53,6 @@ public class Base {
        return _damage;
    }
    
-   public Player owner(){
-       return _owner;
-   }
-   
    public boolean receiveDamage(Point loc, char type) {
        int damageIndex =(loc.y-10);
        boolean didDamage=false;
@@ -62,6 +60,7 @@ public class Base {
        //... The damage is only caused to an additional box if it
        //can be reached in direction to the bow (if it is a ship which is reached)
        //or towards a side to be determined (if it is a naval base which is reached).
+       //TODO change case if upper
        if(type == 't'){
            int damageToDo=2;
            while(this.intact() && (damageToDo != 0) && (damageIndex<10)){
@@ -133,7 +132,6 @@ public class Base {
 	   for(int i=0; i<this._damage.length; i++){
 		   result.append(this._damage[i] + ",");
 	   }
-	   result.append("[Owner:]" + this._owner.name());
 	   result.append("[Location:]");
 	   for(int i=0; i<this._location.length; i++){
 		   result.append(this._location.toString() + ",");
@@ -145,7 +143,7 @@ public class Base {
    
    //TODO
    public Base fromString(String s) throws Exception{
-	   Base tempBase = new Base(null, 'w');
+	   Base tempBase = new Base('w');
 
        int i = s.indexOf('{');
        int j = s.indexOf('}');
