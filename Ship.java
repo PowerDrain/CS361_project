@@ -235,8 +235,26 @@ public abstract class Ship {
 		return (temp != 0);
 	}
 
-	public void receiveDamage(Point damLoc, char type){
-		//TODO   
+	public void receiveDamage(Point damLoc, char type) throws IllegalArgumentException {
+		Point[] shipCoordinates = this.getShipCoordinates();
+		for (int i = 0; i < this.shipSize; i++){
+			if (shipCoordinates[i].equals(damLoc)){
+				switch(type){
+				case 't':
+					this.applyDamage(damLoc, type);
+					break;
+				case 'g':
+					this.applyDamage(damLoc, type);
+					break;
+				default:
+					throw new IllegalArgumentException ();
+				}
+			}
+		}
+		
+	}
+	private void applyDamage(Point damLoc, char type){
+		//TODO
 	}
 
 	public void repairDamage(){
