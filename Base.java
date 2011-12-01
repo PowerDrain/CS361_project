@@ -13,16 +13,18 @@ public class Base {
    public Base(char startingSide){
        this._startingSide=startingSide;
        _damage = new int[10];
-       for(int i=0; i<10; i++){
+       _location = new Point[10];
+       for(int i=0; i<_location.length+1; i++){
            _damage[i]=1;        //1=untouched, 0=damaged
        }
+       
        if(this._startingSide=='w'){
-    	   for(int i=0; i<_location.length; i++){
+    	   for(int i=0; i<_location.length+1; i++){
     		   _location[i].setLocation(0, i+10);
     	   }
        }
        else{
-    	   for(int i=0; i<_location.length; i++){
+    	   for(int i=0; i<_location.length+1; i++){
     		   _location[i].setLocation(29, i+10);
     	   }
        }
