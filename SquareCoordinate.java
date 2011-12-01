@@ -2,11 +2,11 @@
  * SquareCoordinate.java
  * Michael Mattson - cs361
  * 
- * Modification - 11/7/2011
+ * Modification - 11/30/2011
  * Description:
  * 	Represents the center of Square which lies in a grid made up of squares.
  */
-package mjm.lib.gameboard;
+
 
 import java.awt.Point;
 import java.awt.Polygon;

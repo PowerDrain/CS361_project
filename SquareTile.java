@@ -2,14 +2,13 @@
  * SquareTile.java
  * Michael Mattson - cs361
  * 
- * Modification - 11/20/2011
+ * Modification - 11/30/2011
  * Description:
  * 	Models a tile with certain characteristics that represent coordinates with different 
  * 	occupants in a battleship game.
  */
-package mjm.lib.gameboard;
 
-import mjm.lib.gameboard.FormatException;
+
 import java.awt.Graphics;
 import java.awt.Polygon;
 import java.awt.Color;
@@ -18,23 +17,26 @@ public class SquareTile {
 	
 	private Occupant _occupant;
 	private SquareCoordinate _location;
-	private Ship tileShip = null;
+	private Ship _tileShip = null;
 	
-	public SquareTile(SquareCoordinate location, Occupant o){
+	public SquareTile(SquareCoordinate location, Occupant o, Ship tileShip){
 		_location = location;
 		_occupant = o;
-		tileShip = null;
+		_tileShip = tileShip;
 	}
 	
 	public boolean setShip(Ship s){
-		tileShip = s;
+		_tileShip = s;
 		return true;
 	}
 	
+	/**
+	 * Converts a SquareTile to a String in the form Occupant(x,y)tileShip.toString()
+	 */
 	@Override
 	public String toString(){
 		//TODO
-		String result = _occupant.toString() + _location.toString() + tileShip.toString();
+		String result = _occupant.toString() + _location.toString() + _tileShip.toString();
 		return result;
 	}
 	
@@ -44,6 +46,14 @@ public class SquareTile {
 	 */
 	public Occupant getOccupant(){
 		return _occupant;
+	}
+	
+	/**
+	 * Returns the reference of this tiles tileShip
+	 * @return _tileShip
+	 */
+	public Ship getTileShip(){
+		return _tileShip;
 	}
 	
 	/**
@@ -79,21 +89,41 @@ public class SquareTile {
 	}
 
 	/**
-	 * Draws this tile to screen
-	 * @param g
+	 * Draws this tile to screen based on visibility and enemy status;
+	 * visiblity 'n' == not visible, 'e' == enemy and in visibility, 'm' == mine not in visibility, 'v' == in visibility
+	 * @param g, visiblity
 	 */
-	public void draw(Graphics g){
-		Polygon square = _location.toPolygon(WIDTH);
-		g.setColor(_occupant.getColor());
-		g.fillPolygon(square);
-		g.drawPolygon(square);
+	public void draw(Graphics g, char visiblity){
+		Polygon squareTile = _location.toPolygon(WIDTH);
+		if(visiblity == 'n'){
+			g.setColor(Color.blue.darker());
+			g.fillPolygon(squareTile);
+			g.setColor(Color.black);
+			g.drawPolygon(squareTile);
+		}else if(visiblity == 'e'){
+			g.setColor(this.getOccupant().getColor());
+			g.fillPolygon(squareTile);
+			g.setColor(Color.red);
+			g.drawPolygon(squareTile);
+		}else if(visiblity == 'm'){
+			g.setColor(Color.blue);
+			g.fillPolygon(squareTile);
+			g.setColor(Color.black);
+			g.drawPolygon(squareTile);
+		}else{
+			g.setColor(this.getOccupant().getColor());
+			g.fillPolygon(squareTile);
+			g.setColor(Color.black);
+			g.drawPolygon(squareTile);
+		}
 	}
 	
 	@Override
 	public boolean equals(Object guest){
-		//TODO check tileShip field
+		//TODO test check tileShip field
 		if(guest instanceof SquareTile){
-			if(this.getLocation().equals(((SquareTile)guest).getLocation()) && this.getOccupant().equals(((SquareTile)guest).getOccupant()) ){
+			if(this.getLocation().equals(((SquareTile)guest).getLocation()) && this.getOccupant().equals(((SquareTile)guest).getOccupant()) && 
+					this.getTileShip()==((SquareTile)guest).getTileShip()){
 				return true;
 			}else{
 				return false;
@@ -130,7 +160,16 @@ public class SquareTile {
 		catch(FormatException e){
 			System.out.println(e);
 		}
+		Ship tileShip = null;
+		//try{
+		//	String subS;
+		//	subS = s.substring(j+1);
+		//	tileShip = Ship.fromString(subS);
+		//}
+		//catch(FormatException e){
+		//	System.out.println(e);
+		//}/*
 		
-		return new SquareTile(c, o);
+		return new SquareTile(c, o, tileShip);
 	}
 }
