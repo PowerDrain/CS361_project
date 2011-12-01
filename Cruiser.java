@@ -29,15 +29,6 @@ public class Cruiser extends Ship{
 		this.setDirection(direction);
 	}
 
-	// Three argument constructor
-	public Cruiser(Point position, char direction, String owner){
-		super();
-		this.setSize(5);
-		this.resetDamage(max_dam);
-		this.moveShip(position);
-		this.setDirection(direction);
-		this.setOwner(owner);
-	}
 	@Override
 	public String toString(){
 		return ("Cruiser");

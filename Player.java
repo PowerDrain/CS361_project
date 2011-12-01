@@ -72,7 +72,7 @@ public class Player {
        --_shipCount;
    }
    
-   public boolean makeShips(){
+   private boolean makeShips(){
 	   Point shipPoint = new Point();
 	   if (this._startingSide == 'w') {
 			shipPoint.setLocation(4, 10);

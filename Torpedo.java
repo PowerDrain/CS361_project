@@ -29,15 +29,6 @@ public class Torpedo extends Ship{
 		this.setDirection(direction);
 	}
 
-	// Three argument constructor
-	public Torpedo(Point position, char direction, String owner){
-		super();
-		this.setSize(4);
-		this.resetDamage(max_dam);
-		this.moveShip(position);
-		this.setDirection(direction);
-		this.setOwner(owner);
-	}
 	@Override
 	public String toString(){
 		return ("Torpedo");

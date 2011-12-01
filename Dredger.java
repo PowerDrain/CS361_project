@@ -28,15 +28,6 @@ public class Dredger extends Ship{
 		this.setDirection(direction);
 	}
 
-	// Three argument constructor
-	public Dredger(Point position, char direction, String owner){
-		super();
-		this.setSize(5);
-		this.resetDamage(max_dam);
-		this.moveShip(position);
-		this.setDirection(direction);
-		this.setOwner(owner);
-	}
 
 	public Point[] getSonarRange(){
 		return this.getRadarRange();

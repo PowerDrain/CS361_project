@@ -11,8 +11,8 @@ public class Turn {
 	//No argument constructor for creating a instance of a turn.
 	public Turn(){
 		//Still figuring out how to implement
-		user = new Player("Player 1");
-		enemy = new Player("Player 2");
+		user = new Player("Player 1", 'w');
+		enemy = new Player("Player 2", 'e');
 		m = new Map();
 	}//End of Default Constructor
 
@@ -48,9 +48,10 @@ public class Turn {
 	//otherwise returns false.
 	public boolean immerseMine(Point loc){
 		//Check for type of ship
-		if(user.numMines() > 0){
-			user.setNumMines(-1);
-			return m.placeMine(loc);
+		if(user.mineCount() > 0){
+			user.decrementMineCount();
+			m.placeMine(loc);
+			return true;
 		}//End of if
 		return false;
 	}//End of immerseMine Method
@@ -59,23 +60,27 @@ public class Turn {
 	//If the move is legal and completes successfully it returns true, otherwise returns false. 
 	public boolean withdrawMine(Point loc){
 		//Check for type of ship
-		if(m.removeMine(loc)){
-			user.setNumMines(1);
+		//TODO maybe there is a more elegant solution to this,
+		//this just doesn't seem good but it may work. -Tommy
+		if(user.getCurrentShip().getClass().getName()=="Dredger"){
+			m.removeMine(loc);
+			user.decrementMineCount();
 			return true;
-		}//End of if
+		}
 		return false;
 	}//End of withdrawMine Method
 
 	//Takes a ship to shoot a torpedo, if able to do so via game rules it returns true, 
 	//otherwise returns false.
-	public boolean launchTorpedo(Ship currentShip){
+	public boolean launchTorpedo(){
 		//Check if currentShip is the right type!
 		//Must get ship location and direction
-		Point a = currentShip.getPosition();
+		Ship currentShip = user.getCurrentShip();
+		Point shipPosition = currentShip.getPosition();
 		char d = currentShip.getDirection();
 		int x, y;
-		x = a.x;
-		y = a.y;
+		x = shipPosition.x;
+		y = shipPosition.y;
 		//if d equals n decrement y
 		if(d == 'n') 
 			for(; y >= y - 10; --y){
@@ -136,15 +141,13 @@ public class Turn {
 	}//End of repairBase Method
 
 	//Returns true if the turn is passed otherwise returns false.
-	public boolean pass(){   //Needs a little work  
-		if(getCurrentPlayer()){
-			user.setNumTurn();
-			return true;
-		}//End of if
-		return false;
+	//TODO This method might not have to do anything at all... -Tommy
+	public boolean pass(){
+		return true;
 	}//End of pass Method
 
 	//Returns true if it is users turn and false if it is enemy’s turn
+	//TODO I don't think we need this one -Tommy
 	public boolean getCurrentPlayer(){
 		//I should increment numTurn   
 		return user.numTurn() == enemy.numTurn();

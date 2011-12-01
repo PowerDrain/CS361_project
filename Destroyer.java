@@ -30,16 +30,6 @@ public class Destroyer extends Ship{
 		this.setDirection(direction);
 	}
 
-	// Three argument constructor
-	public Destroyer(Point position, char direction, String owner){
-		super();
-		this.setSize(3);
-		this.resetDamage(max_dam);
-		this.moveShip(position);
-		this.setDirection(direction);
-		this.setOwner(owner);
-	}
-
 	public Point[] checkTurnMobility(){
 		//TODO
 	}
