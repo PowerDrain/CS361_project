@@ -6,7 +6,7 @@
  * 	11/30/2011
  * 
  * Description:
- * 	Models a 30 X 30 map for a game of battle ship
+ * 	Models a 30 X 30 map for a game of battle ship 
  */
 
 import java.awt.Graphics;
@@ -26,8 +26,7 @@ public class Map {
 	 * Constructs the map specified by the text file
 	 */
 	public Map(String txtFile){
-		// initialize _map
-		// set _map to contain all water using file (reefs and mines may be added here also)
+		// initialize _map using a .txt file
 		// initialize both players
 		// add all ships and bases
 		_map = new SquareTile[30][30];
