@@ -3,35 +3,35 @@ import java.util.ArrayList;;
 
 
 public abstract class Ship {
-	
+
 	// Data Fields
 	private int shipSize;		// Size of ship, ex: Cruiser = 5, Torpedo boat = 4. . .
 	private Point position;		// Coordinate of the bow of the ship
 	private char direction;    	// cardinal direction of the ship: n, e, s, w
 	private int[] shipDamage;	// holds the damage of each square of the ship
 	private int maxHealth;		// maximum health a ship box can have, 1 or 2
-	
+
 	// Class Methods
-	
+
 	// No argument constructor
 	public Ship(){
 	}
-	
+
 	// Sets the size of the ship, ex: Cruiser = 5, Torpedo boat = 4. . .
 	public void setSize(int size){
 		this.shipSize = size;
 	}
-	
+
 	// Returns the size of the ship
 	public int getSize(){
 		return shipSize;
 	}
-	
+
 	// Returns the position of the ship's bow
 	public Point getPosition(){
 		return position;
 	}
-	
+
 	// Takes the direction as an argument and checks for validity and sets then sets the direction
 	public void setDirection(char dir) throws IllegalArgumentException {
 		if (dir == 'N' || dir == 'n'){
@@ -46,26 +46,26 @@ public abstract class Ship {
 			throw new IllegalArgumentException();
 		}
 	}
-	
+
 	// Returns the direction of the ship, in lower case
 	public char getDirection(){
 		return direction;
 	}
-	
+
 	// Takes no argument and sets the damage of each block to 1 (untouched)
-	public void resetDamage(int value){
-		this.maxHealth = value;
+	public void resetDamage(int maxDamage){
+		this.maxHealth = maxDamage;
 		this.shipDamage = new int[this.shipSize];
 		for (int i = 0; i < this.shipDamage.length; i++){
-			this.shipDamage[i] = value;
+			this.shipDamage[i] = maxDamage;
 		}
 	}
-	
+
 	// Takes no arguments and returns an array containing the states of each block of the ship
 	public int[] getDamage(){
 		return shipDamage;
 	}
-	
+
 	public Point[] getRadarRange() throws IllegalStateException {
 		ArrayList<Point> temp = new ArrayList<Point>();
 		switch (this.direction) {
@@ -79,7 +79,7 @@ public abstract class Ship {
 				temp.add(new Point(this.position.x - 1, this.position.y + i));
 				temp.add(new Point(this.position.x + 1, this.position.y + i));
 			}
-			
+
 			break;
 		case 'e':
 			for (int i = 1; i <= this.shipSize + 1; i++){
@@ -117,14 +117,14 @@ public abstract class Ship {
 		default:
 			throw new IllegalStateException();
 		}
-		
+
 		// Clean up array list, change into regular array and then return
 		temp.trimToSize();
 		Point[] retVal = new Point[temp.size()];
 		retVal = temp.toArray(retVal);
 		return retVal;
 	}
-	
+
 	public Point[] getGunRange() throws IllegalStateException {
 		ArrayList<Point> temp = new ArrayList<Point>();
 		Point cornerOfRange;
@@ -170,8 +170,8 @@ public abstract class Ship {
 		retVal = temp.toArray(retVal);
 		return retVal;
 	}
-	
-	
+
+
 	public Point[] getShipCoordinates() throws IllegalStateException {
 		Point[] retVal = new Point[this.shipSize];
 		switch (this.direction){
@@ -200,7 +200,7 @@ public abstract class Ship {
 		}
 		return retVal;
 	}
-	
+
 	public Point[] getMoveMobility(){
 		Point[] left = this.getLeftMobility();
 		Point[] right = this.getRightMobility();
@@ -215,7 +215,7 @@ public abstract class Ship {
 		System.arraycopy(back, 0, retVal, left.length + right.length + front.length, back.length);
 		return retVal;
 	}
-	
+
 	public boolean aFloat(){
 		int temp = 0;
 		for (int i = 0; i < this.shipDamage.length; i++){
@@ -223,13 +223,13 @@ public abstract class Ship {
 		}
 		return (temp != 0);
 	}
-	
-	public boolean receiveDamage(Point damLoc, char type) throws IllegalArgumentException {
+
+	public boolean receiveDamage(Point damLoc, char damType) throws IllegalArgumentException {
 		Point[] shipCoordinates = this.getShipCoordinates();
 		boolean shipDamaged = false;
 		for (int i = 0; i < this.shipSize; i++){
 			if (shipCoordinates[i].equals(damLoc)){
-				switch(type){
+				switch(damType){
 				case 't':
 					shipDamaged = this.applyTorDamage(i);
 					break;
@@ -243,13 +243,14 @@ public abstract class Ship {
 		}
 		return shipDamaged;
 	}
-	
+
 	public void rotateShip(Point position) throws IllegalArgumentException, IllegalStateException {
 		Point[] currentRotateMobility = this.getRotationalMobility();
 		boolean foundPoint = false;
 		for (int i = 0; i < currentRotateMobility.length; i++){
-			if (currentRotateMobility[i].x == position.x && currentRotateMobility[i].y == position.y){
+			if (currentRotateMobility[i].equals(position)){
 				foundPoint = true;
+				break;
 			}
 		}
 		if (!foundPoint){
@@ -296,7 +297,7 @@ public abstract class Ship {
 			throw new IllegalStateException();
 		}
 	}
-	
+
 	public Point[] getRotationalMobility() throws IllegalStateException {
 		ArrayList<Point> temp = new ArrayList<Point>();
 		int offset = 0;
@@ -312,7 +313,7 @@ public abstract class Ship {
 					temp.add(new Point(this.position.x - j, this.position.y + (i - 1)));
 					temp.add(new Point(this.position.x + j, this.position.y + (i - 1)));
 				}
-				
+
 			}
 			break;
 		case 'e':
@@ -326,7 +327,7 @@ public abstract class Ship {
 					temp.add(new Point(this.position.x - (i - 1), this.position.y - j));
 					temp.add(new Point(this.position.x - (i - 1), this.position.y + j));
 				}
-				
+
 			}
 			break;
 		case 's':
@@ -340,7 +341,7 @@ public abstract class Ship {
 					temp.add(new Point(this.position.x - j, this.position.y - (i - 1)));
 					temp.add(new Point(this.position.x + j, this.position.y - (i - 1)));
 				}
-				
+
 			}
 			break;
 		case 'w':
@@ -354,20 +355,20 @@ public abstract class Ship {
 					temp.add(new Point(this.position.x + (i - 1), this.position.y - j));
 					temp.add(new Point(this.position.x + (i - 1), this.position.y + j));
 				}
-				
+
 			}
 			break;
 		default:		
 			throw new IllegalStateException();
 		}
-		
+
 		// Clean up array list, change into regular array and then return
 		temp.trimToSize();
 		Point[] retVal = new Point[temp.size()];
 		retVal = temp.toArray(retVal);
 		return retVal;
 	}
-	
+
 	public void repairDamage(){
 		boolean repaired = false;
 		for (int i = 0; i < this.shipDamage.length; i++){
@@ -378,19 +379,19 @@ public abstract class Ship {
 				this.shipDamage[i] = maxHealth;
 				repaired = true;
 			}
-			
+
 		}
 		if (repaired == false){
 			error ("repairDamage called on but the ship has no damage to repair.");
 		}
 	}
-	
+
 	public void moveShip(Point location){
 		Point[] rightMove = this.getRightMobility();
 		Point[] leftMove = this.getLeftMobility();
 		Point[] forwardMove = this.getForwardMobility();
 		Point backMove = this.getBackwardMobility();
-		
+
 		for (int i = 0; i < rightMove.length; i++){
 			if (rightMove[i].equals(location)){
 				this.moveRight();
@@ -410,16 +411,16 @@ public abstract class Ship {
 			this.moveBack();
 		}
 	}
-	
+
 	// Takes a point as the new position, checks validity and then sets the point of the new bow
-	private void setPosition(Point pos)throws IllegalArgumentException {
-		if (pos.x < 0 || pos.y < 0 || pos.x > 30 || pos.y > 30){
+	private void setPosition(Point newPosition)throws IllegalArgumentException {
+		if (newPosition.x < 0 || newPosition.y < 0 || newPosition.x > 30 || newPosition.y > 30){
 			throw new IllegalArgumentException();
 		} else {
-			this.position = pos;
+			this.position = newPosition;
 		}
 	}
-	
+
 	private boolean applyTorDamage(int shipDamLoc){
 		boolean shipDamaged = false;
 		if (this.shipDamage[shipDamLoc] > 0){
@@ -445,7 +446,7 @@ public abstract class Ship {
 		}
 		return shipDamaged;
 	}
-	
+
 	private boolean applyGunDamage(int shipDamLoc){
 		boolean shipDamaged = false;
 		if (this.shipDamage[shipDamLoc] > 0){
@@ -454,7 +455,7 @@ public abstract class Ship {
 		}
 		return shipDamaged;
 	}
-	
+
 	private void moveRight() throws IllegalStateException {
 		switch (this.direction){
 		case 'n':
@@ -491,7 +492,7 @@ public abstract class Ship {
 			throw new IllegalStateException();
 		}
 	}
-	
+
 	private void moveBack() throws IllegalStateException {
 		switch (this.direction){
 		case 'n':
@@ -510,7 +511,7 @@ public abstract class Ship {
 			throw new IllegalStateException();
 		}
 	}
-	
+
 	private Point[] getRightMobility() throws IllegalStateException {
 		ArrayList<Point> temp = new ArrayList<Point>();
 		switch (this.direction){
@@ -537,14 +538,14 @@ public abstract class Ship {
 		default:
 			throw new IllegalStateException();
 		}
-		
+
 		// Clean up array list, change into regular array and then return
 		temp.trimToSize();
 		Point[] retVal = new Point[temp.size()];
 		retVal = temp.toArray(retVal);
 		return retVal;
 	}
-	
+
 	private Point[] getLeftMobility(){
 		ArrayList<Point> temp = new ArrayList<Point>();
 		switch (this.direction){
@@ -571,14 +572,14 @@ public abstract class Ship {
 		default:
 			throw new IllegalStateException();
 		}
-		
+
 		// Clean up array list, change into regular array and then return
 		temp.trimToSize();
 		Point[] retVal = new Point[temp.size()];
 		retVal = temp.toArray(retVal);
 		return retVal;
 	}
-	
+
 	private Point[] getForwardMobility(){
 		ArrayList<Point> temp = new ArrayList<Point>();
 		int stillGood = 0;
@@ -609,14 +610,14 @@ public abstract class Ship {
 		default:
 			throw new IllegalStateException();
 		}
-		
+
 		// Clean up array list, change into regular array and then return
 		temp.trimToSize();
 		Point[] retVal = new Point[temp.size()];
 		retVal = temp.toArray(retVal);
 		return retVal;
 	}
-	
+
 	private Point getBackwardMobility(){
 		Point retVal = new Point();
 		switch (this.direction){
@@ -637,10 +638,10 @@ public abstract class Ship {
 		}
 		return retVal;
 	}
-	
+
 	private void error(String error){
 		System.out.println(error);
 	}
-	
+
 }
 
