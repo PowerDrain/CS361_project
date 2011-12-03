@@ -1,4 +1,5 @@
 import java.awt.Point;
+import java.util.*;
 
 public class Base {
    
@@ -62,7 +63,7 @@ public class Base {
        //... The damage is only caused to an additional box if it
        //can be reached in direction to the bow (if it is a ship which is reached)
        //or towards a side to be determined (if it is a naval base which is reached).
-       //TODO change case if upper
+       type = Character.toLowerCase(type);
        if(type == 't'){
            int damageToDo=2;
            while(this.intact() && (damageToDo != 0) && (damageIndex<10)){
@@ -135,6 +136,7 @@ public class Base {
 		   result.append(this._damage[i] + ",");
 	   }
 	   result.append("[Location:]");
+	   //TODO change the way Points are converted to string... java's toString implementation blows.
 	   for(int i=0; i<this._location.length; i++){
 		   result.append(this._location.toString() + ",");
 	   }
@@ -143,14 +145,24 @@ public class Base {
        return result.toString();
    }
    
-   //TODO
+   //TODO finish for Location and Side.
    public Base fromString(String s) throws Exception{
 	   Base tempBase = new Base('w');
+       if(s.indexOf('{') == -1 || s.indexOf('}') == -1) 
+    	   throw new Exception("String must include '{' and '}' to be converted to Player: " + s);
+       s = s.substring(1, s.length()-2); //trim off the { and }
+	   s = s.substring(s.lastIndexOf("[Damage:]")+1); //trim off [Damage:]
+	   String damage = s.substring(0, s.indexOf("[Location:]"));
+	   _damage = new int[10];
+	   //TODO fix method to accommodate for numbers bigger than 1 digit, and actually convert to Integer instead of characters
+	   for(int i=0; i<_damage.length+1; i++){
+		   _damage[i]=damage.charAt(0);
+		   damage = damage.substring(1);	//trim the ',' off after each run through besides the first
+	   }
+	   s = s.substring(s.indexOf("Location:]")+1); 	//trim off [Location:]
+	   String location = s.substring(0, s.indexOf("[Side:]"));
+	   _location = new Point[10];
 
-       int i = s.indexOf('{');
-       int j = s.indexOf('}');
-       if(i == -1 || j == -1) throw new Exception("String must include '{' and '}' to be converted to Player: " + s);
-	   
 	   return tempBase;
    }
 }

@@ -220,10 +220,10 @@ public class Player {
    public String toString(){
 	   StringBuilder result = new StringBuilder();
 	   result.append("{[Name:]" + this._name);
-	   result.append(",[Score:]" + this._score);
-	   result.append(",[Mines:]" + this._mines);
-	   result.append(",[Side:]" + this._startingSide);
-	   result.append(",[Ships:]" + this._shipCount);
+	   result.append("[Score:]" + this._score);
+	   result.append("[Mines:]" + this._mines);
+	   result.append("[Side:]" + this._startingSide);
+	   result.append("[Ships:]" + this._shipCount);
 	   result.append("}");
        return result.toString();
    }
@@ -231,10 +231,13 @@ public class Player {
    //TODO
    public Player fromString(String s) throws Exception{
        Player tempPlayer = new Player(null, 'w');
-       
-       int initialIndex = s.indexOf('{');
-       int finalIndex = s.indexOf('}');
-       if(initialIndex == -1 || finalIndex == -1) throw new Exception("String must include '{' and '}' to be converted to Player: " + s);
+       if(s.indexOf('{') == -1 || s.indexOf('}') == -1) 
+    	   throw new Exception("String must include '{' and '}' to be converted to Player: " + s);
+       s = s.substring(1, s.length()-2); //trim off the { and }
+	   s = s.substring(s.lastIndexOf("[Name:]")+1); //trim off [name:]
+	   this._name= s.substring(0, s.indexOf("[Score:]"));
+	   s = s.substring(s.lastIndexOf("[Score:]")+1);	//trim off [Score:]
+	   this._score = Integer.parseInt((String) s.subSequence(0, s.indexOf("[Mines:]")));
        
        
        return tempPlayer;
