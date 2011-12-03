@@ -187,7 +187,12 @@ public class GameUI extends JFrame {
 		JLabel turn = new JLabel("Turn");
 		turn.setHorizontalAlignment(JLabel.CENTER);
 		infoPane.add(turn);
-		infoPane.add(new JButton("Menu"));
+		JButton menu = new JButton("Menu");
+		menu.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e){
+				new GameMenu("Game Menu");			
+		}});
+		infoPane.add(menu);
 		JTextField player1Score = new JTextField("128");
 		infoPane.add(player1Score);
 		infoPane.add(new JTextField("10"));
