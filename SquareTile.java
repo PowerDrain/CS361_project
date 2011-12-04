@@ -36,7 +36,7 @@ public class SquareTile {
 	@Override
 	public String toString(){
 		//TODO
-		String result = _occupant.toString() + _location.toString() + _tileShip.toString();
+		String result = _occupant.toString() + _location.toString();// + _tileShip.toString();
 		return result;
 	}
 	
