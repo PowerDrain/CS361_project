@@ -1,5 +1,5 @@
 import java.awt.*;
-
+//import java.io.*;
 import javax.swing.*;
 import java.awt.event.*;
 
@@ -19,6 +19,23 @@ public class HelpMenu extends JFrame{
 		panel.add(Box.createHorizontalStrut(100));
 		
 		panel.add(new JTextField("This is the Help Menu!"));
+		
+		/*//For Future Use
+		try{
+			FileInputStream fstream = new FileInputStream("C://README.txt");
+			DataInputStream in = new DataInputStream(fstream);
+			BufferedReader br = new BufferedReader(new InputStreamReader(in));
+			String strLine;
+			String total = "";
+			JTextPane helpText = new JTextPane();
+			JScrollPane slider = new JScrollPane(helpText);
+
+			while ((strLine = br.readLine()) != null)   
+				total+=strLine+'\n';
+
+			helpText.setText(total);
+			panel.add(slider);
+		}catch(Exception e){ System.err.println("Error: " + e.getMessage()); }*/
 		
 		ButtonHandler handler = new ButtonHandler();
 		JButton back = new JButton("Back");
