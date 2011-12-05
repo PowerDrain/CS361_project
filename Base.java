@@ -15,18 +15,21 @@ public class Base {
        this._startingSide=startingSide;
        _damage = new int[10];
        _location = new Point[10];
-       for(int i=0; i<_location.length+1; i++){
+       
+       for(int i=0; i<_damage.length; i++){
            _damage[i]=1;        //1=untouched, 0=damaged
        }
        
        if(this._startingSide=='w'){
-    	   for(int i=0; i<_location.length+1; i++){
-    		   _location[i].setLocation(0, i+10);
+    	   for(int i=0; i<_location.length; i++){
+    		   Point x = new Point(0, i+10);
+    		   _location[i] = x;
     	   }
        }
        else{
-    	   for(int i=0; i<_location.length+1; i++){
-    		   _location[i].setLocation(29, i+10);
+    	   for(int i=0; i<_location.length; i++){
+    		   Point x = new Point(29, i+10);
+    		   _location[i] = x;
     	   }
        }
    }
