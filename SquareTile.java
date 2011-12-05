@@ -2,7 +2,7 @@
  * SquareTile.java
  * Michael Mattson - cs361
  * 
- * Modification - 11/30/2011
+ * Modification - 12/5/2011
  * Description:
  * 	Models a tile with certain characteristics that represent coordinates with different 
  * 	occupants in a battleship game.
@@ -17,17 +17,30 @@ public class SquareTile {
 	
 	private Occupant _occupant;
 	private SquareCoordinate _location;
-	private Ship _tileShip = null;
+	private Object _tileOwner = null; // must be either base object or ship object
 	
-	public SquareTile(SquareCoordinate location, Occupant o, Ship tileShip){
+	/**
+	 * SquareTile Constructor
+	 * @param location SquareCoordinate
+	 * @param o	Occupant
+	 * @param tileOwner Object (must be Ship, Base, or null)
+	 * @throws IllegalArgumentException if the tileOwner parameter is not a Ship, Base, or null
+	 */
+	public SquareTile(SquareCoordinate location, Occupant o, Object tileOwner) throws IllegalArgumentException{
 		_location = location;
 		_occupant = o;
-		_tileShip = tileShip;
+		if(!(tileOwner instanceof Base) && !(tileOwner instanceof Ship) && tileOwner != null) throw new IllegalArgumentException("tile owner must be a ship, base, or null.");
+		_tileOwner = tileOwner;
 	}
 	
-	public boolean setShip(Ship s){
-		_tileShip = s;
-		return true;
+	/**
+	 * Mutator for tileOwner data field
+	 * @param tileOwner Object (must be Ship, Base, or null)
+	 * @throws IllegalArgumentException if the tileOwner parameter is not a Ship, Base, or null
+	 */
+	public void setTileOwner(Object tileOwner) throws IllegalArgumentException{
+		if(!(tileOwner instanceof Base) && !(tileOwner instanceof Ship) && tileOwner != null) throw new IllegalArgumentException("tile owner must be a ship, base, or null.");
+		_tileOwner = tileOwner;
 	}
 	
 	/**
@@ -36,7 +49,8 @@ public class SquareTile {
 	@Override
 	public String toString(){
 		//TODO
-		String result = _occupant.toString() + _location.toString();// + _tileShip.toString();
+		String result = _occupant.toString() + _location.toString();// + _tileOwner.toString();
+		
 		return result;
 	}
 	
@@ -49,11 +63,11 @@ public class SquareTile {
 	}
 	
 	/**
-	 * Returns the reference of this tiles tileShip
-	 * @return _tileShip
+	 * Returns the reference of this tiles tileOwner
+	 * @return _tileShip which is either a Ship, Base, or null
 	 */
-	public Ship getTileShip(){
-		return _tileShip;
+	public Object getTileOwner(){
+		return _tileOwner;
 	}
 	
 	/**
@@ -123,7 +137,7 @@ public class SquareTile {
 		//TODO test check tileShip field
 		if(guest instanceof SquareTile){
 			if(this.getLocation().equals(((SquareTile)guest).getLocation()) && this.getOccupant().equals(((SquareTile)guest).getOccupant()) && 
-					this.getTileShip()==((SquareTile)guest).getTileShip()){
+					this.getTileOwner()==((SquareTile)guest).getTileOwner()){
 				return true;
 			}else{
 				return false;
@@ -160,7 +174,7 @@ public class SquareTile {
 		catch(FormatException e){
 			System.out.println(e);
 		}
-		Ship tileShip = null;
+		Object tileOwner = null;
 		//try{
 		//	String subS;
 		//	subS = s.substring(j+1);
@@ -170,6 +184,6 @@ public class SquareTile {
 		//	System.out.println(e);
 		//}/*
 		
-		return new SquareTile(c, o, tileShip);
+		return new SquareTile(c, o, tileOwner);
 	}
 }
