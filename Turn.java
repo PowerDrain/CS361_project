@@ -1,25 +1,27 @@
 package entity;
-
 import java.awt.Point;
-
 public class Turn {
-	//Not sure if Map is created in the Turn Class
 	private Map m;
-	private Player user;
-	private Player enemy;
+	private Player current;
+	private Player opponent;
 
-	//No argument constructor for creating a instance of a turn.
-	public Turn(){
-		//Still figuring out how to implement
-		user = new Player("Player 1", 'w');
-		enemy = new Player("Player 2", 'e');
-		m = new Map();
+	public Turn(String fileName){
+		current = new Player("Player 1", 'w');
+		opponent = new Player("Player 2", 'e');
+		m = new Map(fileName, current, opponent);
 	}//End of Default Constructor
 
+	//Add a Rotate Ship
+	//I need the direction of the bow
+	public boolean rotateShip(Ship currentShip, char direction){
+		return false;
+	}//End of rotateShip
+	
 	//Takes a ship to be moved in the game and the direction to move it.  If it was able to do so, 
 	//checking game rules, it moves the ship and returns true, otherwise it returns false.
-	public boolean moveShip(Ship currentShip, char direction){
-		if(currentShip.getDirection() != direction){
+	//I need the direction of the bow
+	public boolean moveShip(Ship currentShip, char direction){//TODO I need to add distance -Al
+		if(currentShip.getDirection() != direction){	
 			//Change direction TODO  Should I use getPosition()?
 			if(currentShip.getDirection() == 'n' && direction == 'w' || 
 					currentShip.getDirection() == 'w' && direction == 's' ||	
@@ -46,10 +48,10 @@ public class Turn {
 	//Takes the location to drop a mine. Immerses a mine at the given location and decrements 
 	//users mine count. If move is legal and there are mines available it returns true, 
 	//otherwise returns false.
-	public boolean immerseMine(Point loc){
+	public boolean immerseMine(Point loc, Ship currentShip){
 		//Check for type of ship
-		if(user.mineCount() > 0){
-			user.decrementMineCount();
+		if(current.mineCount() > 0 && currentShip.toString() == "Dredger"){
+			current.decrementMineCount();
 			m.placeMine(loc);
 			return true;
 		}//End of if
@@ -58,13 +60,14 @@ public class Turn {
 
 	//Takes the location of the mine. Withdraw mine from the map and increments users mine count. 
 	//If the move is legal and completes successfully it returns true, otherwise returns false. 
-	public boolean withdrawMine(Point loc){
+	public boolean withdrawMine(Point loc, Ship currentShip){
 		//Check for type of ship
 		//TODO maybe there is a more elegant solution to this,
 		//this just doesn't seem good but it may work. -Tommy
-		if(user.getCurrentShip().getClass().getName()=="Dredger"){
+		//if(current.getCurrentShip().getClass().getName()=="Dredger"){
+		if(currentShip.toString() == "Dredger"){  //TODO Ship must be touching mine.
 			m.removeMine(loc);
-			user.decrementMineCount();
+			current.decrementMineCount();
 			return true;
 		}
 		return false;
@@ -72,12 +75,14 @@ public class Turn {
 
 	//Takes a ship to shoot a torpedo, if able to do so via game rules it returns true, 
 	//otherwise returns false.
-	public boolean launchTorpedo(){
+	public boolean launchTorpedo(Ship currentShip){
 		//Check if currentShip is the right type!
 		//Must get ship location and direction
-		Ship currentShip = user.getCurrentShip();
+		if(currentShip.toString() != "Destroyer" || currentShip.toString() != "Torpedo") return false;
+		
 		Point shipPosition = currentShip.getPosition();
 		char d = currentShip.getDirection();
+				
 		int x, y;
 		x = shipPosition.x;
 		y = shipPosition.y;
@@ -119,6 +124,7 @@ public class Turn {
 	//Takes a ship to shoot the gun and the location of where the shot should go.  If all game rules 
 	//followed it returns true, otherwise returns false.
 	public boolean shootGun(Ship currentShip, Point target){
+		if(currentShip.toString() != "Cruiser" || currentShip.toString() != "Torpedo") return false;
 		Point[] p = currentShip.getGunRange();
 		for(int i = 0; i < p.length; ++i){
 			if(p[i].equals(target)){
@@ -132,29 +138,39 @@ public class Turn {
 	//Takes a ship to be repaired and if allowed it repairs the ship and returns true, 
 	//otherwise it returns false.
 	public boolean repairShip(Ship currentShip){
-		return user.base().repairShip(currentShip);		
+		return current.base().repairShip(currentShip);		
 	}//End of repairShip Method
 
 	//If allowed it repairs players base and returns true, otherwise returns false.
 	public boolean repairBase(){
-		return user.base().repairBase();	
+		return current.base().repairBase();	
 	}//End of repairBase Method
+	
+	public int getMineCount(){
+		return current.mineCount();
+	}//End of getMineCount()
 
 	//Returns true if the turn is passed otherwise returns false.
 	//TODO This method might not have to do anything at all... -Tommy
-	public boolean pass(){
+	//Yeah I think the Gui handles the pass -Al
+/*	public boolean pass(){
 		return true;
 	}//End of pass Method
 
 	//Returns true if it is users turn and false if it is enemy’s turn
 	//TODO I don't think we need this one -Tommy
+	//Agreed -Al
 	public boolean getCurrentPlayer(){
 		//I should increment numTurn   
-		return user.numTurn() == enemy.numTurn();
+		return current.numTurn() == opponent.numTurn();
 	}//End of getCurrentPlayer Method
 
 	//Displays the “Help” topics for user’s reference.
+	//I think the Gui would handle this also -Al
 	public void getHelp(){   
 		System.out.println("Step #1:  Eat Shit and Die!");
-	}//End of getHelp Method	
+	}//End of getHelp Method*/
+	
+	public String toString(){
+		return current.toString() + opponent.toString() + m.toString(); }
 }//End of Class
