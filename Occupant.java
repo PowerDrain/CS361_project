@@ -1,9 +1,9 @@
-package mjm.lib.gameboard;
 import java.awt.Color;
 /**
  * Provides a unique color and visibility for each of 6 different possible occupants of a tile
  * @author Michael Mattson - cs361
  *
+ *	Modification - 12/5/2011
  */
 public enum Occupant {
 	WATER(Color.BLUE, 'A'),
@@ -11,8 +11,10 @@ public enum Occupant {
 	UNARMOREDSHIP(Color.GRAY, 'R'),
 	DAMAGEDSHIP(Color.BLACK, 'R'),
 	BASE(Color.YELLOW,'A'),
+	DAMAGEDBASE(new Color(238,187,0),'A'),
 	REEF(Color.GREEN, 'A'),
 	MINE(Color.RED, 'S');
+	
 	
 
 	private final Color _color;
@@ -71,19 +73,6 @@ public enum Occupant {
 			return true;
 		}else{
 			return false;
-		}
-	}
-	
-	/**
-	 * Parses a string and returns the indicated Occupant type
-	 * @param occupantType
-	 * @return Occupant type indicated by the given string
-	 */
-	public static Occupant parseOccupant(String occupantType){
-		if(occupantType.equals("Occupant.WATER")){
-			return Occupant.WATER;
-		}else{
-			return Occupant.MINE;
 		}
 	}
 	

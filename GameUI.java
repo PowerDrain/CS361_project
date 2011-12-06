@@ -1,23 +1,28 @@
 /*
  * GameUI.java
- * Michael Mattson - cs361
+ * Michael Mattson, Alton Yee  - cs361
  * 
  * Modification:
- * 	11/30/2011
+ * 	12/4/2011
  * Description:
  * 	Graphic user interface for battleship game
  * 
  */
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.GridLayout;
 import java.awt.Menu;
 import java.awt.MenuBar;
+import java.awt.Point;
 import java.awt.TextArea;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -33,16 +38,28 @@ public class GameUI extends JFrame {
 	private Map myMap;
 	private static final int WIDTH = 1100;
 	private static final int HEIGHT = 800;
-	
+	private static int myTurn = 0;
 	public GameUI(){
 		setTitle("Naval WhooopAsssss");
-		//using default constructor that initializes map to be all water 
-		// because specifying constructor was not working properly
-		myMap = new Map();
+		//using default constructor that initializes map based on a .txt file
+		myMap = new Map("defaultLayout.txt");
+		myMap.printMap();
 		setSize(WIDTH, HEIGHT);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		createContents();
 		setVisible(true);
+	}
+	
+	/**
+	 * Returns the currently selected map coordinate in a formatted string form
+	 * @return String containing currently selected coordinate
+	 */
+	private String getSelectedCoordinate(){
+		if(selected == null){
+			return "No coordinate selected.";
+		}else{
+			return "Selected Coordinate: " + ((int)selected.getX()-1) + ", " + ((int)selected.getY()-1);
+		}
 	}
 	
 	public void createContents(){
@@ -51,11 +68,38 @@ public class GameUI extends JFrame {
 		contentPane.setLayout(new BorderLayout());
 		
 		//setup map
-		SquarePanel map = new SquarePanel();
+		final SquarePanel map = new SquarePanel();
+		
+		// setup turn display;
+		final JTextField turnInfo = new JTextField(myTurn + "/80");
+		
+		//setup coordinate display
+		final JTextField myCoord = new JTextField(getSelectedCoordinate());
+		
+		// setup map listener
+		map.addMouseListener(new MouseAdapter(){
+			@Override
+			public void mouseClicked(MouseEvent e){
+				SquareCoordinate sc = SquareCoordinate.fromPoint(new Point(e.getX(),e.getY()), SquareTile.WIDTH);
+				System.out.println(sc.toString());
+				int myX = sc.getX();
+				int myY = sc.getY();
+				if(myX <=30 && myX > 0 && myY > 0 && myY<=30){
+					SquareTile mytile = myMap._map[myX-1][myY-1];
+					System.out.println(mytile.toString());
+					selected = new SquareCoordinate(myX,myY);
+					myCoord.setText(getSelectedCoordinate());
+					repaint();
+				}
+			}
+		});
 		
 		// setup report window
 		final TextArea reportWindow = new TextArea("Welcome to Naval WhoopAsss");
 		reportWindow.setEditable(false);
+		
+		
+
 		
 		// setup buttons
 		JButton shootGun = new JButton("Shoot Gun");
@@ -64,6 +108,7 @@ public class GameUI extends JFrame {
 				String s = reportWindow.getText();
 				s+="\nGun Fired";
 				reportWindow.setText(s);
+				turnInfo.setText(++myTurn + "/80");
 				repaint();
 			}
 		});
@@ -74,6 +119,7 @@ public class GameUI extends JFrame {
 				String s = reportWindow.getText();
 				s+="\nTorpedo Launched";
 				reportWindow.setText(s);
+				turnInfo.setText(++myTurn + "/80");
 				repaint();
 			}
 		});
@@ -83,6 +129,13 @@ public class GameUI extends JFrame {
 			public void actionPerformed(ActionEvent e){
 				String s = reportWindow.getText();
 				s+="\nMine Deployed";
+				turnInfo.setText(++myTurn + "/80");
+				Point selectedPoint = new Point(selected.getX()-1,selected.getY()-1);
+				if(myMap.getTile(selectedPoint).getOccupant().equals(Occupant.WATER)){
+					myMap.setTile(selectedPoint, Occupant.MINE, null);
+				}else{
+					s+="\nCannot lay mine at selected coordinate.";
+				}
 				reportWindow.setText(s);
 				repaint();
 			}
@@ -94,6 +147,14 @@ public class GameUI extends JFrame {
 				String s = reportWindow.getText();
 				s+="\nMine Retrieved";
 				reportWindow.setText(s);
+				turnInfo.setText(++myTurn + "/80");
+				Point selectedPoint = new Point(selected.getX()-1,selected.getY()-1);
+				if(myMap.getTile(selectedPoint).getOccupant().equals(Occupant.MINE)){
+					myMap.setTile(selectedPoint, Occupant.WATER, null);
+				}else{
+					s+="\nNo mine to retrieve at selected coordinate.";
+				}
+				reportWindow.setText(s);
 				repaint();
 			}
 		});
@@ -104,6 +165,7 @@ public class GameUI extends JFrame {
 				String s = reportWindow.getText();
 				s+="\nShip Moved";
 				reportWindow.setText(s);
+				turnInfo.setText(++myTurn + "/80");
 				repaint();
 			}
 		});
@@ -114,6 +176,7 @@ public class GameUI extends JFrame {
 				String s = reportWindow.getText();
 				s+="\nShip Rotated";
 				reportWindow.setText(s);
+				turnInfo.setText(++myTurn + "/80");
 				repaint();
 			}
 		});
@@ -124,6 +187,7 @@ public class GameUI extends JFrame {
 				String s = reportWindow.getText();
 				s+="\nShip Repaired";
 				reportWindow.setText(s);
+				turnInfo.setText(++myTurn + "/80");
 				repaint();
 			}
 		});
@@ -134,6 +198,7 @@ public class GameUI extends JFrame {
 				String s = reportWindow.getText();
 				s+="\nBase Repaired";
 				reportWindow.setText(s);
+				turnInfo.setText(++myTurn + "/80");
 				repaint();
 			}
 		});
@@ -144,6 +209,7 @@ public class GameUI extends JFrame {
 				String s = reportWindow.getText();
 				s+="\npassTurn";
 				reportWindow.setText(s);
+				turnInfo.setText(++myTurn + "/80");
 				repaint();
 			}
 		});
@@ -197,7 +263,8 @@ public class GameUI extends JFrame {
 		infoPane.add(player1Score);
 		infoPane.add(new JTextField("10"));
 		infoPane.add(new JTextField("128"));
-		infoPane.add(new JTextField("41/80"));
+		infoPane.add(turnInfo);
+		infoPane.add(myCoord);
 		
 		// add components to content pane
 		//contentPane.add(infoPane, BorderLayout.NORTH);
@@ -219,12 +286,18 @@ public class GameUI extends JFrame {
 		protected void paintComponent(Graphics g) {
 			super.paintComponent(g); // render background
 			myMap.drawAll(g);
+			if(selected != null){
+				g.setColor(Color.magenta);
+				g.drawPolygon(selected.toPolygon(SquareTile.WIDTH));
+			}
 			
 		}
 	}
 	
 	
 
+
+	private static SquareCoordinate selected = null;
 
 	public static void main(String[] args){
 		new GameUI();

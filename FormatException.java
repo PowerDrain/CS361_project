@@ -1,4 +1,3 @@
-package mjm.lib.gameboard;
 
 public class FormatException extends Exception {
 	

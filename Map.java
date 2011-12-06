@@ -3,14 +3,16 @@
  * Michael Mattson - cs361
  * 
  * Modification:
- * 	11/30/2011
+ * 	12/5/2011
  * 
  * Description:
- * 	Models a 30 X 30 map for a game of battle ship 
+ * 	Models a 30 X 30 map for a game of battle ship
  */
 
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Point;
+import java.awt.Polygon;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -26,17 +28,18 @@ public class Map {
 	 * Constructs the map specified by the text file
 	 */
 	public Map(String txtFile){
-		// initialize _map using a .txt file
+		// initialize _map
+		// set _map to contain all water using file (reefs and mines may be added here also)
 		// initialize both players
 		// add all ships and bases
 		_map = new SquareTile[30][30];
 		initializeMap(txtFile);
-		_currentPlayer = new Player("p1",'w');
-		_opponent = new Player("p2", 'e');
-		addShips(_currentPlayer);
-		addShips(_opponent);
-		addBase(_currentPlayer);
-		addBase(_opponent);
+		//_currentPlayer = new Player("p1",'w');
+		//_opponent = new Player("p2", 'e');
+		//addShips(_currentPlayer);
+		//addShips(_opponent);
+		//addBase(_currentPlayer);
+		//addBase(_opponent);
 	}
 	
 	/**
@@ -68,7 +71,6 @@ public class Map {
 		addShip(p._torpedoBoat3);
 		addShip(p._dredger1);
 		addShip(p._dredger2);
-	
 	}
 	
 	/**
@@ -128,7 +130,6 @@ public class Map {
 				}
 			}
 		}
-		
 	}
 
 	/**
@@ -160,15 +161,27 @@ public class Map {
 	 * Returns true if method was successful and false otherwise
 	 * @param location
 	 * @return whether or not method was successful
+	 * @throws IllegalArgumentException if the tileOwner parameter is not a Ship, Base, or null
+	 * @throws IllegalArgumentException if the location parameter is not in the map
 	 */
-	public void setTile(Point location, Occupant o, Ship tileShip ) throws IllegalArgumentException{
+	public void setTile(Point location, Occupant o, Object tileOwner) throws IllegalArgumentException{
 		int x = (int)location.getX();
 		int y = (int)location.getY();
 		if(x<0 || x>29 || y<0 || y>29){
 			throw new IllegalArgumentException("coordinates must be in the range 0<=x<=29 and 0<=y<=29");
 		}
+		if(!(tileOwner instanceof Base) && !(tileOwner instanceof Ship) && tileOwner!=null){
+			throw new IllegalArgumentException("tile owner must be a Ship, Base, or null.");
+		}
+		
 		_map[x][y].setOccupant(o);
-		_map[x][y].setShip(tileShip);
+		if(tileOwner instanceof Ship){
+			_map[x][y].setTileOwner(tileOwner);
+		}else if(tileOwner instanceof Base){
+			_map[x][y].setTileOwner(tileOwner);
+		}else{
+			_map[x][y].setTileOwner(null);
+		}
 	}
 	
 	/**
@@ -178,7 +191,6 @@ public class Map {
 	 * @return true if method was successful and false otherwise
 	 */
 	public boolean addShip(Ship s){
-		//TODO account for every direction that ship could be facing
 		Point bowCoordinate = s.getPosition();
 		int bowX = (int)bowCoordinate.getX();
 		int bowY = (int)bowCoordinate.getY();
@@ -193,6 +205,8 @@ public class Map {
 					o = Occupant.UNARMOREDSHIP;
 				}else if(myArray[i] == 3){
 					o = Occupant.ARMOREDSHIP;
+				}else if(myArray[i] == 0){
+					o = Occupant.WATER;
 				}else{
 					return false;
 				}
@@ -207,6 +221,8 @@ public class Map {
 					o = Occupant.UNARMOREDSHIP;
 				}else if(myArray[i] == 3){
 					o = Occupant.ARMOREDSHIP;
+				}else if(myArray[i] == 0){
+					o = Occupant.WATER;
 				}else{
 					return false;
 				}
@@ -221,6 +237,8 @@ public class Map {
 					o = Occupant.UNARMOREDSHIP;
 				}else if(myArray[i] == 3){
 					o = Occupant.ARMOREDSHIP;
+				}else if(myArray[i] == 0){
+					o = Occupant.WATER;
 				}else{
 					return false;
 				}
@@ -235,6 +253,8 @@ public class Map {
 					o = Occupant.UNARMOREDSHIP;
 				}else if(myArray[i] == 3){
 					o = Occupant.ARMOREDSHIP;
+				}else if(myArray[i] == 0){
+					o = Occupant.WATER;
 				}else{
 					return false;
 				}
@@ -254,9 +274,17 @@ public class Map {
 	 */
 	private void addBase(Player p){
 		Base baseToAdd = p.base();
+		int[] baseDamage = baseToAdd.damage();
 		Point[] baseTiles = baseToAdd.location();
+		int damageIndex = 0;
 		for(Point currentBaseTile : baseTiles){
-			this.setTile(currentBaseTile, Occupant.BASE, null);
+			if(baseDamage[damageIndex]==0){
+				this.setTile(currentBaseTile, Occupant.DAMAGEDBASE, null);
+			}else if(baseDamage[damageIndex]==1){
+				this.setTile(currentBaseTile, Occupant.BASE, null);
+			}else{
+				throw new IllegalStateException("the base damage array contains invalid value.");
+			}
 		}
 	}
 	
@@ -324,7 +352,7 @@ public class Map {
 		int y = (int)location.getY();
 		Occupant thisOccupant = _map[x][y].getOccupant();
 		
-		if(thisOccupant == Occupant.BASE){
+		if(thisOccupant == Occupant.BASE || thisOccupant == Occupant.DAMAGEDBASE){
 			return true;
 		}else{
 			return false;
@@ -352,7 +380,7 @@ public class Map {
 		for(int i = 0; i<30; ++i){
 			for(int j = 0; j<30; ++j){
 				g.setColor(_map[i][j].getOccupant().getColor());
-				_map[i][j].draw(g, 'm');
+				_map[i][j].draw(g, 'v');
 			}
 		}
 	}
@@ -364,10 +392,13 @@ public class Map {
 		for(int i = 0; i<30; ++i){
 			for(int j = 0; j<30; ++j){
 				Point squareTilePosition = new Point(i,j);
-				Ship squareTilesShip = _map[i][j].getTileShip();
+				Ship squareTilesShip = null; 
+				if(_map[i][j].getTileOwner() instanceof Ship){
+					squareTilesShip = (Ship)_map[i][j].getTileOwner();
+				}
 				if(!inVisibility(squareTilePosition)){
 					_map[i][j].draw(g,'n');
-				}else if(_opponent.isPlayersShip(squareTilesShip)){
+				}else if(squareTilesShip != null && _opponent.isPlayersShip(squareTilesShip)){
 					_map[i][j].draw(g, 'e');
 				}else if(this.hasMine(squareTilePosition) && !inSonarVisibility(squareTilePosition)){
 					_map[i][j].draw(g, 'm');
@@ -379,6 +410,11 @@ public class Map {
 		}
 	}
 	
+	/**
+	 * Returns whether or not the given point is in either radar visibility or sonar visibility
+	 * @param p
+	 * @return True if the given point is in radar visibility or sonar visiblity and false otherwise
+	 */
 	private boolean inVisibility(Point p){
 		Point[] radarVisibility = _currentPlayer.getRadarVisibility();
 		Point[] sonarVisibility = _currentPlayer.getSonarVisibility();
@@ -395,6 +431,11 @@ public class Map {
 		return false;
 	}
 	
+	/**
+	 * Returns whether or not a SquareTile located at a given point is visible by sonar
+	 * @param p
+	 * @return true if given Point is visible by sonar and false otherwise
+	 */
 	private boolean inSonarVisibility(Point p){
 		Point[] sonarVisibility = _currentPlayer.getSonarVisibility();
 		for(Point visiblePoint : sonarVisibility){
@@ -406,11 +447,20 @@ public class Map {
 	}
 	
 	/**
-	 * Outlines all square tiles contained in the current ships mobility in magenta
+	 * Outlines all square tiles contained in the current ships mobility in pink
 	 * @param g
 	 */
 	public void drawMobility(Graphics g){
 		//TODO
+		g.setColor(Color.pink);
+		Point[] mobilityArray = _currentPlayer.getMobility();
+		for(Point mobilityPoint : mobilityArray){
+			int x = (int)mobilityPoint.getX()+1; // adding 1 to x and y coordinates because map[0][0] is
+			int y = (int)mobilityPoint.getY()+1; // at (1,1) on the SquareTile grid
+			SquareCoordinate s = new SquareCoordinate(x,y);
+			Polygon newPolygon = s.toPolygon(SquareTile.WIDTH);
+			g.drawPolygon(newPolygon);
+		}
 	}
 	
 	/**
@@ -419,6 +469,15 @@ public class Map {
 	 */
 	public void drawGunRange(Graphics g){
 		//TODO
+		g.setColor(Color.cyan);
+		Point[] gunRangeArray = _currentPlayer.getGunRange();
+		for(Point gunRangePoint : gunRangeArray){
+			int x = (int)gunRangePoint.getX()+1; // adding 1 to x and y coordinates because map[0][0] is
+			int y = (int)gunRangePoint.getY()+1; // at (1,1) on the SquareTile grid
+			SquareCoordinate s = new SquareCoordinate(x,y);
+			Polygon newPolygon = s.toPolygon(SquareTile.WIDTH);
+			g.drawPolygon(newPolygon);
+		}
 	}
 	
 	/**
