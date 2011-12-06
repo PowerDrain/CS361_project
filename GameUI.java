@@ -299,7 +299,7 @@ public class GameUI extends JFrame {
 
 	private static SquareCoordinate selected = null;
 
-	public static void main(String[] args){
+	/*public static void main(String[] args){
 		new GameUI();
-	}
+	}*/
 }
