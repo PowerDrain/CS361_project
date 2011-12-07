@@ -73,49 +73,49 @@ public class Player {
    }
    
    private boolean makeShips(){
-	   Point shipPoint = new Point();
+	   Point shipPoint;
 	   if (this._startingSide == 'w') {
-			shipPoint.setLocation(5, 10);
+			shipPoint = new Point(5, 10);
 			_cruiser1 = new Cruiser(shipPoint ,'e');
-			shipPoint.setLocation(5, 11);
+			shipPoint = new Point(5, 11);
 			_cruiser2 = new Cruiser(shipPoint ,'e');
 			
-			shipPoint.setLocation(3, 12);
+			shipPoint = new Point(3, 12);
 			_destroyer1 = new Destroyer(shipPoint ,'e');
-			shipPoint.setLocation(3, 13);
+			shipPoint = new Point(3, 13);
 			_destroyer2 = new Destroyer(shipPoint ,'e');
 			
-			shipPoint.setLocation(4, 14);
+			shipPoint = new Point(4, 14);
 			_torpedoBoat1 = new Torpedo(shipPoint ,'e');
-			shipPoint.setLocation(4, 15);
+			shipPoint = new Point(4, 15);
 			_torpedoBoat2 = new Torpedo(shipPoint ,'e');
-			shipPoint.setLocation(4, 16);
+			shipPoint = new Point(4, 16);
 			_torpedoBoat3 = new Torpedo(shipPoint ,'e');
 			
-			shipPoint.setLocation(2, 17);
+			shipPoint = new Point(2, 17);
 			_dredger1 = new Dredger();
-			shipPoint.setLocation(2, 18);
+			shipPoint = new Point(2, 18);
 			_dredger2 = new Dredger();
 	   }
 	   else{
-			shipPoint.setLocation(24, 10);
+			shipPoint = new Point(24, 10);
 			_cruiser1 = new Cruiser(shipPoint ,'w');
-			shipPoint.setLocation(24, 11);
+			shipPoint = new Point(24, 11);
 			_cruiser2 = new Cruiser(shipPoint ,'w');
 			
-			shipPoint.setLocation(26, 12);
+			shipPoint = new Point(26, 12);
 			_destroyer1 = new Destroyer(shipPoint ,'w');
-			shipPoint.setLocation(26, 13);
+			shipPoint = new Point(26, 13);
 			_destroyer2 = new Destroyer(shipPoint ,'w');
 			
-			shipPoint.setLocation(25, 14);
+			shipPoint = new Point(25, 14);
 			_torpedoBoat1 = new Torpedo(shipPoint ,'w');
-			shipPoint.setLocation(25, 15);
+			shipPoint = new Point(25, 15);
 			_torpedoBoat2 = new Torpedo(shipPoint ,'w');
-			shipPoint.setLocation(25, 16);
+			shipPoint = new Point(25, 16);
 			_torpedoBoat3 = new Torpedo(shipPoint ,'w');
 			
-			shipPoint.setLocation(27, 17);
+			shipPoint = new Point(27, 17);
 			_dredger1 = new Dredger();
 			shipPoint.setLocation(27, 18);
 			_dredger2 = new Dredger();
