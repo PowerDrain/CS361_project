@@ -75,49 +75,49 @@ public class Player {
    private boolean makeShips(){
 	   Point shipPoint = new Point();
 	   if (this._startingSide == 'w') {
-			shipPoint.setLocation(4, 10);
+			shipPoint.setLocation(5, 10);
 			_cruiser1 = new Cruiser(shipPoint ,'e');
-			shipPoint.setLocation(4, 11);
+			shipPoint.setLocation(5, 11);
 			_cruiser2 = new Cruiser(shipPoint ,'e');
 			
-			shipPoint.setLocation(2, 12);
+			shipPoint.setLocation(3, 12);
 			_destroyer1 = new Destroyer(shipPoint ,'e');
-			shipPoint.setLocation(2, 13);
+			shipPoint.setLocation(3, 13);
 			_destroyer2 = new Destroyer(shipPoint ,'e');
 			
-			shipPoint.setLocation(3, 14);
+			shipPoint.setLocation(4, 14);
 			_torpedoBoat1 = new Torpedo(shipPoint ,'e');
-			shipPoint.setLocation(3, 15);
+			shipPoint.setLocation(4, 15);
 			_torpedoBoat2 = new Torpedo(shipPoint ,'e');
-			shipPoint.setLocation(3, 16);
+			shipPoint.setLocation(4, 16);
 			_torpedoBoat3 = new Torpedo(shipPoint ,'e');
 			
-			shipPoint.setLocation(1, 17);
+			shipPoint.setLocation(2, 17);
 			_dredger1 = new Dredger();
-			shipPoint.setLocation(1, 18);
+			shipPoint.setLocation(2, 18);
 			_dredger2 = new Dredger();
 	   }
 	   else{
-			shipPoint.setLocation(25, 10);
+			shipPoint.setLocation(24, 10);
 			_cruiser1 = new Cruiser(shipPoint ,'w');
-			shipPoint.setLocation(25, 11);
+			shipPoint.setLocation(24, 11);
 			_cruiser2 = new Cruiser(shipPoint ,'w');
 			
-			shipPoint.setLocation(27, 12);
+			shipPoint.setLocation(26, 12);
 			_destroyer1 = new Destroyer(shipPoint ,'w');
-			shipPoint.setLocation(27, 13);
+			shipPoint.setLocation(26, 13);
 			_destroyer2 = new Destroyer(shipPoint ,'w');
 			
-			shipPoint.setLocation(26, 14);
+			shipPoint.setLocation(25, 14);
 			_torpedoBoat1 = new Torpedo(shipPoint ,'w');
-			shipPoint.setLocation(26, 15);
+			shipPoint.setLocation(25, 15);
 			_torpedoBoat2 = new Torpedo(shipPoint ,'w');
-			shipPoint.setLocation(26, 16);
+			shipPoint.setLocation(25, 16);
 			_torpedoBoat3 = new Torpedo(shipPoint ,'w');
 			
-			shipPoint.setLocation(28, 17);
+			shipPoint.setLocation(27, 17);
 			_dredger1 = new Dredger();
-			shipPoint.setLocation(28, 18);
+			shipPoint.setLocation(27, 18);
 			_dredger2 = new Dredger();
 	   }
 	this._shipCount=9;
@@ -227,11 +227,11 @@ public class Player {
    
    public String toString(){
 	   StringBuilder result = new StringBuilder();
-	   result.append("{[Name:]" + this._name);
-	   result.append("[Score:]" + this._score);
-	   result.append("[Mines:]" + this._mines);
-	   result.append("[Side:]" + this._startingSide);
-	   result.append("[Ships:]" + this._shipCount);
+	   result.append("{<NAME>" + this._name + "</NAME>");
+	   result.append("<SCORE>" + this._score + "</SCORE>");
+	   result.append("<MINES" + this._mines + "</MINES>");
+	   result.append("<SIDE>" + this._startingSide + "</SIDE>");
+	   result.append("<SHIPS>" + this._shipCount + "</SHIPS>");
 	   result.append("}");
        return result.toString();
    }
@@ -241,11 +241,6 @@ public class Player {
        Player tempPlayer = new Player(null, 'w');
        if(s.indexOf('{') == -1 || s.indexOf('}') == -1) 
     	   throw new Exception("String must include '{' and '}' to be converted to Player: " + s);
-       s = s.substring(1, s.length()-2); //trim off the { and }
-	   s = s.substring(s.lastIndexOf("[Name:]")+1); //trim off [name:]
-	   this._name= s.substring(0, s.indexOf("[Score:]"));
-	   s = s.substring(s.lastIndexOf("[Score:]")+1);	//trim off [Score:]
-	   this._score = Integer.parseInt((String) s.subSequence(0, s.indexOf("[Mines:]")));
        
        
        return tempPlayer;
