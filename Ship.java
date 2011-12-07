@@ -385,6 +385,10 @@ public abstract class Ship {
 			error ("repairDamage called on but the ship has no damage to repair.");
 		}
 	}
+	
+	public void startShip(Point location) {
+		this.setPosition(location);
+	}
 
 	public void moveShip(Point location){
 		Point[] rightMove = this.getRightMobility();
