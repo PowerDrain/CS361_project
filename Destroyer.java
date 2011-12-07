@@ -20,7 +20,7 @@ public class Destroyer extends Ship{
 		this.setSize(3);
 		this.resetDamage(max_dam);
 		this.setDirection(direction);
-		this.moveShip(position);
+		this.startShip(position);
 		
 	}
 
