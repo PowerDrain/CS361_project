@@ -13,21 +13,15 @@ public class Destroyer extends Ship{
 		this.resetDamage(max_dam);
 	}
 
-	// Single argument constructor
-	public Destroyer(Point position){
-		super();
-		this.setSize(3);
-		this.resetDamage(max_dam);
-		this.moveShip(position);
-	}
 
 	// Two argument constructor
 	public Destroyer(Point position, char direction){
 		super();
 		this.setSize(3);
 		this.resetDamage(max_dam);
-		this.moveShip(position);
 		this.setDirection(direction);
+		this.moveShip(position);
+		
 	}
 
 	public Point[] checkTurnMobility(){
