@@ -1,4 +1,3 @@
-
 import java.awt.Point;
 
 public class Torpedo extends Ship{
@@ -12,21 +11,15 @@ public class Torpedo extends Ship{
 		this.resetDamage(max_dam);
 	}
 
-	// Single argument constructor
-	public Torpedo(Point position){
-		super();
-		this.setSize(4);
-		this.resetDamage(max_dam);
-		this.moveShip(position);
-	}
-
+	
 	// Two argument constructor
 	public Torpedo(Point position, char direction){
 		super();
 		this.setSize(4);
 		this.resetDamage(max_dam);
-		this.moveShip(position);
 		this.setDirection(direction);
+		this.moveShip(position);
+	
 	}
 
 	@Override
