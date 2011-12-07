@@ -217,6 +217,14 @@ public class Player {
 		return (Point[]) points.toArray();
    }
    
+   public Point[] getMobility(){
+	   return _currentShip.getMoveMobility();
+   }
+   
+   public Point[] getGunRange(){
+	   return _currentShip.getGunRange();
+   }
+   
    public String toString(){
 	   StringBuilder result = new StringBuilder();
 	   result.append("{[Name:]" + this._name);
