@@ -93,9 +93,9 @@ public class Player {
 			_torpedoBoat3 = new Torpedo(shipPoint ,'e');
 			
 			shipPoint = new Point(2, 17);
-			_dredger1 = new Dredger();
+			_dredger1 = new Dredger(shipPoint, 'e');
 			shipPoint = new Point(2, 18);
-			_dredger2 = new Dredger();
+			_dredger2 = new Dredger(shipPoint, 'e');
 	   }
 	   else{
 			shipPoint = new Point(24, 10);
@@ -116,9 +116,9 @@ public class Player {
 			_torpedoBoat3 = new Torpedo(shipPoint ,'w');
 			
 			shipPoint = new Point(27, 17);
-			_dredger1 = new Dredger();
+			_dredger1 = new Dredger(shipPoint, 'w');
 			shipPoint.setLocation(27, 18);
-			_dredger2 = new Dredger();
+			_dredger2 = new Dredger(shipPoint, 'w');
 	   }
 	this._shipCount=9;
        return true;
