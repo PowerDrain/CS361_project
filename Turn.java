@@ -20,7 +20,7 @@ public class Turn {
 	//Takes a ship to be moved in the game and the direction to move it.  If it was able to do so, 
 	//checking game rules, it moves the ship and returns true, otherwise it returns false.
 	//I need the direction of the bow
-	public boolean moveShip(Ship currentShip, char direction){//TODO I need to add distance -Al
+	public boolean moveShip(Ship currentShip, char direction, int distance){//TODO I need to add distance -Al
 		if(currentShip.getDirection() != direction){	
 			//Change direction TODO  Should I use getPosition()?
 			if(currentShip.getDirection() == 'n' && direction == 'w' || 
@@ -65,7 +65,8 @@ public class Turn {
 		//TODO maybe there is a more elegant solution to this,
 		//this just doesn't seem good but it may work. -Tommy
 		//if(current.getCurrentShip().getClass().getName()=="Dredger"){
-		if(currentShip.toString() == "Dredger"){  //TODO Ship must be touching mine.
+		if(currentShip.toString() == "Dredger"){  
+			//if(currentShip.getPosition())//TODO Ship must be touching mine.
 			m.removeMine(loc);
 			current.decrementMineCount();
 			return true;
