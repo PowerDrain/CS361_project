@@ -171,50 +171,61 @@ public class Player {
    public Point[] getRadarVisibility(){
 	ArrayList<Point> points = new ArrayList<Point>();
 	
-	for(int i=0; i<_cruiser1.getSize(); i++){
-		Point[] cruiser1Radar = _cruiser1.getRadarRange();
+	Point[] cruiser1Radar = _cruiser1.getRadarRange();
+	for (int i = 0; i < cruiser1Radar.length; i++){
 		points.add(cruiser1Radar[i]);
 	}
-	for(int i=0; i<_cruiser2.getSize(); i++){
-		Point[] cruiser2Radar = _cruiser2.getRadarRange();
+	
+	Point[] cruiser2Radar = _cruiser2.getRadarRange();
+	for(int i=0; i<cruiser2Radar.length; i++){
 		points.add(cruiser2Radar[i]);
 	}
-	for(int i=0; i<_destroyer1.getSize(); i++){
-		Point[] destroyer1Radar = _destroyer1.getRadarRange();
+	
+	Point[] destroyer1Radar = _destroyer1.getRadarRange();
+	for(int i=0; i<destroyer1Radar.length; i++){
 		points.add(destroyer1Radar[i]);
 	}
-	for(int i=0; i<_destroyer2.getSize(); i++){
-		Point[] destroyer2Radar = _destroyer2.getRadarRange();
+	
+	Point[] destroyer2Radar = _destroyer2.getRadarRange();
+	for(int i=0; i<destroyer2Radar.length; i++){	
 		points.add(destroyer2Radar[i]);
 	}
-	for(int i=0; i<_torpedoBoat1.getSize(); i++){
-		Point[] torpedoBoat1Radar = _torpedoBoat1.getRadarRange();
+	
+	Point[] torpedoBoat1Radar = _torpedoBoat1.getRadarRange();
+	for(int i=0; i<torpedoBoat1Radar.length; i++){
 		points.add(torpedoBoat1Radar[i]);
 	}
-	for(int i=0; i<_torpedoBoat2.getSize(); i++){
-		Point[] torpedoBoat2Radar = _torpedoBoat2.getRadarRange();
+	
+	Point[] torpedoBoat2Radar = _torpedoBoat2.getRadarRange();
+	for(int i=0; i<torpedoBoat2Radar.length; i++){
 		points.add(torpedoBoat2Radar[i]);
 	}
-	for(int i=0; i<_torpedoBoat3.getSize(); i++){
-		Point[] torpedoBoat3Radar = _torpedoBoat3.getRadarRange();
+	Point[] torpedoBoat3Radar = _torpedoBoat3.getRadarRange();
+	for(int i=0; i<torpedoBoat3Radar.length; i++){
 		points.add(torpedoBoat3Radar[i]);
 	}
 	points.trimToSize();
-	return  (Point[]) points.toArray();
+	Point[] retVal = new Point[points.size()];
+	retVal = points.toArray(retVal);
+	return retVal;
    }
 
    public Point[] getSonarVisibility(){
 		ArrayList<Point> points = new ArrayList<Point>();
-		for(int i=0; i<_dredger1.getSize(); i++){
-			Point[] dredger1Radar = _dredger1.getRadarRange();
+		
+		Point[] dredger1Radar = _dredger1.getRadarRange();
+		for(int i=0; i<dredger1Radar.length; i++){
 			points.add(dredger1Radar[i]);
 		}
-		for(int i=0; i<_dredger2.getSize(); i++){
-			Point[] dredger2Radar = _dredger2.getRadarRange();
+		
+		Point[] dredger2Radar = _dredger2.getRadarRange();
+		for(int i=0; i<dredger2Radar.length; i++){
 			points.add(dredger2Radar[i]);
 		}
 		points.trimToSize();
-		return (Point[]) points.toArray();
+		Point[] retVal = new Point[points.size()];
+		retVal = points.toArray(retVal);
+		return retVal;
    }
    
    public Point[] getMobility(){
