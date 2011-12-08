@@ -15,7 +15,7 @@ public class Dredger extends Ship{
 	// Two argument constructor
 	public Dredger(Point position, char direction){
 		super();
-		this.setSize(5);
+		this.setSize(2);
 		this.resetDamage(max_dam);
 		this.setDirection(direction);
 		this.startShip(position);

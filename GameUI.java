@@ -3,7 +3,7 @@
  * Michael Mattson, Alton Yee  - cs361
  * 
  * Modification:
- * 	12/4/2011
+ * 	12/8/2011
  * Description:
  * 	Graphic user interface for battleship game
  * 
@@ -39,8 +39,10 @@ public class GameUI extends JFrame {
 	private static final int WIDTH = 1100;
 	private static final int HEIGHT = 800;
 	private static int myTurn = 0;
+	private static boolean canMoveShip = false;
+	private static boolean canFireGun = false;
 	public GameUI(){
-		setTitle("Naval WhooopAsssss");
+		setTitle("Naval WhoopAss");
 		//using default constructor that initializes map based on a .txt file
 		myMap = new Map("defaultLayout.txt");
 		myMap.printMap();
@@ -109,6 +111,7 @@ public class GameUI extends JFrame {
 				s+="\nGun Fired";
 				reportWindow.setText(s);
 				turnInfo.setText(++myTurn + "/80");
+				canFireGun = true;
 				repaint();
 			}
 		});
@@ -166,6 +169,7 @@ public class GameUI extends JFrame {
 				s+="\nShip Moved";
 				reportWindow.setText(s);
 				turnInfo.setText(++myTurn + "/80");
+				canMoveShip = true;
 				repaint();
 			}
 		});
@@ -267,8 +271,6 @@ public class GameUI extends JFrame {
 		infoPane.add(myCoord);
 		
 		// add components to content pane
-		//contentPane.add(infoPane, BorderLayout.NORTH);
-		//contentPane.add(contentPane2, BorderLayout.EAST);
 		contentPane.add(map, BorderLayout.CENTER);
 		contentPane.add(contentPane2, BorderLayout.EAST);
 		contentPane.add(infoPane, BorderLayout.NORTH);
@@ -285,10 +287,19 @@ public class GameUI extends JFrame {
 		@Override
 		protected void paintComponent(Graphics g) {
 			super.paintComponent(g); // render background
+			//myMap.draw(g);
 			myMap.drawAll(g);
 			if(selected != null){
 				g.setColor(Color.magenta);
 				g.drawPolygon(selected.toPolygon(SquareTile.WIDTH));
+			}
+			if(canMoveShip){
+				myMap.drawMobility(g);
+				canMoveShip = false;
+			}
+			if(canFireGun){
+				myMap.drawGunRange(g);
+				canFireGun = false;
 			}
 			
 		}

@@ -34,12 +34,12 @@ public class Map {
 		// add all ships and bases
 		_map = new SquareTile[30][30];
 		initializeMap(txtFile);
-		//_currentPlayer = new Player("p1",'w');
-		//_opponent = new Player("p2", 'e');
-		//addShips(_currentPlayer);
-		//addShips(_opponent);
-		//addBase(_currentPlayer);
-		//addBase(_opponent);
+		_currentPlayer = new Player("p1",'w');
+		_opponent = new Player("p2", 'e');
+		addShips(_currentPlayer);
+		addShips(_opponent);
+		addBase(_currentPlayer);
+		addBase(_opponent);
 	}
 	
 	/**
@@ -199,14 +199,12 @@ public class Map {
 		Occupant o = Occupant.WATER;
 		if(shipDirection == 'e'){
 			for(int i = myArray.length-1; i>=0; --i){
-				if(myArray[i] == 1){
+				if(myArray[i] == 0){
 					o = Occupant.DAMAGEDSHIP;
-				}else if(myArray[i] == 2){
+				}else if(myArray[i] == 1){
 					o = Occupant.UNARMOREDSHIP;
-				}else if(myArray[i] == 3){
+				}else if(myArray[i] == 2){
 					o = Occupant.ARMOREDSHIP;
-				}else if(myArray[i] == 0){
-					o = Occupant.WATER;
 				}else{
 					return false;
 				}
@@ -215,14 +213,12 @@ public class Map {
 			}
 		}else if(shipDirection == 'w'){
 			for(int i = myArray.length-1; i>=0; --i){
-				if(myArray[i] == 1){
+				if(myArray[i] == 0){
 					o = Occupant.DAMAGEDSHIP;
-				}else if(myArray[i] == 2){
+				}else if(myArray[i] == 1){
 					o = Occupant.UNARMOREDSHIP;
-				}else if(myArray[i] == 3){
+				}else if(myArray[i] == 2){
 					o = Occupant.ARMOREDSHIP;
-				}else if(myArray[i] == 0){
-					o = Occupant.WATER;
 				}else{
 					return false;
 				}
@@ -231,14 +227,12 @@ public class Map {
 			}
 		}else if(shipDirection == 'n'){
 			for(int i = myArray.length-1; i>=0; --i){
-				if(myArray[i] == 1){
+				if(myArray[i] == 0){
 					o = Occupant.DAMAGEDSHIP;
-				}else if(myArray[i] == 2){
+				}else if(myArray[i] == 1){
 					o = Occupant.UNARMOREDSHIP;
-				}else if(myArray[i] == 3){
+				}else if(myArray[i] == 2){
 					o = Occupant.ARMOREDSHIP;
-				}else if(myArray[i] == 0){
-					o = Occupant.WATER;
 				}else{
 					return false;
 				}
@@ -247,14 +241,12 @@ public class Map {
 			}
 		}else if(shipDirection == 's'){
 			for(int i = myArray.length-1; i>=0; --i){
-				if(myArray[i] == 1){
+				if(myArray[i] == 0){
 					o = Occupant.DAMAGEDSHIP;
-				}else if(myArray[i] == 2){
+				}else if(myArray[i] == 1){
 					o = Occupant.UNARMOREDSHIP;
-				}else if(myArray[i] == 3){
+				}else if(myArray[i] == 2){
 					o = Occupant.ARMOREDSHIP;
-				}else if(myArray[i] == 0){
-					o = Occupant.WATER;
 				}else{
 					return false;
 				}
@@ -392,7 +384,7 @@ public class Map {
 		for(int i = 0; i<30; ++i){
 			for(int j = 0; j<30; ++j){
 				Point squareTilePosition = new Point(i,j);
-				Ship squareTilesShip = null; 
+				Ship squareTilesShip = null;
 				if(_map[i][j].getTileOwner() instanceof Ship){
 					squareTilesShip = (Ship)_map[i][j].getTileOwner();
 				}
