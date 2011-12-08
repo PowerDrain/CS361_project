@@ -117,6 +117,10 @@ public abstract class Ship {
 		default:
 			throw new IllegalStateException();
 		}
+		Point[] shipCoordinates = this.getShipCoordinates();
+		for (int i = 0; i < shipCoordinates.length; i++){
+			temp.add(shipCoordinates[i]);
+		}
 
 		// Clean up array list, change into regular array and then return
 		temp.trimToSize();
