@@ -62,6 +62,30 @@ public class SquareTile {
 		return _occupant;
 	}
 	
+	public boolean tileOwnerIsBase(){
+		if(this._tileOwner instanceof Base){
+			return true;
+		}else{
+			return false;
+		}
+	}
+	
+	public boolean tileOwnerIsShip(){
+		if(this._tileOwner instanceof Ship){
+			return true;
+		}else{
+			return false;
+		}
+	}
+	
+	public boolean tileHasNoOwner(){
+		if(this._tileOwner == null){
+			return true;
+		}else{
+			return false;
+		}
+	}
+	
 	/**
 	 * Returns the reference of this tiles tileOwner
 	 * @return _tileShip which is either a Ship, Base, or null
@@ -134,7 +158,6 @@ public class SquareTile {
 	
 	@Override
 	public boolean equals(Object guest){
-		//TODO test check tileShip field
 		if(guest instanceof SquareTile){
 			if(this.getLocation().equals(((SquareTile)guest).getLocation()) && this.getOccupant().equals(((SquareTile)guest).getOccupant()) && 
 					this.getTileOwner()==((SquareTile)guest).getTileOwner()){
