@@ -3,7 +3,7 @@
  * Michael Mattson - cs361
  * 
  * Modification:
- * 	12/5/2011
+ * 	12/9/2011
  * 
  * Description:
  * 	Models a 30 X 30 map for a game of battle ship
@@ -368,6 +368,10 @@ public class Map {
 		}
 	}
 
+	/**
+	 * Draws Map to a user interface with unfiltered visibility
+	 * @param g
+	 */
 	public void drawAll(Graphics g){
 		for(int i = 0; i<30; ++i){
 			for(int j = 0; j<30; ++j){
@@ -378,17 +382,20 @@ public class Map {
 	}
 	
 	/**
-	 * Draws Map to a user interface
+	 * Draws Map to a user interface with filtered visibility
+	 * 
 	 */
 	public void draw(Graphics g){
 		for(int i = 0; i<30; ++i){
 			for(int j = 0; j<30; ++j){
 				Point squareTilePosition = new Point(i,j);
 				Ship squareTilesShip = null;
-				if(_map[i][j].getTileOwner() instanceof Ship){
+				if(_map[i][j].tileOwnerIsShip()){
 					squareTilesShip = (Ship)_map[i][j].getTileOwner();
 				}
-				if(!inVisibility(squareTilePosition)){
+				if(hasBase(squareTilePosition) || hasReef(squareTilePosition)){
+					_map[i][j].draw(g, 'v');
+				}else if((!inVisibility(squareTilePosition)) ){
 					_map[i][j].draw(g,'n');
 				}else if(squareTilesShip != null && _opponent.isPlayersShip(squareTilesShip)){
 					_map[i][j].draw(g, 'e');
@@ -405,7 +412,7 @@ public class Map {
 	/**
 	 * Returns whether or not the given point is in either radar visibility or sonar visibility
 	 * @param p
-	 * @return True if the given point is in radar visibility or sonar visiblity and false otherwise
+	 * @return True if the given point is in radar visibility or sonar visibility and false otherwise
 	 */
 	private boolean inVisibility(Point p){
 		Point[] radarVisibility = _currentPlayer.getRadarVisibility();
@@ -460,7 +467,6 @@ public class Map {
 	 * @param g
 	 */
 	public void drawGunRange(Graphics g){
-		//TODO
 		g.setColor(Color.cyan);
 		Point[] gunRangeArray = _currentPlayer.getGunRange();
 		for(Point gunRangePoint : gunRangeArray){
@@ -469,6 +475,19 @@ public class Map {
 			SquareCoordinate s = new SquareCoordinate(x,y);
 			Polygon newPolygon = s.toPolygon(SquareTile.WIDTH);
 			g.drawPolygon(newPolygon);
+		}
+	}
+	
+	public void drawCurrentShip(Graphics g){
+		g.setColor(Color.orange);
+		Ship currentShip = _currentPlayer.getCurrentShip();
+		Point[] occupiedCoordinates = currentShip.getShipCoordinates();
+		for(Point coordinateToDraw : occupiedCoordinates){
+			int x = (int)coordinateToDraw.getX()+1; 
+			int y = (int)coordinateToDraw.getY()+1;
+			SquareCoordinate squareCoordinateToDraw = new SquareCoordinate(x,y);
+			Polygon shipBlock = squareCoordinateToDraw.toPolygon(SquareTile.WIDTH);
+			g.drawPolygon(shipBlock);
 		}
 	}
 	

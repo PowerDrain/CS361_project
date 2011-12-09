@@ -32,7 +32,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.JTextPane;
-
+import java.util.Random;
 
 public class GameUI extends JFrame {
 	private Map myMap;
@@ -41,15 +41,30 @@ public class GameUI extends JFrame {
 	private static int myTurn = 0;
 	private static boolean canMoveShip = false;
 	private static boolean canFireGun = false;
+	private final String layoutFile = chooseFileRandomly();
 	public GameUI(){
 		setTitle("Naval WhoopAss");
-		//using default constructor that initializes map based on a .txt file
-		myMap = new Map("defaultLayout.txt");
+		myMap = new Map(layoutFile);
 		myMap.printMap();
 		setSize(WIDTH, HEIGHT);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		createContents();
 		setVisible(true);
+	}
+	
+	/**
+	 * Randomly selects one of the map layout files
+	 * @return name of file selected
+	 */
+	public String chooseFileRandomly(){
+		Double randomNumber = Math.random();
+		if(randomNumber>=0 && randomNumber<0.3){
+			return "ReefLayout1.txt";
+		}else if(randomNumber <0.6){
+			return "ReefLayout2.txt";
+		}else{
+			return "defaultLayout.txt";
+		}
 	}
 	
 	/**
@@ -97,7 +112,7 @@ public class GameUI extends JFrame {
 		});
 		
 		// setup report window
-		final TextArea reportWindow = new TextArea("Welcome to Naval WhoopAsss");
+		final TextArea reportWindow = new TextArea("Welcome to Naval WhoopAss");
 		reportWindow.setEditable(false);
 		
 		
@@ -287,8 +302,8 @@ public class GameUI extends JFrame {
 		@Override
 		protected void paintComponent(Graphics g) {
 			super.paintComponent(g); // render background
-			//myMap.draw(g);
-			myMap.drawAll(g);
+			myMap.draw(g);
+			//myMap.drawAll(g);
 			if(selected != null){
 				g.setColor(Color.magenta);
 				g.drawPolygon(selected.toPolygon(SquareTile.WIDTH));
@@ -301,6 +316,7 @@ public class GameUI extends JFrame {
 				myMap.drawGunRange(g);
 				canFireGun = false;
 			}
+			myMap.drawCurrentShip(g);
 			
 		}
 	}
