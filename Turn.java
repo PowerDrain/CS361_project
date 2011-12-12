@@ -1,4 +1,5 @@
-package entity;
+
+
 import java.awt.Point;
 public class Turn {
 	private Map m;
@@ -11,11 +12,14 @@ public class Turn {
 		m = new Map(fileName, current, opponent);
 	}//End of Default Constructor
 
-	//Add a Rotate Ship
 	//I need the direction of the bow
 	public boolean rotateShip(Ship currentShip, char direction){
 		return false;
 	}//End of rotateShip
+	
+	private boolean rotateDestroyer(Ship currentShip, char direction){
+		return false;
+	}//End of rotateDestroyer
 	
 	//Takes a ship to be moved in the game and the direction to move it.  If it was able to do so, 
 	//checking game rules, it moves the ship and returns true, otherwise it returns false.
@@ -45,17 +49,28 @@ public class Turn {
 		return false;
 	}//End of moveShip Method
 
+	private boolean moveForward(Ship currentShip, int distance){
+		return false;
+	}//End of moveForward
+	
+	private boolean moveBack(Ship currentShip, char direction){
+		return false;
+	}//End of moveBack
+	
+	private boolean moveSide(Ship currentShip, char direction){
+		return false;
+	}//End of moveSide
+	
 	//Takes the location to drop a mine. Immerses a mine at the given location and decrements 
 	//users mine count. If move is legal and there are mines available it returns true, 
 	//otherwise returns false.
 	public boolean immerseMine(Point loc, Ship currentShip){
 		//Check for type of ship
-		if(current.mineCount() > 0 && currentShip.toString() == "Dredger"){
+		if(current.mineCount() <= 0 || currentShip.toString() != "Dredger") return false;
+		if(m.hasMine(loc) || m.hasBase(loc) || m.hasReef(loc) || m.hasShip(loc))  return false;
 			current.decrementMineCount();
 			m.placeMine(loc);
 			return true;
-		}//End of if
-		return false;
 	}//End of immerseMine Method
 
 	//Takes the location of the mine. Withdraw mine from the map and increments users mine count. 
@@ -65,62 +80,63 @@ public class Turn {
 		//TODO maybe there is a more elegant solution to this,
 		//this just doesn't seem good but it may work. -Tommy
 		//if(current.getCurrentShip().getClass().getName()=="Dredger"){
-		if(currentShip.toString() == "Dredger"){  
-			//if(currentShip.getPosition())//TODO Ship must be touching mine.
+		if(currentShip.toString() != "Dredger") return false;
 			m.removeMine(loc);
 			current.decrementMineCount();
 			return true;
-		}
-		return false;
 	}//End of withdrawMine Method
+	
+	private boolean isTouching(Point loc, Ship currentShip){
+		return false;
+	}//End of isTouching Method
 
 	//Takes a ship to shoot a torpedo, if able to do so via game rules it returns true, 
 	//otherwise returns false.
 	public boolean launchTorpedo(Ship currentShip){
-		//Check if currentShip is the right type!
-		//Must get ship location and direction
-		if(currentShip.toString() != "Destroyer" || currentShip.toString() != "Torpedo") return false;
+		if(currentShip.toString() != "Destroyer" || currentShip.toString() != "Torpedo") return false;	
 		
-		Point shipPosition = currentShip.getPosition();
-		char d = currentShip.getDirection();
-				
+		char d = currentShip.getDirection();			
 		int x, y;
-		x = shipPosition.x;
-		y = shipPosition.y;
+		x = currentShip.getPosition().x;
+		y = currentShip.getPosition().y;
 		//if d equals n decrement y
 		if(d == 'n') 
-			for(; y >= y - 10; --y){
-				if(m.hasBase(new Point(x,y))) return true;//Should destroy Box
-				if(m.hasMine(new Point(x,y))) return true;//Should destroy Mine
-				if(m.hasReef(new Point(x,y))) return true;//Nothing should happen
-				if(m.hasShip(new Point(x,y))) return true;//Should damage Ship      TODO
-			}//End of for  //End of if
+			for(int i = y-10; y >= i; --y){
+				if(checkForHit(x,y)) return true;
+			}//End of for  
 		//if d equals s increment y
 		if(d == 's') 
-			for(; y <= y + 10; ++y){
-				if(m.hasBase(new Point(x,y))) return true;//Should destroy Box
-				if(m.hasMine(new Point(x,y))) return true;//Should destroy Mine
-				if(m.hasReef(new Point(x,y))) return true;//Nothing should happen
-				if(m.hasShip(new Point(x,y))) return true;//Should damage Ship	TODO
-			}//End of for  //End of if	
+			for(int i = y+10; y <= i; ++y){
+				if(checkForHit(x,y)) return true;
+			}//End of for
 		//if d equals e increment x
 		if(d == 'e')
-			for(; x <= x + 10; ++x){
-				if(m.hasBase(new Point(x,y))) return true;//Should destroy Box
-				if(m.hasMine(new Point(x,y))) return true;//Should destroy Mine
-				if(m.hasReef(new Point(x,y))) return true;//Nothing should happen
-				if(m.hasShip(new Point(x,y))) return true;//Should damage Ship  TODO
+			for(int i = x+10; x <= i; ++x){
+				if(checkForHit(x,y)) return true;
 			}//End of for  //End of if	
 		//if d equals w decrement x	
 		if(d == 'w') 
-			for(; x >= x - 10; --x){
-				if(m.hasBase(new Point(x,y))) return true;//Should destroy Box
-				if(m.hasMine(new Point(x,y))) return true;//Should destroy Mine
-				if(m.hasReef(new Point(x,y))) return true;//Nothing should happen
-				if(m.hasShip(new Point(x,y))) return true;//Should damage Ship TODO
+			for(int i = x-10; x >= i; --x){
+				if(checkForHit(x,y)) return true;
 			}//End of for  //End of if
 		return false;
 	}//End of launchTorpedo Method
+	
+	private boolean checkForHit(int x, int y){
+		if(m.hasBase(new Point(x,y))){
+			Base b = (Base)m.getTile(new Point(x,y)).getTileOwner();
+			b.receiveDamage(new Point(x,y),'t');
+			return true;
+		}else if(m.hasShip(new Point(x,y))){
+			Ship s = (Ship)m.getTile(new Point(x,y)).getTileOwner();
+			s.receiveDamage(new Point(x,y),'t');
+			return true;
+		}else if(m.hasMine(new Point(x,y))){
+			m.removeMine(new Point(x,y));
+			return true;
+		}else if(m.hasReef(new Point(x,y))) return true;
+		else return false;
+	}//End of checkForHit method
 
 	//Takes a ship to shoot the gun and the location of where the shot should go.  If all game rules 
 	//followed it returns true, otherwise returns false.
@@ -129,7 +145,16 @@ public class Turn {
 		Point[] p = currentShip.getGunRange();
 		for(int i = 0; i < p.length; ++i){
 			if(p[i].equals(target)){
-				//This should inflict damage on a ship  
+				if(m.hasBase(target)){
+					Base b = (Base) m.getTile(target).getTileOwner();
+					b.receiveDamage(target, 'g');
+					return true;
+				}else if(m.hasShip(target)){
+					Ship s = (Ship) m.getTile(target).getTileOwner();
+					s.receiveDamage(target, 'g');
+					return true;
+				}else if(m.hasMine(target)){
+					m.removeMine(target);}
 				return true;
 			}//End of if
 		}//End of for
@@ -150,28 +175,8 @@ public class Turn {
 	public int getMineCount(){
 		return current.mineCount();
 	}//End of getMineCount()
-
-	//Returns true if the turn is passed otherwise returns false.
-	//TODO This method might not have to do anything at all... -Tommy
-	//Yeah I think the Gui handles the pass -Al
-/*	public boolean pass(){
-		return true;
-	}//End of pass Method
-
-	//Returns true if it is users turn and false if it is enemy’s turn
-	//TODO I don't think we need this one -Tommy
-	//Agreed -Al
-	public boolean getCurrentPlayer(){
-		//I should increment numTurn   
-		return current.numTurn() == opponent.numTurn();
-	}//End of getCurrentPlayer Method
-
-	//Displays the “Help” topics for user’s reference.
-	//I think the Gui would handle this also -Al
-	public void getHelp(){   
-		System.out.println("Step #1:  Eat Shit and Die!");
-	}//End of getHelp Method*/
 	
 	public String toString(){
 		return current.toString() + opponent.toString() + m.toString(); }
 }//End of Class
+
