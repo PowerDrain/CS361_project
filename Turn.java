@@ -13,25 +13,43 @@ public class Turn {
 	}//End of Default Constructor
 
 	//I need the direction of the bow
-	public boolean rotateShip(Ship currentShip, char direction){
+	public boolean rotateShip(char direction){
 		return false;
 	}//End of rotateShip
 	
-	private boolean rotateDestroyer(Ship currentShip, char direction){
+	private boolean rotateDestroyer(char direction){
 		return false;
 	}//End of rotateDestroyer
 	
 	//Takes a ship to be moved in the game and the direction to move it.  If it was able to do so, 
 	//checking game rules, it moves the ship and returns true, otherwise it returns false.
 	//I need the direction of the bow
-	public boolean moveShip(Ship currentShip, char direction, int distance){//TODO I need to add distance -Al
-		if(currentShip.getDirection() != direction){	
-			//Change direction TODO  Should I use getPosition()?
-			if(currentShip.getDirection() == 'n' && direction == 'w' || 
-					currentShip.getDirection() == 'w' && direction == 's' ||	
-					currentShip.getDirection() == 's' && direction == 'e' ||
-					currentShip.getDirection() == 'e' && direction == 'n'){
-				//Make left turn
+	public boolean moveShip(char direction, int distance){
+		if(current.getCurrentShip().getDirection()== direction) return moveForward(current.getCurrentShip(), distance);
+		
+		int x = current.getCurrentShip().getPosition().x;
+		int y = current.getCurrentShip().getPosition().y;
+		if(direction == 'n'){ 
+			current.getCurrentShip().moveShip(new Point(x,y-1)); return true;
+		}else if(direction == 's'){ 
+			current.getCurrentShip().moveShip(new Point(x,y+1)); return true;
+		}else if(direction == 'e'){
+			current.getCurrentShip().moveShip(new Point(x+1,y)); return true;
+		}else if(direction == 'w'){
+			current.getCurrentShip().moveShip(new Point(x-1,y)); return true;
+		}
+		return false;
+		
+		/*if(currentShip.getDirection() == 'n' && direction == 's' || currentShip.getDirection() == 'w' && direction == 'e' ||	
+		   currentShip.getDirection() == 's' && direction == 'n' || currentShip.getDirection() == 'e' && direction == 'w')
+			return moveBack(currentShip, direction);
+		
+		if(currentShip.getDirection() == 'n' && direction == 'e' || currentShip.getDirection() == 'n' && direction == 'w' ||
+		   currentShip.getDirection() == 's' && direction == 'e' || currentShip.getDirection() == 's' && direction == 'w' ||	
+		   currentShip.getDirection() == 'e' && direction == 'n' || currentShip.getDirection() == 'e' && direction == 's' ||
+		   currentShip.getDirection() == 'w' && direction == 'n' || currentShip.getDirection() == 'w' && direction == 's')
+		   	return moveSide(currentShip, direction);
+			
 				currentShip.getLeftMobility();//Not sure how this works?  Would a boolean be better?
 				currentShip.moveLeft();
 			}//End of inner if	
@@ -44,77 +62,92 @@ public class Turn {
 				currentShip.moveRight();
 			}//End of inner if	
 		}//End of if
-		//How to move forward?
-		//Have not set it to move 180
-		return false;
+
+		return false;*/
 	}//End of moveShip Method
 
-	private boolean moveForward(Ship currentShip, int distance){
+	private boolean moveForward(int distance){
+		int x = current.getCurrentShip().getPosition().x;
+		int y = current.getCurrentShip().getPosition().y;
+		if(current.getCurrentShip().getDirection() == 'n')
+			
+		current.getCurrentShip().getPosition();
+		//currentShip.moveShip();
 		return false;
 	}//End of moveForward
-	
+	/*
 	private boolean moveBack(Ship currentShip, char direction){
+		int x = currentShip.getPosition().x;
+		int y = currentShip.getPosition().y;
+		if(direction == 'n'){ 
+			currentShip.moveShip(new Point(x,y-1)); return true;
+		}else if(direction == 's'){ 
+			currentShip.moveShip(new Point(x,y+1)); return true;
+		}else if(direction == 'e'){
+			currentShip.moveShip(new Point(x+1,y)); return true;
+		}else if(direction == 'w'){
+			currentShip.moveShip(new Point(x-1,y)); return true;
+		}
 		return false;
 	}//End of moveBack
 	
 	private boolean moveSide(Ship currentShip, char direction){
+		int x = currentShip.getPosition().x;
+		int y = currentShip.getPosition().y;
+		if(direction == 'n'){ 
+			currentShip.moveShip(new Point(x,y-1)); return true;
+		}else if(direction == 's'){ 
+			currentShip.moveShip(new Point(x,y+1)); return true;
+		}else if(direction == 'e'){
+			currentShip.moveShip(new Point(x+1,y)); return true;
+		}else if(direction == 'w'){
+			currentShip.moveShip(new Point(x-1,y)); return true;
+		}
 		return false;
-	}//End of moveSide
+	}//End of moveSide*/
 	
-	//Takes the location to drop a mine. Immerses a mine at the given location and decrements 
-	//users mine count. If move is legal and there are mines available it returns true, 
-	//otherwise returns false.
-	public boolean immerseMine(Point loc, Ship currentShip){
+	public boolean immerseMine(Point loc){
 		//Check for type of ship
-		if(current.mineCount() <= 0 || currentShip.toString() != "Dredger") return false;
+		if(current.mineCount() <= 0 || current.getCurrentShip().toString() != "Dredger") return false;
 		if(m.hasMine(loc) || m.hasBase(loc) || m.hasReef(loc) || m.hasShip(loc))  return false;
 			current.decrementMineCount();
 			m.placeMine(loc);
 			return true;
 	}//End of immerseMine Method
 
-	//Takes the location of the mine. Withdraw mine from the map and increments users mine count. 
-	//If the move is legal and completes successfully it returns true, otherwise returns false. 
-	public boolean withdrawMine(Point loc, Ship currentShip){
-		//Check for type of ship
-		//TODO maybe there is a more elegant solution to this,
-		//this just doesn't seem good but it may work. -Tommy
-		//if(current.getCurrentShip().getClass().getName()=="Dredger"){
-		if(currentShip.toString() != "Dredger") return false;
+	public boolean withdrawMine(Point loc){
+		if(current.getCurrentShip().toString() != "Dredger") return false;
+		//Make sure ship is touching mine;
 			m.removeMine(loc);
 			current.decrementMineCount();
 			return true;
 	}//End of withdrawMine Method
 	
-	private boolean isTouching(Point loc, Ship currentShip){
+	private boolean isTouching(Point loc){
 		return false;
 	}//End of isTouching Method
 
 	//Takes a ship to shoot a torpedo, if able to do so via game rules it returns true, 
 	//otherwise returns false.
-	public boolean launchTorpedo(Ship currentShip){
-		if(currentShip.toString() != "Destroyer" || currentShip.toString() != "Torpedo") return false;	
+	public boolean launchTorpedo(){
+		if(current.getCurrentShip().toString() != "Destroyer" || current.getCurrentShip().toString() != "Torpedo") return false;	
 		
-		char d = currentShip.getDirection();			
+		char d = current.getCurrentShip().getDirection();			
 		int x, y;
-		x = currentShip.getPosition().x;
-		y = currentShip.getPosition().y;
-		//if d equals n decrement y
+		x = current.getCurrentShip().getPosition().x;
+		y = current.getCurrentShip().getPosition().y;
 		if(d == 'n') 
 			for(int i = y-10; y >= i; --y){
 				if(checkForHit(x,y)) return true;
 			}//End of for  
-		//if d equals s increment y
-		if(d == 's') 
+		else if(d == 's') 
 			for(int i = y+10; y <= i; ++y){
 				if(checkForHit(x,y)) return true;
 			}//End of for
-		//if d equals e increment x
 		if(d == 'e')
 			for(int i = x+10; x <= i; ++x){
 				if(checkForHit(x,y)) return true;
 			}//End of for  //End of if	
-		//if d equals w decrement x	
 		if(d == 'w') 
 			for(int i = x-10; x >= i; --x){
 				if(checkForHit(x,y)) return true;
@@ -138,11 +171,9 @@ public class Turn {
 		else return false;
 	}//End of checkForHit method
 
-	//Takes a ship to shoot the gun and the location of where the shot should go.  If all game rules 
-	//followed it returns true, otherwise returns false.
-	public boolean shootGun(Ship currentShip, Point target){
-		if(currentShip.toString() != "Cruiser" || currentShip.toString() != "Torpedo") return false;
-		Point[] p = currentShip.getGunRange();
+	public boolean shootGun(Point target){
+		if(current.getCurrentShip().toString() != "Cruiser" || current.getCurrentShip().toString() != "Torpedo") return false;
+		Point[] p = current.getCurrentShip().getGunRange();
 		for(int i = 0; i < p.length; ++i){
 			if(p[i].equals(target)){
 				if(m.hasBase(target)){
@@ -163,8 +194,8 @@ public class Turn {
 
 	//Takes a ship to be repaired and if allowed it repairs the ship and returns true, 
 	//otherwise it returns false.
-	public boolean repairShip(Ship currentShip){
-		return current.base().repairShip(currentShip);		
+	public boolean repairShip(){
+		return current.base().repairShip(current.getCurrentShip());		
 	}//End of repairShip Method
 
 	//If allowed it repairs players base and returns true, otherwise returns false.
