@@ -35,6 +35,7 @@ import javax.swing.JTextPane;
 import java.util.Random;
 
 public class GameUI extends JFrame {
+	private Turn gameTurn;
 	private Map myMap;
 	private static final int WIDTH = 1100;
 	private static final int HEIGHT = 800;
@@ -42,10 +43,12 @@ public class GameUI extends JFrame {
 	private static boolean canMoveShip = false;
 	private static boolean canFireGun = false;
 	private final String layoutFile = chooseFileRandomly();
+	private static SquareCoordinate selected = null;
+
 	public GameUI(){
 		setTitle("Naval WhoopAss");
-		myMap = new Map(layoutFile);
-		myMap.printMap();
+		gameTurn = new Turn(layoutFile);
+		myMap = gameTurn.m; // only works if m is set to public 
 		setSize(WIDTH, HEIGHT);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		createContents();
@@ -324,7 +327,6 @@ public class GameUI extends JFrame {
 	
 
 
-	private static SquareCoordinate selected = null;
 
 	/*public static void main(String[] args){
 		new GameUI();

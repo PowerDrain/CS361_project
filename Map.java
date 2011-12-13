@@ -27,15 +27,15 @@ public class Map {
 	 * Map constructor
 	 * Constructs the map specified by the text file
 	 */
-	public Map(String txtFile){
+	public Map(String txtFile, Player currentPlayer, Player opponent){
 		// initialize _map
 		// set _map to contain all water using file (reefs and mines may be added here also)
 		// initialize both players
 		// add all ships and bases
 		_map = new SquareTile[30][30];
 		initializeMap(txtFile);
-		_currentPlayer = new Player("p1",'w');
-		_opponent = new Player("p2", 'e');
+		_currentPlayer = currentPlayer;//new Player("p1",'w');
+		_opponent = opponent; //new Player("p2", 'e');
 		addShips(_currentPlayer);
 		addShips(_opponent);
 		addBase(_currentPlayer);
