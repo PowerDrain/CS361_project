@@ -133,27 +133,27 @@ public class Base {
    
    public String toString(){
 	   StringBuilder result = new StringBuilder();
-	   result.append("{<BASE>:<DAMAGE>");
+	   result.append("{<BASE>#<DAMAGE>");
 	   for(int i=0; i<this._damage.length; i++){
 		   result.append(this._damage[i] + ",");
 	   }
-	   result.append("</DAMAGE>:");
+	   result.append("</DAMAGE>#");
 	   result.append("<LOCATIONX>");
 	   for(int i=0; i<this._location.length; i++){
 		   result.append(this._location[i].x + ",");
 	   }
-	   result.append("</LOCATIONX>:<LOCATIONY>");
+	   result.append("</LOCATIONX>#<LOCATIONY>");
 	   for(int i=0; i<this._location.length; i++){
 		   result.append(this._location[i].y + ",");
 	   }
-	   result.append("</LOCATIONY>:");
+	   result.append("</LOCATIONY>#");
 	   
-	   result.append("<SIDE>" + _startingSide + "</SIDE>:");
+	   result.append("<SIDE>" + _startingSide + "</SIDE>#");
 	   result.append("</BASE>");
        return result.toString();
    }
    
-   public Base fromString(String s) throws Exception{
+   public static Base fromString(String s) throws Exception{
 	   Base tempBase = new Base('w');
        String[] baseParsedStrings = s.split(":");
        String baseSubString;

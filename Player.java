@@ -60,6 +60,10 @@ public class Player {
 	   return _currentShip;
    }
    
+   public void setCurrentShip(Ship ship){
+	   this._currentShip = ship;
+   }
+   
    public char getStartingSide(){
 	   return _startingSide;
    }
@@ -257,7 +261,7 @@ public class Player {
        return result.toString();
    }
    
-   public Player fromString(String s) throws Exception{
+   public static Player fromString(String s) throws Exception{
        Player tempPlayer = new Player("tempPlayer", 'w');
        
        if(!s.contains("<PLAYER>") || !s.contains("</PLAYER>"))
@@ -289,7 +293,7 @@ public class Player {
 	       }
 	       else if(playerParsedStrings[i].contains("<BASE>")){
 	    	   playerSubString = playerParsedStrings[i].substring(6, playerParsedStrings[i].lastIndexOf("</BASE>"));
-	    	   tempPlayer._base.fromString(playerSubString);
+	    	   Base.fromString(playerSubString);
 	       }
 	       else if(playerParsedStrings[i].contains("<SHIPS>")){
 	    	   //do nothing fun at all
