@@ -28,7 +28,7 @@ public class Cruiser extends Ship{
 		this.setSize(5);
 		this.resetDamage(max_dam);
 		this.setDirection(direction);
-		this.startShip(position);
+		this.setPosition(position);
 		
 	}
 

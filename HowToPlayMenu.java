@@ -11,6 +11,7 @@
 import java.awt.*;
 import javax.swing.*;
 import java.awt.event.*;
+import java.io.*;
 
 public class HowToPlayMenu extends JFrame{
 	private static final long serialVersionUID = 1L;
@@ -27,11 +28,10 @@ public class HowToPlayMenu extends JFrame{
 		panel.add(j);
 		panel.add(Box.createHorizontalStrut(100));
 		
-		panel.add(new JTextField("This is where the How To Play info will go."));
-		
-		/*//For Future Use
+		//panel.add(new JTextField("This is where the How To Play info will go."));
+
 		try{
-			FileInputStream fstream = new FileInputStream("C://README.txt");
+			FileInputStream fstream = new FileInputStream("HowToPlay.txt");//Could use a HowToPlay textfile.
 			DataInputStream in = new DataInputStream(fstream);
 			BufferedReader br = new BufferedReader(new InputStreamReader(in));
 			String strLine;
@@ -39,12 +39,14 @@ public class HowToPlayMenu extends JFrame{
 			JTextPane helpText = new JTextPane();
 			JScrollPane slider = new JScrollPane(helpText);
 
-			while ((strLine = br.readLine()) != null)   
+			while ((strLine = br.readLine()) != null)
 				total+=strLine+'\n';
 
 			helpText.setText(total);
 			panel.add(slider);
-		}catch(Exception e){ System.err.println("Error: " + e.getMessage()); }*/
+		}catch(Exception e){ System.err.println("Error: " + e.getMessage()); }
+
+
 		
 		ButtonHandler handler = new ButtonHandler();
 		JButton back = new JButton("Back");

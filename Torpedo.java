@@ -28,7 +28,7 @@ public class Torpedo extends Ship{
 		this.setSize(4);
 		this.resetDamage(max_dam);
 		this.setDirection(direction);
-		this.startShip(position);
+		this.setPosition(position);
 	
 	}
 

@@ -251,6 +251,9 @@ public abstract class Ship {
 				case 'g':
 					shipDamaged = this.applyGunDamage(i);
 					break;
+				case 'm':
+					shipDamaged = this.applyMineDamage();
+					break;
 				default:
 					throw new IllegalArgumentException ();
 				}
@@ -400,10 +403,6 @@ public abstract class Ship {
 			error ("repairDamage called on but the ship has no damage to repair.");
 		}
 	}
-	
-	public void startShip(Point location) {
-		this.setPosition(location);
-	}
 
 	public void moveShip(Point location){
 		Point[] rightMove = this.getRightMobility();
@@ -432,7 +431,7 @@ public abstract class Ship {
 	}
 
 	// Takes a point as the new position, checks validity and then sets the point of the new bow
-	private void setPosition(Point newPosition)throws IllegalArgumentException {
+	public void setPosition(Point newPosition)throws IllegalArgumentException {
 		if (newPosition.x < 0 || newPosition.y < 0 || newPosition.x > 30 || newPosition.y > 30){
 			throw new IllegalArgumentException();
 		} else {
@@ -471,6 +470,18 @@ public abstract class Ship {
 		if (this.shipDamage[shipDamLoc] > 0){
 			this.shipDamage[shipDamLoc] = this.shipDamage[shipDamLoc] - 1;
 			shipDamaged = true;
+		}
+		return shipDamaged;
+	}
+
+	private boolean applyMineDamage() {
+		boolean shipDamaged = false;
+		for (int i = 0; i < this.shipDamage.length; i++){
+			if (this.shipDamage[i] > 0){
+				this.shipDamage[i] = this.shipDamage[i] - 1;
+				shipDamaged = true;
+				break;
+			}
 		}
 		return shipDamaged;
 	}
@@ -531,7 +542,7 @@ public abstract class Ship {
 		}
 	}
 
-	private Point[] getRightMobility() throws IllegalStateException {
+	public Point[] getRightMobility() throws IllegalStateException {
 		ArrayList<Point> temp = new ArrayList<Point>();
 		switch (this.direction){
 		case 'n':
@@ -565,7 +576,7 @@ public abstract class Ship {
 		return retVal;
 	}
 
-	private Point[] getLeftMobility(){
+	public Point[] getLeftMobility(){
 		ArrayList<Point> temp = new ArrayList<Point>();
 		switch (this.direction){
 		case 'n':
@@ -608,12 +619,12 @@ public abstract class Ship {
 		switch (this.direction){
 		case 'n':
 			for (int i = 1; i <= stillGood * 2; i++){
-				temp.add(new Point(this.position.x, this.position.y - 1));
+				temp.add(new Point(this.position.x, this.position.y - i));
 			}
 			break;
 		case 'e':
 			for (int i = 1; i <= stillGood * 2; i++){
-				temp.add(new Point(this.position.x + 1, this.position.y));
+				temp.add(new Point(this.position.x + i, this.position.y));
 			}
 			break;
 		case 's':

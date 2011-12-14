@@ -29,7 +29,7 @@ public class Destroyer extends Ship{
 		this.setSize(3);
 		this.resetDamage(max_dam);
 		this.setDirection(direction);
-		this.startShip(position);
+		this.setPosition(position);
 		
 	}
 
@@ -77,19 +77,19 @@ public class Destroyer extends Ship{
 		switch (this.getDirection()){
 		case 'n':
 			this.setDirection('s');
-			this.startShip(shipCoordinates[this.getSize() - 1]);
+			this.setPosition(shipCoordinates[this.getSize() - 1]);
 			break;
 		case 'e':
 			this.setDirection('w');
-			this.startShip(shipCoordinates[this.getSize() - 1]);
+			this.setPosition(shipCoordinates[this.getSize() - 1]);
 			break;
 		case 's':
 			this.setDirection('n');
-			this.startShip(shipCoordinates[this.getSize() - 1]);
+			this.setPosition(shipCoordinates[this.getSize() - 1]);
 			break;
 		case 'w':
 			this.setDirection('e');
-			this.startShip(shipCoordinates[this.getSize() - 1]);
+			this.setPosition(shipCoordinates[this.getSize() - 1]);
 			break;
 		default:
 			throw new IllegalStateException();
@@ -126,19 +126,19 @@ public class Destroyer extends Ship{
 		switch (this.getDirection()){
 		case 'n':
 			this.setDirection('w');
-			this.startShip(new Point(sc[1].x - 1, sc[1].y));
+			this.setPosition(new Point(sc[1].x - 1, sc[1].y));
 			break;
 		case 'e':
 			this.setDirection('n');
-			this.startShip(new Point(sc[1].x, sc[1].y - 1));
+			this.setPosition(new Point(sc[1].x, sc[1].y - 1));
 			break;
 		case 's':
 			this.setDirection('e');
-			this.startShip(new Point(sc[1].x + 1, sc[1].y));
+			this.setPosition(new Point(sc[1].x + 1, sc[1].y));
 			break;
 		case 'w':
 			this.setDirection('s');
-			this.startShip(new Point(sc[1].x, sc[1].y + 1));
+			this.setPosition(new Point(sc[1].x, sc[1].y + 1));
 			break;
 		default:
 			throw new IllegalStateException();
@@ -150,19 +150,19 @@ public class Destroyer extends Ship{
 		switch (this.getDirection()){
 		case 'n':
 			this.setDirection('e');
-			this.startShip(new Point(sc[1].x + 1, sc[1].y));
+			this.setPosition(new Point(sc[1].x + 1, sc[1].y));
 			break;
 		case 'e':
 			this.setDirection('s');
-			this.startShip(new Point(sc[1].x, sc[1].y + 1));
+			this.setPosition(new Point(sc[1].x, sc[1].y + 1));
 			break;
 		case 's':
 			this.setDirection('w');
-			this.startShip(new Point(sc[1].x - 1, sc[1].y));
+			this.setPosition(new Point(sc[1].x - 1, sc[1].y));
 			break;
 		case 'w':
 			this.setDirection('n');
-			this.startShip(new Point(sc[1].x, sc[1].y - 1));
+			this.setPosition(new Point(sc[1].x, sc[1].y - 1));
 			break;
 		default:
 			throw new IllegalStateException();

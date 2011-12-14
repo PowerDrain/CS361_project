@@ -28,7 +28,7 @@ public class Dredger extends Ship{
 		this.setSize(2);
 		this.resetDamage(max_dam);
 		this.setDirection(direction);
-		this.startShip(position);
+		this.setPosition(position);
 		
 	}
 

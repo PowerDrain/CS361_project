@@ -1,0 +1,10 @@
+Player turns
+Each player, on their turn, can choose to play one of the following possibilities:
+• To move a ship a certain number of boxes or at a certain angle, within the limits of its characteristics of mobility. Only one movement can be carried out for a single turn of the game, i.e., either a quarter turn rotation (or a half-turn in the case of the destroyer), or a side displacement or backup a box, or a displacement ahead of a number of boxes equal to the specific maximum of the ship in question. These displacements can only be carried out in the absence of obstacle - visible or invisible. The invisible presence of an enemy ship which prevents effective movement means the player loses the turn. From this point of view, displacement of a ship is in fact always an attempt at displacement, which may be successful or not. A displacement ahead can be partially achieved, i.e., if an obstacle is in the path of the total movement then the movement proceeds in part. This is not the case of rotation (including a half-turn rotation) and side displacement or a backup: those are not carried out at all if an o stacle opposes. Also let us point out that a mine is an obstacle which, in addition, explodes and causes damage if one tries to cross its path.
+• To immerse a mine in a given box by means of a minesweeper, if the stock of the player still contains mines.
+• To withdraw a mine from a given box by means of a dredger.
+• To launch a torpedo from an equipped ship.
+• To shoot a gun (by a ship which is equipped with them) towards a given box at the location of the corresponding shooting range.
+• To repair a box of a ship at the quay in the naval base, if the base is operational.
+• To repair a box of the naval base, if the base is repairable, i.e., not destroyed.
+• To pass the turn.
