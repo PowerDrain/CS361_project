@@ -505,4 +505,8 @@ public class Map {
 		
 	}
 	
+	public void setCurrentShip(Ship s){
+		_currentPlayer.setCurrentShip(s);
+	}
+	
 }
