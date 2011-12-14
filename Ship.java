@@ -1,3 +1,13 @@
+/* Created by David Gamez
+ * Created for CS361 Naval Whoop Ass Project
+ * Team name: The Compilers
+ * Team members:
+ * David Gamez
+ * Tommy Grelecki
+ * Alton Yee
+ * Michael Mattson
+ */
+
 import java.awt.Point;
 import java.util.ArrayList;;
 
@@ -229,6 +239,7 @@ public abstract class Ship {
 	}
 
 	public boolean receiveDamage(Point damLoc, char damType) throws IllegalArgumentException {
+		//TODO receive mine damage
 		Point[] shipCoordinates = this.getShipCoordinates();
 		boolean shipDamaged = false;
 		for (int i = 0; i < this.shipSize; i++){
@@ -649,6 +660,23 @@ public abstract class Ship {
 
 	private void error(String error){
 		System.out.println(error);
+	}
+	
+	@Override
+	public String toString(){
+		String returnString;
+		returnString = this.shipSize + "," + this.position.x + "," + this.position.y + "," + this.direction + ",";
+		returnString += this.maxHealth;
+		for (int i = 0; i < this.shipDamage.length; i++){
+			returnString += this.shipDamage[i] + ",";
+		}
+		return returnString;
+		}
+	
+	public Ship fromString(String s) {
+		System.out.println("Calling fromString in Ship class, child classes should override this method.");
+		System.out.println("Returning NULL.");
+		return null;
 	}
 
 }

@@ -1,11 +1,16 @@
-import java.awt.*;
+/* Created by David Gamez
+ * Created for CS361 Naval Whoop Ass Project
+ * Team name: The Compilers
+ * Team members:
+ * David Gamez
+ * Tommy Grelecki
+ * Alton Yee
+ * Michael Mattson
+ */
 
-import javax.imageio.ImageIO;
+import java.awt.*;
 import javax.swing.*;
 import java.awt.event.*;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 
 public class SplashScreen extends JFrame {
 

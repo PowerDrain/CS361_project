@@ -1,3 +1,13 @@
+/* Created by David Gamez
+ * Created for CS361 Naval Whoop Ass Project
+ * Team name: The Compilers
+ * Team members:
+ * David Gamez
+ * Tommy Grelecki
+ * Alton Yee
+ * Michael Mattson
+ */
+
 import java.awt.*;
 import javax.swing.*;
 import java.awt.event.*;
@@ -17,10 +27,11 @@ public class HowToPlayMenu extends JFrame{
 		panel.add(j);
 		panel.add(Box.createHorizontalStrut(100));
 		
-		//panel.add(new JTextField("This is where the How To Play info will go."));
-				
+		panel.add(new JTextField("This is where the How To Play info will go."));
+		
+		/*//For Future Use
 		try{
-			FileInputStream fstream = new FileInputStream("README.txt");//Could use a HowToPlay textfile.
+			FileInputStream fstream = new FileInputStream("C://README.txt");
 			DataInputStream in = new DataInputStream(fstream);
 			BufferedReader br = new BufferedReader(new InputStreamReader(in));
 			String strLine;
