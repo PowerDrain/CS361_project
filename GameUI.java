@@ -49,7 +49,7 @@ public class GameUI extends JFrame {
 	public GameUI(){
 		setTitle("Naval WhoopAss");
 		gameTurn = new Turn(layoutFile);
-		myMap = gameTurn.m; // only works if m is set to public 
+		myMap = gameTurn.getMap(); // only works if m is set to public 
 		setSize(WIDTH, HEIGHT);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		createContents();
@@ -352,7 +352,7 @@ public class GameUI extends JFrame {
 
 
 
-	public static void main(String[] args){
+	/*public static void main(String[] args){
 		new GameUI();
-	}
+	}*/
 }
