@@ -17,11 +17,10 @@ public class HowToPlayMenu extends JFrame{
 		panel.add(j);
 		panel.add(Box.createHorizontalStrut(100));
 		
-		panel.add(new JTextField("This is where the How To Play info will go."));
-		
-		/*//For Future Use
+		//panel.add(new JTextField("This is where the How To Play info will go."));
+				
 		try{
-			FileInputStream fstream = new FileInputStream("C://README.txt");
+			FileInputStream fstream = new FileInputStream("README.txt");//Could use a HowToPlay textfile.
 			DataInputStream in = new DataInputStream(fstream);
 			BufferedReader br = new BufferedReader(new InputStreamReader(in));
 			String strLine;
