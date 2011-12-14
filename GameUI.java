@@ -42,6 +42,7 @@ public class GameUI extends JFrame {
 	private static int myTurn = 0;
 	private static boolean canMoveShip = false;
 	private static boolean canFireGun = false;
+	private static boolean canRotateShip = false;
 	private final String layoutFile = chooseFileRandomly();
 	private static SquareCoordinate selected = null;
 
@@ -111,6 +112,24 @@ public class GameUI extends JFrame {
 					myCoord.setText(getSelectedCoordinate());
 					repaint();
 				}
+			}
+		});
+		
+		map.addMouseListener(new MouseAdapter(){
+			@Override
+			public void mouseClicked(MouseEvent e){
+				if(e.getClickCount()==2){
+					SquareCoordinate sc = SquareCoordinate.fromPoint(new Point(e.getX(),e.getY()), SquareTile.WIDTH);
+					int myX = sc.getX();
+					int myY = sc.getY();
+					if(myX <=30 && myX > 0 && myY > 0 && myY<=30){
+						SquareTile mytile = myMap._map[myX-1][myY-1];
+						System.out.println(mytile.toString());
+						if(mytile.tileOwnerIsShip()){
+							myMap.setCurrentShip((Ship)mytile.getTileOwner());
+						}
+					}
+				}	
 			}
 		});
 		
@@ -199,6 +218,7 @@ public class GameUI extends JFrame {
 				s+="\nShip Rotated";
 				reportWindow.setText(s);
 				turnInfo.setText(++myTurn + "/80");
+				canRotateShip = true;
 				repaint();
 			}
 		});
@@ -319,6 +339,10 @@ public class GameUI extends JFrame {
 				myMap.drawGunRange(g);
 				canFireGun = false;
 			}
+			if(canRotateShip){
+				myMap.drawRotationalMobility(g);
+				canRotateShip = false;
+			}
 			myMap.drawCurrentShip(g);
 			
 		}
@@ -328,7 +352,7 @@ public class GameUI extends JFrame {
 
 
 
-	/*public static void main(String[] args){
+	public static void main(String[] args){
 		new GameUI();
-	}*/
+	}
 }
