@@ -34,8 +34,7 @@ public class Map {
 		// add all ships and bases
 		_map = new SquareTile[30][30];
 		initializeMap(txtFile);
-		_currentPlayer = currentPlayer;//new Player("p1",'w');
-		_opponent = opponent; //new Player("p2", 'e');
+		_currentPlayer = currentPlayer;
 		addShips(_currentPlayer);
 		addShips(_opponent);
 		addBase(_currentPlayer);
@@ -51,11 +50,22 @@ public class Map {
 			System.out.println("_map must not be null when updateMap is called.");
 		    return;
 		}
-		initializeMap(txtFile);
+		clearShipsFromMap();
 		addShips(_currentPlayer);
 		addShips(_opponent);
 		addBase(_currentPlayer);
 		addBase(_opponent);
+	}
+	
+	private void clearShipsFromMap(){
+		for(int i =0; i<30; ++i){
+			for(int j=0; j<30; ++j){
+				Point mapCoordinate = new Point(i,j);
+				if(hasShip(mapCoordinate)){
+					setTile(mapCoordinate, Occupant.WATER,null);
+				}
+			}
+		}
 	}
 	
 	/**
@@ -509,4 +519,7 @@ public class Map {
 		_currentPlayer.setCurrentShip(s);
 	}
 	
+	public Player getCurrentPlayer(){
+		return _currentPlayer;
+	}
 }

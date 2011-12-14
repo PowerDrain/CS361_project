@@ -3,7 +3,7 @@
  * Michael Mattson, Alton Yee  - cs361
  * 
  * Modification:
- * 	12/8/2011
+ * 	12/14/2011
  * Description:
  * 	Graphic user interface for battleship game
  * 
@@ -49,7 +49,7 @@ public class GameUI extends JFrame {
 	public GameUI(){
 		setTitle("Naval WhoopAss");
 		gameTurn = new Turn(layoutFile);
-		myMap = gameTurn.getMap(); // only works if m is set to public 
+		myMap = gameTurn.getMap(); 
 		setSize(WIDTH, HEIGHT);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		createContents();
@@ -119,6 +119,7 @@ public class GameUI extends JFrame {
 			@Override
 			public void mouseClicked(MouseEvent e){
 				if(e.getClickCount()==2){
+					Player currentPlayer = myMap.getCurrentPlayer();
 					SquareCoordinate sc = SquareCoordinate.fromPoint(new Point(e.getX(),e.getY()), SquareTile.WIDTH);
 					int myX = sc.getX();
 					int myY = sc.getY();
@@ -126,12 +127,16 @@ public class GameUI extends JFrame {
 						SquareTile mytile = myMap._map[myX-1][myY-1];
 						System.out.println(mytile.toString());
 						if(mytile.tileOwnerIsShip()){
-							myMap.setCurrentShip((Ship)mytile.getTileOwner());
+							Ship selectedShip = (Ship)mytile.getTileOwner();
+							if(currentPlayer.isPlayersShip(selectedShip)){
+								myMap.setCurrentShip(selectedShip);
+							}
 						}
 					}
 				}	
 			}
 		});
+		
 		
 		// setup report window
 		final TextArea reportWindow = new TextArea("Welcome to Naval WhoopAss");
