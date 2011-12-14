@@ -3,7 +3,7 @@
  * Michael Mattson - cs361
  * 
  * Modification:
- * 	12/9/2011
+ * 	12/14/2011
  * 
  * Description:
  * 	Models a 30 X 30 map for a game of battle ship
@@ -73,6 +73,102 @@ public class Map {
 		addShip(p._dredger2);
 	}
 	
+	/**
+	 * Adds a ship to the map by appropriately changing the attributes of all of the tiles occupied by a
+	 * ship to reflect those of the ship occupying it.
+	 * @param s
+	 * @return true if method was successful and false otherwise
+	 */
+	private boolean addShip(Ship s){
+		Point bowCoordinate = s.getPosition();
+		int bowX = (int)bowCoordinate.getX();
+		int bowY = (int)bowCoordinate.getY();
+		char shipDirection = s.getDirection();
+		int[] myArray = s.getDamage();
+		Occupant o = Occupant.WATER;
+		if(shipDirection == 'e'){
+			for(int i = myArray.length-1; i>=0; --i){
+				if(myArray[i] == 0){
+					o = Occupant.DAMAGEDSHIP;
+				}else if(myArray[i] == 1){
+					o = Occupant.UNARMOREDSHIP;
+				}else if(myArray[i] == 2){
+					o = Occupant.ARMOREDSHIP;
+				}else{
+					return false;
+				}
+				this.setTile(new Point(bowX,bowY), o, s);
+				--bowX;
+			}
+		}else if(shipDirection == 'w'){
+			for(int i = myArray.length-1; i>=0; --i){
+				if(myArray[i] == 0){
+					o = Occupant.DAMAGEDSHIP;
+				}else if(myArray[i] == 1){
+					o = Occupant.UNARMOREDSHIP;
+				}else if(myArray[i] == 2){
+					o = Occupant.ARMOREDSHIP;
+				}else{
+					return false;
+				}
+				this.setTile(new Point(bowX,bowY), o, s);
+				++bowX;
+			}
+		}else if(shipDirection == 'n'){
+			for(int i = myArray.length-1; i>=0; --i){
+				if(myArray[i] == 0){
+					o = Occupant.DAMAGEDSHIP;
+				}else if(myArray[i] == 1){
+					o = Occupant.UNARMOREDSHIP;
+				}else if(myArray[i] == 2){
+					o = Occupant.ARMOREDSHIP;
+				}else{
+					return false;
+				}
+				this.setTile(new Point(bowX,bowY), o, s);
+				++bowY;
+			}
+		}else if(shipDirection == 's'){
+			for(int i = myArray.length-1; i>=0; --i){
+				if(myArray[i] == 0){
+					o = Occupant.DAMAGEDSHIP;
+				}else if(myArray[i] == 1){
+					o = Occupant.UNARMOREDSHIP;
+				}else if(myArray[i] == 2){
+					o = Occupant.ARMOREDSHIP;
+				}else{
+					return false;
+				}
+				this.setTile(new Point(bowX,bowY), o, s);
+				--bowY;
+			}
+		}else{
+			return false;
+		}
+		return true;
+		
+	}
+
+	/**
+	 * Adds given players base to _map
+	 * @param p
+	 */
+	private void addBase(Player p){
+		Base baseToAdd = p.base();
+		int[] baseDamage = baseToAdd.damage();
+		Point[] baseTiles = baseToAdd.location();
+		int damageIndex = 0;
+		for(Point currentBaseTile : baseTiles){
+			if(baseDamage[damageIndex]==0){
+				this.setTile(currentBaseTile, Occupant.DAMAGEDBASE, null);
+			}else if(baseDamage[damageIndex]==1){
+				this.setTile(currentBaseTile, Occupant.BASE, null);
+			}else{
+				throw new IllegalStateException("the base damage array contains invalid value.");
+			}
+		}
+	}
+
 	/**
 	 * Map default constructor
 	 * Initializes map to consist entirely of water
@@ -181,102 +277,6 @@ public class Map {
 			_map[x][y].setTileOwner(tileOwner);
 		}else{
 			_map[x][y].setTileOwner(null);
-		}
-	}
-	
-	/**
-	 * Adds a ship to the map by appropriately changing the attributes of all of the tiles occupied by a
-	 * ship to reflect those of the ship occupying it.
-	 * @param s
-	 * @return true if method was successful and false otherwise
-	 */
-	public boolean addShip(Ship s){
-		Point bowCoordinate = s.getPosition();
-		int bowX = (int)bowCoordinate.getX();
-		int bowY = (int)bowCoordinate.getY();
-		char shipDirection = s.getDirection();
-		int[] myArray = s.getDamage();
-		Occupant o = Occupant.WATER;
-		if(shipDirection == 'e'){
-			for(int i = myArray.length-1; i>=0; --i){
-				if(myArray[i] == 0){
-					o = Occupant.DAMAGEDSHIP;
-				}else if(myArray[i] == 1){
-					o = Occupant.UNARMOREDSHIP;
-				}else if(myArray[i] == 2){
-					o = Occupant.ARMOREDSHIP;
-				}else{
-					return false;
-				}
-				this.setTile(new Point(bowX,bowY), o, s);
-				--bowX;
-			}
-		}else if(shipDirection == 'w'){
-			for(int i = myArray.length-1; i>=0; --i){
-				if(myArray[i] == 0){
-					o = Occupant.DAMAGEDSHIP;
-				}else if(myArray[i] == 1){
-					o = Occupant.UNARMOREDSHIP;
-				}else if(myArray[i] == 2){
-					o = Occupant.ARMOREDSHIP;
-				}else{
-					return false;
-				}
-				this.setTile(new Point(bowX,bowY), o, s);
-				++bowX;
-			}
-		}else if(shipDirection == 'n'){
-			for(int i = myArray.length-1; i>=0; --i){
-				if(myArray[i] == 0){
-					o = Occupant.DAMAGEDSHIP;
-				}else if(myArray[i] == 1){
-					o = Occupant.UNARMOREDSHIP;
-				}else if(myArray[i] == 2){
-					o = Occupant.ARMOREDSHIP;
-				}else{
-					return false;
-				}
-				this.setTile(new Point(bowX,bowY), o, s);
-				++bowY;
-			}
-		}else if(shipDirection == 's'){
-			for(int i = myArray.length-1; i>=0; --i){
-				if(myArray[i] == 0){
-					o = Occupant.DAMAGEDSHIP;
-				}else if(myArray[i] == 1){
-					o = Occupant.UNARMOREDSHIP;
-				}else if(myArray[i] == 2){
-					o = Occupant.ARMOREDSHIP;
-				}else{
-					return false;
-				}
-				this.setTile(new Point(bowX,bowY), o, s);
-				--bowY;
-			}
-		}else{
-			return false;
-		}
-		return true;
-		
-	}
-	
-	/**
-	 * Adds given players base to _map
-	 * @param p
-	 */
-	private void addBase(Player p){
-		Base baseToAdd = p.base();
-		int[] baseDamage = baseToAdd.damage();
-		Point[] baseTiles = baseToAdd.location();
-		int damageIndex = 0;
-		for(Point currentBaseTile : baseTiles){
-			if(baseDamage[damageIndex]==0){
-				this.setTile(currentBaseTile, Occupant.DAMAGEDBASE, null);
-			}else if(baseDamage[damageIndex]==1){
-				this.setTile(currentBaseTile, Occupant.BASE, null);
-			}else{
-				throw new IllegalStateException("the base damage array contains invalid value.");
-			}
 		}
 	}
 	
@@ -491,13 +491,18 @@ public class Map {
 		}
 	}
 	
-	/**
-	 * Returns an array containing all of the points in the currentShip's mobility
-	 * @return array of all possible points of mobility for currentShip
-	 */
-	public Point[] getCurrentShipMobility(){
-		//TODO
-		return null;
+	public void drawRotationalMobility(Graphics g){
+		g.setColor(Color.pink);
+		Ship currentShip = _currentPlayer.getCurrentShip();
+		Point[] rotationalMobilityCoordinates = currentShip.getRotationalMobility();
+		for(Point coordinateToOutline : rotationalMobilityCoordinates){
+			int x = (int)coordinateToOutline.getX()+1;
+			int y = (int)coordinateToOutline.getY()+1;
+			SquareCoordinate squareCoordinateToOutline = new SquareCoordinate(x,y);
+			Polygon gridCoordinateToOutline = squareCoordinateToOutline.toPolygon(SquareTile.WIDTH);
+			g.drawPolygon(gridCoordinateToOutline);
+		}
+		
 	}
 	
 }
