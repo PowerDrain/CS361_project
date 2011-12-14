@@ -238,22 +238,90 @@ public class Player {
    
    public String toString(){
 	   StringBuilder result = new StringBuilder();
-	   result.append("{<NAME>" + this._name + "</NAME>");
-	   result.append("<SCORE>" + this._score + "</SCORE>");
-	   result.append("<MINES" + this._mines + "</MINES>");
-	   result.append("<SIDE>" + this._startingSide + "</SIDE>");
-	   result.append("<SHIPS>" + this._shipCount + "</SHIPS>");
-	   result.append("}");
+	   result.append("<PLAYER>:<NAME>" + this._name + "</NAME>:");
+	   result.append("<SCORE>" + this._score + "</SCORE>:");
+	   result.append("<MINES>" + this._mines + "</MINES>:");
+	   result.append("<SIDE>" + this._startingSide + "</SIDE>:");
+	   result.append("<SHIPNUM>" + this._shipCount + "</SHIPNUM>:");
+	   result.append("<BASE>" + this.base().toString() + "</BASE>");
+	   result.append("<SHIPS>:<CRUISER1>" + "" + "</CRUISER1>:");
+	   result.append("<CRUISER2>" + "" + "</CRUISER2>:");
+	   result.append("<DESTROYER1>" + "" + "</DESTROYER1>:");
+	   result.append("<DESTROYER2>" + "" + "</DESTROYER2>:");
+	   result.append("<TORPEDOBOAT1>" + "" + "</TORPEDOBOAT1>:");
+	   result.append("<TORPEDOBOAT2>" + "" + "</TORPEDOBOAT2>:");
+	   result.append("<TORPEDOBOAT3>" + "" + "</TORPEDOBOAT3>:");
+	   result.append("<DREDGER1>" + "" + "</DREDGER1:>");
+	   result.append("<DREDGER2>" + "" + "</DREDGER2:>");
+	   result.append("</SHIPS>:</PLAYER>");
        return result.toString();
    }
    
-   //TODO
    public Player fromString(String s) throws Exception{
-       Player tempPlayer = new Player(null, 'w');
-       if(s.indexOf('{') == -1 || s.indexOf('}') == -1) 
-    	   throw new Exception("String must include '{' and '}' to be converted to Player: " + s);
+       Player tempPlayer = new Player("tempPlayer", 'w');
        
+       if(!s.contains("<PLAYER>") || !s.contains("</PLAYER>"))
+    	   throw new Exception("String must include '<PLAYER>' and '</PLAYER>' to be converted to Player: " + s);
        
+       String[] playerParsedStrings = s.split(":");
+       String playerSubString;
+       
+       for(int i=0; i<playerParsedStrings.length; i++){
+    	   if(playerParsedStrings[i].contains("<NAME>")){
+	    	   playerSubString = playerParsedStrings[i].substring(6, playerParsedStrings[i].lastIndexOf("</NAME>"));
+	    	   tempPlayer._name = playerSubString;
+	       }
+	       else if(playerParsedStrings[i].contains("<SCORE>")){
+	    	   playerSubString = playerParsedStrings[i].substring(7, playerParsedStrings[i].lastIndexOf("</SCORE>"));
+	    	   tempPlayer._score = Integer.decode(playerSubString);
+	       }
+	       else if(playerParsedStrings[i].contains("<MINES>")){
+	    	   playerSubString = playerParsedStrings[i].substring(7, playerParsedStrings[i].lastIndexOf("</MINES>"));
+	    	   tempPlayer._mines = Integer.decode(playerSubString);
+	       }
+	       else if(playerParsedStrings[i].contains("<SIDE>")){
+	    	   playerSubString = playerParsedStrings[i].substring(6, playerParsedStrings[i].lastIndexOf("</SIDE>"));
+	    	   tempPlayer._startingSide = playerSubString.charAt(0);
+	       }
+	       else if(playerParsedStrings[i].contains("<SHIPNUM>")){
+	    	   playerSubString = playerParsedStrings[i].substring(9, playerParsedStrings[i].lastIndexOf("</SHIPNUM>"));
+	    	   tempPlayer._shipCount = Integer.decode(playerSubString);
+	       }
+	       else if(playerParsedStrings[i].contains("<BASE>")){
+	    	   playerSubString = playerParsedStrings[i].substring(6, playerParsedStrings[i].lastIndexOf("</BASE>"));
+	    	   tempPlayer._base.fromString(playerSubString);
+	       }
+	       else if(playerParsedStrings[i].contains("<SHIPS>")){
+	    	   //do nothing fun at all
+	       }
+	       else if(playerParsedStrings[i].contains("<CRUISER1>")){
+	    	   //TODO these
+	       }
+	       else if(playerParsedStrings[i].contains("<CRUISER2>")){
+	    	   
+	       }
+	       else if(playerParsedStrings[i].contains("<DESTROYER1>")){
+	    	   
+	       }
+	       else if(playerParsedStrings[i].contains("<DESTROYER2>")){
+	    	   
+	       }
+	       else if(playerParsedStrings[i].contains("<TORPEDOBOAT1>")){
+	    	   
+	       }
+	       else if(playerParsedStrings[i].contains("<TORPEDOBOAT2>")){
+	    	   
+	       }
+	       else if(playerParsedStrings[i].contains("<TORPEDOBOAT3>")){
+	    	   
+	       }
+	       else if(playerParsedStrings[i].contains("<DREDGER1>")){
+	    	   
+	       }
+	       else if(playerParsedStrings[i].contains("<DREDGER2>")){
+	    	   
+	       }
+       }
        return tempPlayer;
    }
    
