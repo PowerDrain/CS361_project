@@ -1,5 +1,4 @@
 import java.awt.Point;
-import java.util.*;
 
 public class Base {
    
@@ -134,37 +133,59 @@ public class Base {
    
    public String toString(){
 	   StringBuilder result = new StringBuilder();
-	   result.append("{[Damage:]");
+	   result.append("{<BASE>:<DAMAGE>");
 	   for(int i=0; i<this._damage.length; i++){
 		   result.append(this._damage[i] + ",");
 	   }
-	   result.append("[Location:]");
-	   //TODO change the way Points are converted to string... java's toString implementation blows.
+	   result.append("</DAMAGE>:");
+	   result.append("<LOCATIONX>");
 	   for(int i=0; i<this._location.length; i++){
-		   result.append(this._location.toString() + ",");
+		   result.append(this._location[i].x + ",");
 	   }
-	   result.append("[Side:]" + this._startingSide);
-	   result.append("}");
+	   result.append("</LOCATIONX>:<LOCATIONY>");
+	   for(int i=0; i<this._location.length; i++){
+		   result.append(this._location[i].y + ",");
+	   }
+	   result.append("</LOCATIONY>:");
+	   
+	   result.append("<SIDE>" + _startingSide + "</SIDE>:");
+	   result.append("</BASE>");
        return result.toString();
    }
    
-   //TODO finish for Location and Side.
    public Base fromString(String s) throws Exception{
 	   Base tempBase = new Base('w');
-       if(s.indexOf('{') == -1 || s.indexOf('}') == -1) 
-    	   throw new Exception("String must include '{' and '}' to be converted to Player: " + s);
-       s = s.substring(1, s.length()-2); //trim off the { and }
-	   s = s.substring(s.lastIndexOf("[Damage:]")+1); //trim off [Damage:]
-	   String damage = s.substring(0, s.indexOf("[Location:]"));
-	   _damage = new int[10];
-	   //TODO fix method to accommodate for numbers bigger than 1 digit, and actually convert to Integer instead of characters
-	   for(int i=0; i<_damage.length+1; i++){
-		   _damage[i]=damage.charAt(0);
-		   damage = damage.substring(1);	//trim the ',' off after each run through besides the first
-	   }
-	   s = s.substring(s.indexOf("Location:]")+1); 	//trim off [Location:]
-	   String location = s.substring(0, s.indexOf("[Side:]"));
-	   _location = new Point[10];
+       String[] baseParsedStrings = s.split(":");
+       String baseSubString;
+	   String[] tempStrings;
+       for(int i=0; i<baseParsedStrings.length; i++){
+    	   if(baseParsedStrings[i].contains("<DAMAGE>")){
+	    	   baseSubString = baseParsedStrings[i].substring(8, baseParsedStrings[i].lastIndexOf("</DAMAGE>"));
+		       tempStrings = baseSubString.split(",");
+	    	   for(int j=0; j<tempStrings.length; j++){
+	    		   tempBase._damage[j] = Integer.decode(tempStrings[j]);
+	    	   }
+    	   }
+    	   else if(baseParsedStrings[i].contains("<LOCATIONX>")){
+	    	   baseSubString = baseParsedStrings[i].substring(11, baseParsedStrings[i].lastIndexOf("</LOCATIONX>"));
+	    	   tempStrings = baseSubString.split(",");
+	    	   for(int j=0; j<tempStrings.length; j++){
+	    		   tempBase._location[j].x = Integer.decode(tempStrings[j]);
+	    	   }
+
+    	   }
+    	   else if(baseParsedStrings[i].contains("<LOCATIONY>")){
+	    	   baseSubString = baseParsedStrings[i].substring(11, baseParsedStrings[i].lastIndexOf("</LOCATIONY>"));
+	    	   tempStrings = baseSubString.split(",");
+	    	   for(int j=0; j<tempStrings.length; j++){
+	    		   tempBase._location[j].y = Integer.decode(tempStrings[j]);
+	    	   }
+    	   }
+    	   else if(baseParsedStrings[i].contains("<SIDE>")){
+	    	   baseSubString = baseParsedStrings[i].substring(6, baseParsedStrings[i].lastIndexOf("</SIDE>"));
+	    	   tempBase._startingSide = baseSubString.charAt(0);	    	   
+    	   }
+       }
 
 	   return tempBase;
    }
