@@ -35,6 +35,7 @@ public class Map {
 		_map = new SquareTile[30][30];
 		initializeMap(txtFile);
 		_currentPlayer = currentPlayer;
+		_opponent = opponent;
 		addShips(_currentPlayer);
 		addShips(_opponent);
 		addBase(_currentPlayer);
