@@ -387,7 +387,7 @@ public abstract class Ship {
 		return retVal;
 	}
 
-	public void repairDamage(){
+	public boolean repairDamage(){
 		boolean repaired = false;
 		for (int i = 0; i < this.shipDamage.length; i++){
 			if (this.shipDamage[i] == 0 && repaired == false){
@@ -402,6 +402,7 @@ public abstract class Ship {
 		if (repaired == false){
 			error ("repairDamage called on but the ship has no damage to repair.");
 		}
+		return repaired;
 	}
 
 	public void moveShip(Point location){
@@ -610,7 +611,7 @@ public abstract class Ship {
 		return retVal;
 	}
 
-	private Point[] getForwardMobility(){
+	public Point[] getForwardMobility(){
 		ArrayList<Point> temp = new ArrayList<Point>();
 		int stillGood = 0;
 		for (int i = 0; i < this.shipDamage.length; i++){
@@ -648,7 +649,7 @@ public abstract class Ship {
 		return retVal;
 	}
 
-	private Point getBackwardMobility(){
+	public Point getBackwardMobility(){
 		Point retVal = new Point();
 		switch (this.direction){
 		case 'n':
@@ -684,7 +685,7 @@ public abstract class Ship {
 		return returnString;
 		}
 	
-	public Ship fromString(String s) {
+	public static Ship fromString(String s) {
 		System.out.println("Calling fromString in Ship class, child classes should override this method.");
 		System.out.println("Returning NULL.");
 		return null;

@@ -250,13 +250,13 @@ public class Destroyer extends Ship{
 		return super.toString();
 	}
 	
-	public static Cruiser fromString(String s){
+	public static Destroyer fromString(String s){
 		//TODO Figure out a way to apply the damage to the ship. . .
 		int xCoor = s.charAt(2);
 		int yCoor = s.charAt(4);
 		char direction = s.charAt(6);
 		Point startingPosition = new Point(xCoor, yCoor);
-		return new Cruiser(startingPosition, direction);
+		return new Destroyer(startingPosition, direction);
 	}
 
 }
