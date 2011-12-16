@@ -60,6 +60,25 @@ public class Player {
 	   return _currentShip;
    }
    
+   public Ship[] getPlayerShips(){
+	   ArrayList<Ship> playerShips = new ArrayList<Ship>();
+	   playerShips.add(_cruiser1);
+	   playerShips.add(_cruiser2);
+	   playerShips.add(_destroyer1);
+	   playerShips.add(_destroyer2);
+	   playerShips.add(_dredger1);
+	   playerShips.add(_dredger2);
+	   playerShips.add(_torpedoBoat1);
+	   playerShips.add(_torpedoBoat2);
+	   playerShips.add(_torpedoBoat3);
+
+	   // Clean up array list, change into regular array and then return
+	   playerShips.trimToSize();
+	   Ship[] retVal = new Ship[playerShips.size()];
+	   retVal = playerShips.toArray(retVal);
+	   return retVal;
+   }
+   
    public void setCurrentShip(Ship ship){
 	   this._currentShip = ship;
    }
