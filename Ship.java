@@ -230,6 +230,72 @@ public abstract class Ship {
 		return retVal;
 	}
 
+	public Point[] getAdjacentPoints() throws IllegalStateException {
+		ArrayList<Point> listOfPoints = new ArrayList<Point>();
+		Point[] shipPoints = this.getShipCoordinates();
+		Point shipBow = this.getPosition();
+		Point shipStern = shipPoints[shipPoints.length - 1];
+
+		switch (direction){
+		case 'n':
+			for (int i = 0; i < shipPoints.length; i++){
+				listOfPoints.add(new Point(shipPoints[i].x - 1, shipPoints[i].y));
+				listOfPoints.add(new Point(shipPoints[i].x + 1, shipPoints[i].y));
+			}
+			listOfPoints.add(new Point(shipBow.x - 1, shipBow.y - 1));
+			listOfPoints.add(new Point(shipBow.x, shipBow.y - 1));
+			listOfPoints.add(new Point(shipBow.x + 1, shipBow.y - 1));
+			listOfPoints.add(new Point(shipStern.x - 1, shipBow.y + 1));
+			listOfPoints.add(new Point(shipStern.x, shipBow.y + 1));
+			listOfPoints.add(new Point(shipStern.x + 1, shipBow.y + 1));
+			break;
+		case 'e':
+			for (int i = 0; i < shipPoints.length; i++){
+				listOfPoints.add(new Point(shipPoints[i].x, shipPoints[i].y - 1));
+				listOfPoints.add(new Point(shipPoints[i].x, shipPoints[i].y + 1));
+			}
+			listOfPoints.add(new Point(shipBow.x + 1, shipBow.y - 1));
+			listOfPoints.add(new Point(shipBow.x + 1, shipBow.y));
+			listOfPoints.add(new Point(shipBow.x + 1, shipBow.y + 1));
+			listOfPoints.add(new Point(shipStern.x - 1, shipBow.y - 1));
+			listOfPoints.add(new Point(shipStern.x - 1, shipBow.y));
+			listOfPoints.add(new Point(shipStern.x - 1, shipBow.y + 1));
+			break;
+		case 's':
+			for (int i = 0; i < shipPoints.length; i++){
+				listOfPoints.add(new Point(shipPoints[i].x - 1, shipPoints[i].y));
+				listOfPoints.add(new Point(shipPoints[i].x + 1, shipPoints[i].y));
+			}
+			listOfPoints.add(new Point(shipBow.x - 1, shipBow.y + 1));
+			listOfPoints.add(new Point(shipBow.x, shipBow.y + 1));
+			listOfPoints.add(new Point(shipBow.x + 1, shipBow.y + 1));
+			listOfPoints.add(new Point(shipStern.x - 1, shipBow.y - 1));
+			listOfPoints.add(new Point(shipStern.x, shipBow.y - 1));
+			listOfPoints.add(new Point(shipStern.x + 1, shipBow.y - 1));
+			break;
+		case 'w':
+			for (int i = 0; i < shipPoints.length; i++){
+				listOfPoints.add(new Point(shipPoints[i].x, shipPoints[i].y - 1));
+				listOfPoints.add(new Point(shipPoints[i].x, shipPoints[i].y + 1));
+			}
+			listOfPoints.add(new Point(shipBow.x - 1, shipBow.y - 1));
+			listOfPoints.add(new Point(shipBow.x - 1, shipBow.y));
+			listOfPoints.add(new Point(shipBow.x - 1, shipBow.y + 1));
+			listOfPoints.add(new Point(shipStern.x + 1, shipBow.y - 1));
+			listOfPoints.add(new Point(shipStern.x + 1, shipBow.y));
+			listOfPoints.add(new Point(shipStern.x + 1, shipBow.y + 1));
+			break;
+		default:
+			throw new IllegalStateException();
+		}
+
+		// Clean up array list, change into regular array and then return
+		listOfPoints.trimToSize();
+		Point[] retVal = new Point[listOfPoints.size()];
+		retVal = listOfPoints.toArray(retVal);
+		return retVal;
+	}
+
 	public boolean aFloat(){
 		int temp = 0;
 		for (int i = 0; i < this.shipDamage.length; i++){
@@ -612,30 +678,32 @@ public abstract class Ship {
 	}
 
 	public Point[] getForwardMobility(){
-		ArrayList<Point> temp = new ArrayList<Point>();
+		ArrayList<Point> listOfPoints = new ArrayList<Point>();
 		int stillGood = 0;
 		for (int i = 0; i < this.shipDamage.length; i++){
-			stillGood = stillGood + this.shipDamage[i];
+			if (this.shipDamage[i] != 0){
+				stillGood += 1;
+			}
 		}
 		switch (this.direction){
 		case 'n':
 			for (int i = 1; i <= stillGood * 2; i++){
-				temp.add(new Point(this.position.x, this.position.y - i));
+				listOfPoints.add(new Point(this.position.x, this.position.y - i));
 			}
 			break;
 		case 'e':
 			for (int i = 1; i <= stillGood * 2; i++){
-				temp.add(new Point(this.position.x + i, this.position.y));
+				listOfPoints.add(new Point(this.position.x + i, this.position.y));
 			}
 			break;
 		case 's':
 			for (int i = 1; i <= stillGood * 2; i++){
-				temp.add(new Point(this.position.x , this.position.y + i));
+				listOfPoints.add(new Point(this.position.x , this.position.y + i));
 			}
 			break;
 		case 'w':
 			for (int i = 1; i <= stillGood * 2; i++){
-				temp.add(new Point(this.position.x - i, this.position.y));
+				listOfPoints.add(new Point(this.position.x - i, this.position.y));
 			}
 			break;
 		default:
@@ -643,9 +711,9 @@ public abstract class Ship {
 		}
 
 		// Clean up array list, change into regular array and then return
-		temp.trimToSize();
-		Point[] retVal = new Point[temp.size()];
-		retVal = temp.toArray(retVal);
+		listOfPoints.trimToSize();
+		Point[] retVal = new Point[listOfPoints.size()];
+		retVal = listOfPoints.toArray(retVal);
 		return retVal;
 	}
 
@@ -673,7 +741,7 @@ public abstract class Ship {
 	private void error(String error){
 		System.out.println(error);
 	}
-	
+
 	@Override
 	public String toString(){
 		String returnString;
@@ -683,8 +751,8 @@ public abstract class Ship {
 			returnString += this.shipDamage[i] + ",";
 		}
 		return returnString;
-		}
-	
+	}
+
 	public static Ship fromString(String s) {
 		System.out.println("Calling fromString in Ship class, child classes should override this method.");
 		System.out.println("Returning NULL.");
