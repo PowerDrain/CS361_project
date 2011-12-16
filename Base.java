@@ -131,6 +131,44 @@ public class Base {
 	   return _location;
    }
    
+   public Point[] getAdjacentPoints(){
+	   Point[] adjacentPoints = new Point[14];
+
+	   if(this._startingSide=='w'){
+		   adjacentPoints[0]= (new Point(0,9));
+		   adjacentPoints[1]= (new Point(1,9));
+		   adjacentPoints[2]= (new Point(1,10));
+		   adjacentPoints[3]= (new Point(1,11));
+		   adjacentPoints[4]= (new Point(1,12));
+		   adjacentPoints[5]= (new Point(1,13));
+		   adjacentPoints[6]= (new Point(1,14));
+		   adjacentPoints[7]= (new Point(1,15));
+		   adjacentPoints[8]= (new Point(1,16));
+		   adjacentPoints[9]= (new Point(1,17));
+		   adjacentPoints[10]= (new Point(1,18));
+		   adjacentPoints[11]= (new Point(1,19));
+		   adjacentPoints[12]= (new Point(1,20));
+		   adjacentPoints[13]= (new Point(1,20));
+	   }
+	   else if(this._startingSide=='e'){
+		   adjacentPoints[0]= (new Point(29,9));
+		   adjacentPoints[1]= (new Point(28,9));
+		   adjacentPoints[2]= (new Point(28,10));
+		   adjacentPoints[3]= (new Point(28,11));
+		   adjacentPoints[4]= (new Point(28,12));
+		   adjacentPoints[5]= (new Point(28,13));
+		   adjacentPoints[6]= (new Point(28,14));
+		   adjacentPoints[7]= (new Point(28,15));
+		   adjacentPoints[8]= (new Point(28,16));
+		   adjacentPoints[9]= (new Point(28,17));
+		   adjacentPoints[10]= (new Point(28,18));
+		   adjacentPoints[11]= (new Point(28,19));
+		   adjacentPoints[12]= (new Point(28,20));
+		   adjacentPoints[13]= (new Point(29,20));
+	   }
+	   return adjacentPoints;
+   }
+   
    public String toString(){
 	   StringBuilder result = new StringBuilder();
 	   result.append("{<BASE>#<DAMAGE>");
