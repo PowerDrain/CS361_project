@@ -459,14 +459,12 @@ public abstract class Ship {
 			if (this.shipDamage[i] == 0 && repaired == false){
 				this.shipDamage[i] = maxHealth;
 				repaired = true;
-			} else if (this.shipDamage[i] == 1 && repaired == false){
+				break;
+			} else if (this.shipDamage[i] == (maxHealth - 1) && repaired == false){
 				this.shipDamage[i] = maxHealth;
 				repaired = true;
+				break;
 			}
-
-		}
-		if (repaired == false){
-			error ("repairDamage called on but the ship has no damage to repair.");
 		}
 		return repaired;
 	}

@@ -39,12 +39,14 @@ public class GameUI extends JFrame {
 	private Map myMap;
 	private static final int WIDTH = 1100;
 	private static final int HEIGHT = 800;
-	private static int myTurn = 0;
 	private static boolean canMoveShip = false;
 	private static boolean canFireGun = false;
 	private static boolean canRotateShip = false;
 	private final String layoutFile = chooseFileRandomly();
 	private static SquareCoordinate selected = null;
+	private boolean playerMovingShip = false;
+	private boolean playerRotatingShip = false;
+	private boolean playerShootingGun = false;
 
 	public GameUI(){
 		setTitle("Naval WhoopAss");
@@ -92,7 +94,7 @@ public class GameUI extends JFrame {
 		final SquarePanel map = new SquarePanel();
 		
 		// setup turn display;
-		final JTextField turnInfo = new JTextField(myTurn + "/80");
+		final JTextField turnInfo = new JTextField(gameTurn.getTurnNumber() + "/80");
 		
 		//setup coordinate display
 		final JTextField myCoord = new JTextField(getSelectedCoordinate());
@@ -110,6 +112,18 @@ public class GameUI extends JFrame {
 					System.out.println(mytile.toString());
 					selected = new SquareCoordinate(myX,myY);
 					myCoord.setText(getSelectedCoordinate());
+					//TODO add part about moving ships, rotating ships and shooting guns.
+					if (playerMovingShip){
+						String[] results;
+						results = gameTurn.moveShip(new Point(sc.getX(), sc.getY()));
+						playerMovingShip = false;
+						System.out.println(results[1]);
+						repaint();
+					} else if (playerRotatingShip){
+						
+					} else if (playerShootingGun){
+						
+					}
 					repaint();
 				}
 			}
@@ -130,6 +144,7 @@ public class GameUI extends JFrame {
 							Ship selectedShip = (Ship)mytile.getTileOwner();
 							if(currentPlayer.isPlayersShip(selectedShip)){
 								myMap.setCurrentShip(selectedShip);
+								gameTurn.getCurrentPlayer().setCurrentShip(selectedShip);
 							}
 						}
 					}
@@ -152,7 +167,7 @@ public class GameUI extends JFrame {
 				String s = reportWindow.getText();
 				s+="\nGun Fired";
 				reportWindow.setText(s);
-				turnInfo.setText(++myTurn + "/80");
+				turnInfo.setText(gameTurn.getTurnNumber() + "/80");
 				canFireGun = true;
 				repaint();
 			}
@@ -164,7 +179,7 @@ public class GameUI extends JFrame {
 				String s = reportWindow.getText();
 				s+="\nTorpedo Launched";
 				reportWindow.setText(s);
-				turnInfo.setText(++myTurn + "/80");
+				turnInfo.setText(gameTurn.getTurnNumber() + "/80");
 				repaint();
 			}
 		});
@@ -174,7 +189,7 @@ public class GameUI extends JFrame {
 			public void actionPerformed(ActionEvent e){
 				String s = reportWindow.getText();
 				s+="\nMine Deployed";
-				turnInfo.setText(++myTurn + "/80");
+				turnInfo.setText(gameTurn.getTurnNumber() + "/80");
 				Point selectedPoint = new Point(selected.getX()-1,selected.getY()-1);
 				if(myMap.getTile(selectedPoint).getOccupant().equals(Occupant.WATER)){
 					myMap.setTile(selectedPoint, Occupant.MINE, null);
@@ -192,7 +207,7 @@ public class GameUI extends JFrame {
 				String s = reportWindow.getText();
 				s+="\nMine Retrieved";
 				reportWindow.setText(s);
-				turnInfo.setText(++myTurn + "/80");
+				turnInfo.setText(gameTurn.getTurnNumber() + "/80");
 				Point selectedPoint = new Point(selected.getX()-1,selected.getY()-1);
 				if(myMap.getTile(selectedPoint).getOccupant().equals(Occupant.MINE)){
 					myMap.setTile(selectedPoint, Occupant.WATER, null);
@@ -207,10 +222,7 @@ public class GameUI extends JFrame {
 		JButton moveShip = new JButton("Move Ship");
 		moveShip.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
-				String s = reportWindow.getText();
-				s+="\nShip Moved";
-				reportWindow.setText(s);
-				turnInfo.setText(++myTurn + "/80");
+				playerMovingShip = true;
 				canMoveShip = true;
 				repaint();
 			}
@@ -222,7 +234,7 @@ public class GameUI extends JFrame {
 				String s = reportWindow.getText();
 				s+="\nShip Rotated";
 				reportWindow.setText(s);
-				turnInfo.setText(++myTurn + "/80");
+				turnInfo.setText(gameTurn.getTurnNumber() + "/80");
 				canRotateShip = true;
 				repaint();
 			}
@@ -231,10 +243,11 @@ public class GameUI extends JFrame {
 		JButton repairShip = new JButton("Repair Ship");
 		repairShip.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
-				String s = reportWindow.getText();
-				s+="\nShip Repaired";
-				reportWindow.setText(s);
-				turnInfo.setText(++myTurn + "/80");
+				String[] results = gameTurn.repairShip();
+				String consoleText = reportWindow.getText();
+				consoleText+="\n" +results[1];
+				reportWindow.setText(consoleText);
+				turnInfo.setText(gameTurn.getTurnNumber() + "/80");
 				repaint();
 			}
 		});
@@ -242,10 +255,12 @@ public class GameUI extends JFrame {
 		JButton repairBase = new JButton("Repair Base");
 		repairBase.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
-				String s = reportWindow.getText();
-				s+="\nBase Repaired";
-				reportWindow.setText(s);
-				turnInfo.setText(++myTurn + "/80");
+				String[] results;
+				String consoleText = reportWindow.getText();
+				results = gameTurn.repairBase();
+				consoleText+="\n" + results[1];
+				reportWindow.setText(consoleText);
+				turnInfo.setText(gameTurn.getTurnNumber() + "/80");
 				repaint();
 			}
 		});
@@ -253,10 +268,12 @@ public class GameUI extends JFrame {
 		JButton passTurn = new JButton("Pass Turn");
 		passTurn.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
-				String s = reportWindow.getText();
-				s+="\npassTurn";
-				reportWindow.setText(s);
-				turnInfo.setText(++myTurn + "/80");
+				String[] results;
+				results = gameTurn.passTurn();
+				String sconsoleText = reportWindow.getText();
+				sconsoleText+="\n" + results[1];
+				reportWindow.setText(sconsoleText);
+				turnInfo.setText(gameTurn.getTurnNumber() + "/80");
 				repaint();
 			}
 		});

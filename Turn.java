@@ -34,7 +34,7 @@ public class Turn {
 			for (int i = 0; i < possrp.length; i++){
 				if (currentMap.hasBase(possrp[i]) || currentMap.hasReef(possrp[i]) || currentMap.hasShip(possrp[i])) {
 					returnValue[0] = null;
-					returnValue[1] = "Cannot rotate ship to point " + pointToRotate + " there is something in the way.";
+					returnValue[1] = "Cannot rotate ship to point " + pointToRotate + "\nThere is something in the way.";
 					return returnValue;
 				} else if (currentMap.hasMine(possrp[i])){
 					returnValue[0] = null;
@@ -49,7 +49,7 @@ public class Turn {
 			return returnValue;
 		} else {
 			returnValue[0] = null;
-			returnValue[1] = "Point passed is not in the rotational mobility of this ship.";
+			returnValue[1] = "Cannon move to point...\nOut of range.";
 			return returnValue;
 		}	
 	}//End of rotateShip
@@ -115,7 +115,7 @@ public class Turn {
 			for (int i = 0; i < leftOfShip.length; i++){
 				if (currentMap.hasBase(leftOfShip[i]) || currentMap.hasReef(leftOfShip[i]) || currentMap.hasShip(leftOfShip[i])){
 					returnValue[0] = null;
-					returnValue[1] = "Cannot move ship left to point " + pointToMove + " something in the way.";
+					returnValue[1] = "Cannot move ship to the left.\nSomething in the way.";
 					return returnValue;
 				} else if (currentMap.hasMine(leftOfShip[i])){
 					returnValue[0] = null;
@@ -140,7 +140,7 @@ public class Turn {
 			for (int i = 0; i < rightOfShip.length; i++){
 				if (currentMap.hasBase(rightOfShip[i]) || currentMap.hasReef(rightOfShip[i]) || currentMap.hasShip(rightOfShip[i])){
 					returnValue[0] = null;
-					returnValue[1] = "Cannot move ship right to point " + pointToMove + " something in the way.";
+					returnValue[1] = "Cannot move ship to the right.\nSomething in the way.";
 					return returnValue;
 				} else if (currentMap.hasMine(rightOfShip[i])){
 					returnValue[0] = null;
@@ -166,7 +166,7 @@ public class Turn {
 				if (currentMap.hasBase(frontOfShip[i]) || currentMap.hasReef(frontOfShip[i]) || currentMap.hasShip(frontOfShip[i])){
 					if (i == 0){
 						returnValue[0] = null;
-						returnValue[1] = "Object directly in front of ship, it cannot move.";
+						returnValue[1] = "Object directly in front of ship.\nShip cannot move.";
 						return returnValue;
 					} else {
 						return actuallyMoveShip(frontOfShip[i - 1]);
@@ -195,7 +195,7 @@ public class Turn {
 		boolean canDropMine = false;
 		if (!(currentPlayer.getCurrentShip() instanceof Dredger)){
 			returnValue[0] = null;
-			returnValue[1] = "Current ship is not a dredger, only dredgers can drop mines.";
+			returnValue[1] = "Current ship is not a dredger...\nOnly dredgers can drop mines.";
 			return returnValue;
 		}
 		Point[] legalDropSpots = currentPlayer.getCurrentShip().getAdjacentPoints();
@@ -207,12 +207,12 @@ public class Turn {
 		}
 		if (!canDropMine){
 			returnValue[0] = null;
-			returnValue[1] = "Cannot drop a mine in location that is not adjacent to a dredger.";
+			returnValue[1] = "Cannot drop mine...\nLocation is not adjacent dredger.";
 			return returnValue;
 		}
 		if (currentMap.hasBase(dropMineLocation) || currentMap.hasReef(dropMineLocation) || currentMap.hasShip(dropMineLocation) || currentMap.hasMine(dropMineLocation)){
 			returnValue[0] = null;
-			returnValue[1] = "Cannot drop mine at point " + dropMineLocation + " there is something in the way.";
+			returnValue[1] = "Cannot drop mine...\n" + dropMineLocation + "is occupied.";
 			return returnValue;
 		}
 		Ship[] allCurrentPlayerShips = currentPlayer.getPlayerShips();
@@ -221,7 +221,7 @@ public class Turn {
 			for (int j = 0; j < pointsAroundShip.length; j++){
 				if (dropMineLocation.equals(pointsAroundShip[i])){
 					returnValue[0] = null;
-					returnValue[1] = "Cannot drop a mine right next to a ship, this would cause an instantaneous explosion!";
+					returnValue[1] = "Cannot drop mine next to a ship\nWould cause an instantaneous explosion!";
 					return returnValue;
 				}
 			}
@@ -233,7 +233,7 @@ public class Turn {
 			for (int j = 0; j < pointsAroundShip.length; j++){
 				if (dropMineLocation.equals(pointsAroundShip[i])){
 					returnValue[0] = null;
-					returnValue[1] = "Cannot drop a mine right next to a ship, this would cause an instantaneous explosion!";
+					returnValue[1] = "Cannot drop mine next to a ship\nWould cause an instantaneous explosion!";
 					return returnValue;
 				}
 			}
@@ -242,7 +242,7 @@ public class Turn {
 		for (int i = 0; i < pointsAroundBase.length; i++){
 			if (dropMineLocation.equals(pointsAroundBase[i])){
 				returnValue[0] = null;
-				returnValue[1] = "Cannot drop a mine right next to a base, this would cause an instantaneous explosion!";
+				returnValue[1] = "Cannot drop mine next to base\nWould cause instantaneous explosion!";
 				return returnValue;
 			}
 		}
@@ -250,7 +250,7 @@ public class Turn {
 		for (int i = 0; i < pointsAroundBase.length; i++){
 			if (dropMineLocation.equals(pointsAroundBase[i])){
 				returnValue[0] = null;
-				returnValue[1] = "Cannot drop a mine right next to a base, this would cause an instantaneous explosion!";
+				returnValue[1] = "Cannot drop mine next to base\nWould cause instantaneous explosion!";
 				return returnValue;
 			}
 		}
@@ -258,10 +258,10 @@ public class Turn {
 		if (currentPlayer.decrementMineCount()){
 			currentMap.placeMine(dropMineLocation);
 			returnValue[0] = "0";
-			returnValue[1] = "Mine successfully drop at location " + dropMineLocation + ".";
+			returnValue[1] = "Mine successfully droped!\nMine now at " + dropMineLocation + ".";
 		} else {
 			returnValue[0] = null;
-			returnValue[1] = "You can't drop mines joker, you're out of mines!";
+			returnValue[1] = "You can't drop mines joker\nYou're out of mines!";
 		}
 		return returnValue;
 	}
@@ -274,7 +274,7 @@ public class Turn {
 		if (currentMap.hasMine(pickupMineLocation)){
 			if (!(currentPlayer.getCurrentShip() instanceof Dredger)){
 				returnValue[0] = null;
-				returnValue[1] = "Current ship is not a dredger, only dredgers can pickup mines.";
+				returnValue[1] = "Ship is not a dredger...\nOnly dredgers can pickup mines.";
 				return returnValue;
 			}
 			Point[] legalPickupSpots = currentPlayer.getCurrentShip().getAdjacentPoints();
@@ -286,17 +286,17 @@ public class Turn {
 			}
 			if (!canPickupMine){
 				returnValue[0] = null;
-				returnValue[1] = "Cannot pick up a mine in location that is not adjacent to a dredger.";
+				returnValue[1] = "Cannot pick up a mine...\nLocation is not adjacent to dredger.";
 				return returnValue;
 			} else {
 				currentPlayer.incrementMineCount();
 				currentMap.removeMine(pickupMineLocation);
 				returnValue[0] = "0";
-				returnValue[1] = "Mine successfully removed from point " + pickupMineLocation + ".";
+				returnValue[1] = "Mine successfully removed!\nNo longer mine at " + pickupMineLocation + ".";
 			}
 		} else {
 			returnValue[0] = null;
-			returnValue[1] = "Cannot pickup mine, no mine at location " + pickupMineLocation + ".";
+			returnValue[1] = "Cannot pickup mine...\nNo mine at location " + pickupMineLocation + ".";
 		}
 		return returnValue;
 	}
@@ -315,12 +315,12 @@ public class Turn {
 				for (int i = 1; (i <= 10)&&(yCoor >= 0); i++){
 					if (torpedoHit(xCoor, yCoor - i)){
 						returnValue[0] = "0";
-						returnValue[1] = "Torpedo has hit a target!";
+						returnValue[1] = "Torpedo fired...\nTorpedo hit target!";
 						turnNumber+=1;
 						break;
 					} else {
 						returnValue[0] = "0";
-						returnValue[1] = "Torpedo fired but has missed target.";
+						returnValue[1] = "Torpedo fired...\nTorpedo missed target.";
 					}
 					yCoor -= 1;
 				}
@@ -329,12 +329,12 @@ public class Turn {
 				for (int i = 1; (i <= 10)&&(xCoor <= 30); i++){
 					if (torpedoHit(xCoor + i, yCoor)){
 						returnValue[0] = "0";
-						returnValue[1] = "Torpedo has hit a target!";
+						returnValue[1] = "Torpedo fired...\nTorpedo hit target!";
 						turnNumber+=1;
 						break;
 					} else {
 						returnValue[0] = "0";
-						returnValue[1] = "Torpedo fired but has missed target.";
+						returnValue[1] = "Torpedo fired...\nTorpedo missed target.";
 					}
 					xCoor += 1;
 				}
@@ -343,12 +343,12 @@ public class Turn {
 				for (int i = 1; (i <= 10)&&(yCoor < 30); i++){
 					if (torpedoHit(xCoor, yCoor + i)){
 						returnValue[0] = "0";
-						returnValue[1] = "Torpedo has hit a target!";
+						returnValue[1] = "Torpedo fired...\nTorpedo hit target!";
 						turnNumber+=1;
 						break;
 					} else {
 						returnValue[0] = "0";
-						returnValue[1] = "Torpedo fired but has missed target.";
+						returnValue[1] = "Torpedo fired...\nTorpedo missed target.";
 					}
 					yCoor += 1;
 				}
@@ -357,12 +357,12 @@ public class Turn {
 				for (int i = 1; (i <= 10)&&(xCoor >= 0); i++){
 					if (torpedoHit(xCoor - i, yCoor)){
 						returnValue[0] = "0";
-						returnValue[1] = "Torpedo has hit a target!";
+						returnValue[1] = "Torpedo fired...\nTorpedo hit target!";
 						turnNumber+=1;
 						break;
 					} else {
 						returnValue[0] = "0";
-						returnValue[1] = "Torpedo fired but has missed target.";
+						returnValue[1] = "Torpedo fired...\nTorpedo missed target.";
 					}
 					xCoor -= 1;
 				}
@@ -372,7 +372,7 @@ public class Turn {
 			}
 		} else {
 			returnValue[0] = null;
-			returnValue[1] = "Current ship cannot shoot a torpedo.";
+			returnValue[1] = "Ship cannot shoot torpedo...\nNot equiped with torpedos.";
 			return returnValue;
 		}
 		return returnValue;
@@ -434,26 +434,30 @@ public class Turn {
 			if (currentPlayer.isDocked(currentPlayer.getCurrentShip())){
 				if (currentPlayer.getCurrentShip().repairDamage()){
 					returnValue[0] = "0";
-					returnValue[1] = "Current ship repaired!";
+					returnValue[1] = "Ship has been repaired!";
 					turnNumber+=1;
 				} else {
 					returnValue[0] = null;
-					returnValue[1] = "Current ship is at full health, cannot repair it.";
+					returnValue[1] = "Ship is at full health\nCannot repair ship.";
 				}
 
 			} else {
 				returnValue[0] = null;
-				returnValue[1] = "Current ship is not docked at a base, cannot repair it.";
+				returnValue[1] = "Ship is not docked at base...\nCannot repair ship.";
 			}
 		} else {
 			returnValue[0] = null;
-			returnValue[1] = "Current ship is destroyed, cannot repair it.";
+			returnValue[1] = "Ship is fully destroyed...\nCannot repair ship.";
 		}
 		return returnValue;
 	}
 
-	public int getTurnNuber(){
+	public int getTurnNumber(){
 		return turnNumber;
+	}
+	
+	public Player getCurrentPlayer(){
+		return currentPlayer;
 	}
 	public String[] repairBase(){
 		String[] returnValue = new String[2];
@@ -465,7 +469,7 @@ public class Turn {
 			turnNumber+=1;
 		} else {
 			returnValue[0] = null;
-			returnValue[1] = "Base is at full health, cannot repair.";
+			returnValue[1] = "Base is at full health...\nCannot repair base.";
 		}
 		return returnValue;
 	}//End of repairBase Method
@@ -481,7 +485,7 @@ public class Turn {
 	public String[] passTurn(){
 		String[] returnValue = new String[2];
 		returnValue[0] = "0";
-		returnValue[0] = "Passing turn to opponent.";
+		returnValue[1] = "Passing turn to opponent.";
 		turnNumber +=1;
 		return returnValue;
 	}
