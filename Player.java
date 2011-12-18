@@ -158,11 +158,11 @@ public class Player {
    public boolean isDocked(Ship ship){
 	   boolean result = false;
 	   Point shipPoints[] = ship.getShipCoordinates();
-	   Point basePoints[] = _base.location();
+	   Point basePoints[] = _base.getAdjacentPoints();
 	   for(int i=0; i<ship.getSize(); i++){
-		   for(int j=0; j<11; j++){
+		   for(int j=0; j<basePoints.length; j++){
 			   if(shipPoints[i].equals(basePoints[j]))
-				   result = true;
+				   return true;
 		   }
 	   }
 	   return result;

@@ -96,6 +96,9 @@ public class GameUI extends JFrame {
 		// setup turn display;
 		final JTextField turnInfo = new JTextField(gameTurn.getTurnNumber() + "/80");
 		
+		//setup mine display;
+		final JTextField mineInfo = new JTextField("10");
+		
 		//setup coordinate display
 		final JTextField myCoord = new JTextField(getSelectedCoordinate());
 		
@@ -115,14 +118,18 @@ public class GameUI extends JFrame {
 					//TODO add part about moving ships, rotating ships and shooting guns.
 					if (playerMovingShip){
 						String[] results;
-						results = gameTurn.moveShip(new Point(sc.getX(), sc.getY()));
+						results = gameTurn.moveShip(new Point(selected.getX() - 1, selected.getY() - 1));
 						playerMovingShip = false;
 						System.out.println(results[1]);
 						repaint();
 					} else if (playerRotatingShip){
 						
 					} else if (playerShootingGun){
-						
+						String[] results;
+						results = gameTurn.shootGun(new Point(selected.getX() - 1, selected.getY() - 1));
+						playerShootingGun = false;
+						System.out.println(results[1]);
+						repaint();
 					}
 					repaint();
 				}
@@ -151,23 +158,21 @@ public class GameUI extends JFrame {
 				}	
 			}
 		});
-		
-		
+				
 		// setup report window
 		final TextArea reportWindow = new TextArea("Welcome to Naval WhoopAss");
 		reportWindow.setEditable(false);
-		
-		
 
-		
 		// setup buttons
+		//TODO
 		JButton shootGun = new JButton("Shoot Gun");
 		shootGun.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
-				String s = reportWindow.getText();
-				s+="\nGun Fired";
-				reportWindow.setText(s);
+				String consoleText = reportWindow.getText();
+				consoleText+="\nPick a square to shoot!";
+				reportWindow.setText(consoleText);
 				turnInfo.setText(gameTurn.getTurnNumber() + "/80");
+				playerShootingGun = true;
 				canFireGun = true;
 				repaint();
 			}
@@ -176,49 +181,59 @@ public class GameUI extends JFrame {
 		JButton launchTorpedo = new JButton("Launch Torpedo");
 		launchTorpedo.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
-				String s = reportWindow.getText();
-				s+="\nTorpedo Launched";
-				reportWindow.setText(s);
+				String[] results = gameTurn.launchTorpedo();
+				String consoleText = reportWindow.getText();
+				consoleText+="\n" + results[1];
+				reportWindow.setText(consoleText);
 				turnInfo.setText(gameTurn.getTurnNumber() + "/80");
 				repaint();
 			}
 		});
 		
+		//TODO verify that setting in the map, red tile is correct.
 		JButton deployMine = new JButton("Deploy Mine");
 		deployMine.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
-				String s = reportWindow.getText();
-				s+="\nMine Deployed";
-				turnInfo.setText(gameTurn.getTurnNumber() + "/80");
 				Point selectedPoint = new Point(selected.getX()-1,selected.getY()-1);
-				if(myMap.getTile(selectedPoint).getOccupant().equals(Occupant.WATER)){
+				String[] results = gameTurn.immerseMine(selectedPoint);
+				String consoleText = reportWindow.getText();
+				turnInfo.setText(gameTurn.getTurnNumber() + "/80");
+				mineInfo.setText("" + gameTurn.getMineCount());
+				if (results[0] != null){
 					myMap.setTile(selectedPoint, Occupant.MINE, null);
-				}else{
-					s+="\nCannot lay mine at selected coordinate.";
 				}
-				reportWindow.setText(s);
+				/*Original Code
+				 * if(myMap.getTile(selectedPoint).getOccupant().equals(Occupant.WATER)){
+					myMap.setTile(selectedPoint, Occupant.MINE, null);
+					consoleText+="\n";
+				}else{
+					consoleText+="\nCannot lay mine at selected coordinate.";
+				}*/
+				consoleText+="\n" + results[1];
+				reportWindow.setText(consoleText);
 				repaint();
 			}
 		});
 		
+		//TODO verify that the tile changes are correct.
 		JButton retrieveMine = new JButton("Retrieve Mine");
 		retrieveMine.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
-				String s = reportWindow.getText();
-				s+="\nMine Retrieved";
-				reportWindow.setText(s);
-				turnInfo.setText(gameTurn.getTurnNumber() + "/80");
 				Point selectedPoint = new Point(selected.getX()-1,selected.getY()-1);
-				if(myMap.getTile(selectedPoint).getOccupant().equals(Occupant.MINE)){
+				String[] result = gameTurn.withdrawMine(selectedPoint);
+				String consoleText = reportWindow.getText();
+				turnInfo.setText(gameTurn.getTurnNumber() + "/80");
+				mineInfo.setText("" + gameTurn.getMineCount());
+				if (result[0] != null){
 					myMap.setTile(selectedPoint, Occupant.WATER, null);
-				}else{
-					s+="\nNo mine to retrieve at selected coordinate.";
-				}
-				reportWindow.setText(s);
+				consoleText+="\n" + result[1];
+				reportWindow.setText(consoleText);
 				repaint();
+				}
 			}
 		});
 		
+		//TODO
 		JButton moveShip = new JButton("Move Ship");
 		moveShip.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
@@ -228,6 +243,7 @@ public class GameUI extends JFrame {
 			}
 		});
 		
+		//TODO
 		JButton rotateShip = new JButton("Rotate Ship");
 		rotateShip.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
@@ -291,17 +307,12 @@ public class GameUI extends JFrame {
 		buttonPanel.add(repairBase);
 		buttonPanel.add(passTurn);
 		
-		
-				
 		// setup second content pane to hold button panel and report window
 		JPanel contentPane2 = new JPanel();
 		contentPane2.setLayout(new GridLayout(1,2));
 		contentPane2.setPreferredSize(new Dimension(400,800));
 		contentPane2.add(buttonPanel);
 		contentPane2.add(reportWindow);
-
-		
-		
 		
 		//setup infoPane
 		JPanel infoPane = new JPanel(new GridLayout(2,5));
@@ -325,7 +336,7 @@ public class GameUI extends JFrame {
 		infoPane.add(menu);
 		JTextField player1Score = new JTextField("128");
 		infoPane.add(player1Score);
-		infoPane.add(new JTextField("10"));
+		infoPane.add(mineInfo);
 		infoPane.add(new JTextField("128"));
 		infoPane.add(turnInfo);
 		infoPane.add(myCoord);
@@ -335,7 +346,6 @@ public class GameUI extends JFrame {
 		contentPane.add(contentPane2, BorderLayout.EAST);
 		contentPane.add(infoPane, BorderLayout.NORTH);
 		this.setContentPane(contentPane);
-
 	}
 	
 	private final class SquarePanel extends JPanel{
@@ -366,13 +376,8 @@ public class GameUI extends JFrame {
 				canRotateShip = false;
 			}
 			myMap.drawCurrentShip(g);
-			
 		}
 	}
-	
-	
-
-
 
 	/*public static void main(String[] args){
 		new GameUI();

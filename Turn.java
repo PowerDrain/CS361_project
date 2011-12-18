@@ -80,8 +80,9 @@ public class Turn {
 			if (currentMap.hasBase(possibleMovePoints[i]) || currentMap.hasMine(possibleMovePoints[i]) || currentMap.hasReef(possibleMovePoints[i]) || currentMap.hasShip(possibleMovePoints[i])){
 				shipCanMove = false;
 				break;
+			} else {
+				shipCanMove = true;
 			}
-			shipCanMove = true;
 		}
 		if (shipCanMove){
 			return actuallyMoveShip(pointToMove);
@@ -168,9 +169,11 @@ public class Turn {
 						returnValue[0] = null;
 						returnValue[1] = "Object directly in front of ship.\nShip cannot move.";
 						return returnValue;
-					} else {
+					} else if(frontOfShip[i].equals(pointToMove)){
 						return actuallyMoveShip(frontOfShip[i - 1]);
 					}
+				} else if (frontOfShip[i].equals(pointToMove)){
+					return actuallyMoveShip(pointToMove);
 				}
 			}
 		}
@@ -405,7 +408,38 @@ public class Turn {
 	 * damage.  Also correct return type to return what other 
 	 * methods return.
 	 */
-	public boolean shootGun(Point target){
+	public String[] shootGun(Point target){
+		String[] returnValue = new String[2];
+		Point[] placesToShoot = currentPlayer.getCurrentShip().getGunRange();
+		boolean legalTarget = false;
+		for (int i = 0; i < placesToShoot.length; i++){
+			if (placesToShoot[i].equals(target)){
+				legalTarget = true;
+				break;
+			}
+		}
+		if (legalTarget){
+			if (currentMap.getTile(target).getTileOwner() instanceof Base){
+				Base attackedBase = (Base)currentMap.getTile(target).getTileOwner();
+				attackedBase.receiveDamage(target, 'g');
+				returnValue[0] = "0";
+				returnValue[1] = "Gun fired\nHit Base!";
+			} else if (currentMap.getTile(target).getTileOwner() instanceof Ship){
+				Ship attackedShip = (Ship)currentMap.getTile(target).getTileOwner();
+				attackedShip.receiveDamage(target, 'g');
+				returnValue[0] = "0";
+				returnValue[1] = "Gun fired\nHit Ship!";
+			} else {
+				returnValue[0] = "0";
+				returnValue[1] = "Gun fired\nMissed Base and Ship.";
+			}
+			return returnValue;
+		} else {
+			returnValue[0] = null;
+			returnValue[1] = "Can't shoot there\nNo within range.";
+		}
+		return returnValue;
+		/* Original code
 		if(currentPlayer.getCurrentShip().toString() != "Cruiser" || currentPlayer.getCurrentShip().toString() != "Torpedo") return false;
 		Point[] p = currentPlayer.getCurrentShip().getGunRange();
 		for(int i = 0; i < p.length; ++i){
@@ -423,7 +457,7 @@ public class Turn {
 					return true;}
 			}//End of if
 		}//End of for
-		return false;
+		return false;*/
 	}//End of shootGun Method
 
 	public String[] repairShip(){
