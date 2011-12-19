@@ -10,8 +10,9 @@
 
 import java.awt.Point;
 import java.awt.Polygon;
+import java.io.Serializable;
 
-public class SquareCoordinate {
+public class SquareCoordinate implements Serializable{
 	private final int _x;
 	private final int _y;
 	

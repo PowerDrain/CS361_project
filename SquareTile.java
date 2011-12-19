@@ -12,7 +12,8 @@
 import java.awt.Graphics;
 import java.awt.Polygon;
 import java.awt.Color;
-public class SquareTile {
+import java.io.Serializable;
+public class SquareTile implements Serializable{
 	public static final int WIDTH = 20; // Subject to change
 	
 	private Occupant _occupant;

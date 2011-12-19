@@ -1,7 +1,8 @@
 import java.awt.Point;    
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Player {
+public class Player implements Serializable{
    
    private String _name;
    private int _mines;

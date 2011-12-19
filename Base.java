@@ -1,6 +1,7 @@
 import java.awt.Point;
+import java.io.Serializable;
 
-public class Base {
+public class Base implements Serializable {
    
    private int[] _damage;
    private Point[] _location;

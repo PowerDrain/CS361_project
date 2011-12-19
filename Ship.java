@@ -9,10 +9,11 @@
  */
 
 import java.awt.Point;
+import java.io.Serializable;
 import java.util.ArrayList;;
 
 
-public abstract class Ship {
+public abstract class Ship implements Serializable {
 
 	// Data Fields
 	private int shipSize;		// Size of ship, ex: Cruiser = 5, Torpedo boat = 4. . .

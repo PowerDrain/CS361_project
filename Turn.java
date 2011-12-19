@@ -1,6 +1,12 @@
 
 import java.awt.Point;
-public class Turn {
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
+public class Turn implements Serializable{
 	private Map currentMap;
 	private Player currentPlayer;
 	private Player opponent;
@@ -525,5 +531,38 @@ public class Turn {
 	}
 	public String toString(){
 		return currentPlayer.toString() + opponent.toString() + currentMap.toString(); }
+	
+	public void serialize(String filename){
+		FileOutputStream fos = null;
+		ObjectOutputStream out = null;
+		try{
+			fos = new FileOutputStream(filename);
+			out = new ObjectOutputStream(fos);
+			out.writeObject(this);
+			out.close();
+		}
+		catch(IOException ex){
+			ex.printStackTrace();
+		}
+	}
+	
+	public static Turn unserialize(String filename){
+		Turn newTurn = null;
+		FileInputStream fis = null;
+		ObjectInputStream in = null;
+		try{
+			fis = new FileInputStream(filename);
+			in = new ObjectInputStream(fis);
+			newTurn = (Turn)in.readObject();
+			in.close();
+		}
+		catch(IOException ex){
+			ex.printStackTrace();
+		}
+		catch(ClassNotFoundException ex){
+			ex.printStackTrace();
+		}
+		return newTurn;
+	}
 }//End of Class
 

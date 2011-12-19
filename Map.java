@@ -17,7 +17,8 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-public class Map {
+import java.io.Serializable;
+public class Map implements Serializable{
 
 	public SquareTile[][]	_map;
 	private Player _currentPlayer;
