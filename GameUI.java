@@ -66,12 +66,16 @@ public class GameUI extends JFrame {
 	 */
 	public String chooseFileRandomly(){
 		Double randomNumber = Math.random();
-		if(randomNumber>=0 && randomNumber<0.3){
+		if(randomNumber>=0 && randomNumber<0.2){
 			return "ReefLayout1.txt";
-		}else if(randomNumber <0.6){
+		}else if(randomNumber < 0.4){
 			return "ReefLayout2.txt";
-		}else{
+		}else if(randomNumber < 0.6){
 			return "ReefLayout3.txt";
+		}else if(randomNumber < 0.8){
+			return "ReefLayout4.txt";
+		}else{
+			return "ReefLayout5.txt";
 		}
 	}
 	
