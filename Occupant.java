@@ -1,11 +1,12 @@
 import java.awt.Color;
+import java.io.Serializable;
 /**
  * Provides a unique color and visibility for each of 6 different possible occupants of a tile
  * @author Michael Mattson - cs361
  *
- *	Modification - 12/5/2011
+ *	Modification - 12/19/2011
  */
-public enum Occupant {
+public enum Occupant implements Serializable{
 	WATER(Color.BLUE, 'A'),
 	ARMOREDSHIP(Color.LIGHT_GRAY,'R'),
 	UNARMOREDSHIP(Color.GRAY, 'R'),

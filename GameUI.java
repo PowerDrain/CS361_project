@@ -1,9 +1,9 @@
 /*
  * GameUI.java
- * Michael Mattson, Alton Yee  - cs361
+ * Michael Mattson, David Gamez, Alton Yee  - cs361
  * 
  * Modification:
- * 	12/14/2011
+ * 	12/19/2011
  * Description:
  * 	Graphic user interface for battleship game
  * 
@@ -54,6 +54,8 @@ public class GameUI extends JFrame {
 		myMap = gameTurn.getMap(); 
 		setSize(WIDTH, HEIGHT);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
+		gameTurn.serialize("mygamefile");
+		gameTurn = Turn.unserialize("mygamefile");
 		createContents();
 		setVisible(true);
 	}
@@ -69,7 +71,7 @@ public class GameUI extends JFrame {
 		}else if(randomNumber <0.6){
 			return "ReefLayout2.txt";
 		}else{
-			return "defaultLayout.txt";
+			return "ReefLayout3.txt";
 		}
 	}
 	
