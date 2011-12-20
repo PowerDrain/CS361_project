@@ -521,6 +521,23 @@ public class Map implements Serializable{
 		
 	}
 	
+	public void drawCurrentPlayerBows(Graphics g){
+		g.setColor(Color.red.darker());
+		Ship[] currentPlayerShips = _currentPlayer.getPlayerShips();
+		Point[] bowPoints = new Point[currentPlayerShips.length];
+		for(int i = 0; i<currentPlayerShips.length; ++i){
+			bowPoints[i] = currentPlayerShips[i].getPosition();
+		}
+		for(Point coordinateToOutline : bowPoints){
+			int x = (int)coordinateToOutline.getX()+1;
+			int y = (int)coordinateToOutline.getY()+1;
+			SquareCoordinate squareCoordinateToOutline = new SquareCoordinate(x,y);
+			Polygon gridCoordinateToOutline = squareCoordinateToOutline.toPolygon(SquareTile.WIDTH);
+			g.drawPolygon(gridCoordinateToOutline);
+		}
+		
+	}
+	
 	public void setCurrentShip(Ship s){
 		_currentPlayer.setCurrentShip(s);
 	}

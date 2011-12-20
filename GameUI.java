@@ -63,7 +63,7 @@ public class GameUI extends JFrame {
 		}else{
 			gameTurn = new Turn(layoutFile);
 		}
-		gameTurn.serialize("C:\\Users\\Tom\\Documents\\test\\");
+		gameTurn.serialize("gamefile");
 		myMap = gameTurn.getMap();
 		setSize(WIDTH, HEIGHT);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -420,6 +420,7 @@ public class GameUI extends JFrame {
 				canRotateShip = false;
 			}
 			myMap.drawCurrentShip(g);
+			myMap.drawCurrentPlayerBows(g);
 		}
 	}
 	
