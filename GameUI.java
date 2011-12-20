@@ -150,7 +150,12 @@ public class GameUI extends JFrame {
 						myMap = gameTurn.getMap();
 						repaint();
 					} else if (playerRotatingShip){
-						
+						String[] results = gameTurn.rotateShip(new Point(selected.getX() - 1, selected.getY() - 1));
+						playerRotatingShip = false;
+						System.out.println(results[1]);
+						gameTurn.updateMap();
+						myMap = gameTurn.getMap();
+						repaint();
 					} else if (playerShootingGun){
 						String[] results;
 						results = gameTurn.shootGun(new Point(selected.getX() - 1, selected.getY() - 1));
