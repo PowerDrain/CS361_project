@@ -4,7 +4,7 @@
  * 
  * Modification:
  * 	12/19/2011
- * Description:
+ * Description :
  * 	Graphic user interface for battleship game
  * 
  */
