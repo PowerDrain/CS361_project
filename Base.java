@@ -3,7 +3,11 @@ import java.io.Serializable;
 
 public class Base implements Serializable {
    
-   private int[] _damage;
+   /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+private int[] _damage;
    private Point[] _location;
    private char _startingSide;
    
@@ -57,6 +61,14 @@ public class Base implements Serializable {
    
    public int[] damage(){
        return _damage;
+   }
+   
+   public int getPointValue(){
+	   int pointValue = 0;
+	   for (int i = 0; i < _damage.length; i++){
+		   pointValue += _damage[i];
+	   }
+	   return pointValue;
    }
    
    public boolean receiveDamage(Point loc, char type) {

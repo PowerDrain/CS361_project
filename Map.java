@@ -20,6 +20,10 @@ import java.io.IOException;
 import java.io.Serializable;
 public class Map implements Serializable{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	public SquareTile[][]	_map;
 	private Player _currentPlayer;
 	private Player _opponent;

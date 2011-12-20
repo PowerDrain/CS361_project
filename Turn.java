@@ -7,12 +7,18 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 public class Turn implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private Map currentMap;
 	private Player currentPlayer;
 	private Player opponent;
 	private int turnNumber;
+	private String layoutFile;
 
 	public Turn(String fileName){
+		layoutFile = fileName;
 		currentPlayer = new Player("Player 1", 'w');
 		opponent = new Player("Player 2", 'e');
 		currentMap = new Map(fileName, currentPlayer, opponent);
@@ -185,6 +191,7 @@ public class Turn implements Serializable{
 		}
 		returnValue[0] = null;
 		returnValue[1] = "Shouldn't ever see this in console, if you do something is wrong with moveShip in Turn class.";
+
 		return returnValue;
 	}//End of moveShip
 
@@ -444,6 +451,7 @@ public class Turn implements Serializable{
 			returnValue[0] = null;
 			returnValue[1] = "Can't shoot there\nNo within range.";
 		}
+
 		return returnValue;
 		/* Original code
 		if(currentPlayer.getCurrentShip().toString() != "Cruiser" || currentPlayer.getCurrentShip().toString() != "Torpedo") return false;
@@ -499,6 +507,11 @@ public class Turn implements Serializable{
 	public Player getCurrentPlayer(){
 		return currentPlayer;
 	}
+	
+	public Player getOpponent(){
+		return opponent;
+	}
+	
 	public String[] repairBase(){
 		String[] returnValue = new String[2];
 		returnValue[0] = null;
@@ -563,6 +576,10 @@ public class Turn implements Serializable{
 			ex.printStackTrace();
 		}
 		return newTurn;
+	}
+	
+	public void updateMap(){
+		currentMap.updateMap(layoutFile);
 	}
 }//End of Class
 

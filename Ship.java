@@ -15,6 +15,10 @@ import java.util.ArrayList;;
 
 public abstract class Ship implements Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	// Data Fields
 	private int shipSize;		// Size of ship, ex: Cruiser = 5, Torpedo boat = 4. . .
 	private Point position;		// Coordinate of the bow of the ship
@@ -61,6 +65,21 @@ public abstract class Ship implements Serializable {
 	// Returns the direction of the ship, in lower case
 	public char getDirection(){
 		return direction;
+	}
+	
+	public int getPointValue(){
+		int pointValue = 0;
+		if (!this.aFloat()){
+			return 0;
+		}
+		for (int i = 0; i < shipDamage.length; i++){
+			if (shipDamage[i] == 2){
+				pointValue += 3;
+			} else if (shipDamage[i] == 1){
+				pointValue += 1;
+			}
+		}
+		return pointValue;
 	}
 
 	// Takes no argument and sets the damage of each block to 1 (untouched)
@@ -309,7 +328,7 @@ public abstract class Ship implements Serializable {
 		//TODO receive mine damage
 		Point[] shipCoordinates = this.getShipCoordinates();
 		boolean shipDamaged = false;
-		for (int i = 0; i < this.shipSize; i++){
+		for (int i = 0; i < shipCoordinates.length; i++){
 			if (shipCoordinates[i].equals(damLoc)){
 				switch(damType){
 				case 't':

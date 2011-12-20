@@ -4,7 +4,11 @@ import java.util.ArrayList;
 
 public class Player implements Serializable{
    
-   private String _name;
+   /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+private String _name;
    private int _mines;
    private int _shipCount;
    private int _score;
@@ -82,6 +86,17 @@ public class Player implements Serializable{
    
    public void setCurrentShip(Ship ship){
 	   this._currentShip = ship;
+   }
+   
+   public int getPlayerScore(){
+	   int playerTotalScore = 0;
+	   Ship[] playerShips = this.getPlayerShips();
+	   int playerBaseScore = this.base().getPointValue();
+	   for (int i = 0; i < playerShips.length; i++){
+		   playerTotalScore += playerShips[i].getPointValue();
+	   }
+	   playerTotalScore += playerBaseScore;
+	   return playerTotalScore;
    }
    
    public char getStartingSide(){

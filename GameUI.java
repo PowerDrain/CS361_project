@@ -35,6 +35,10 @@ import javax.swing.JTextPane;
 import java.util.Random;
 
 public class GameUI extends JFrame {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private Turn gameTurn;
 	private Map myMap;
 	private static final int WIDTH = 1100;
@@ -99,8 +103,14 @@ public class GameUI extends JFrame {
 		//setup map
 		final SquarePanel map = new SquarePanel();
 		
+		//player1 score
+		final JTextField player1Info = new JTextField("");
+		
+		//player2 score
+		final JTextField player2Info = new JTextField("");
+		
 		// setup turn display;
-		final JTextField turnInfo = new JTextField(gameTurn.getTurnNumber() + "/80");
+		final JTextField turnInfo = new JTextField("0/80");
 		
 		//setup mine display;
 		final JTextField mineInfo = new JTextField("10");
@@ -127,6 +137,8 @@ public class GameUI extends JFrame {
 						results = gameTurn.moveShip(new Point(selected.getX() - 1, selected.getY() - 1));
 						playerMovingShip = false;
 						System.out.println(results[1]);
+						gameTurn.updateMap();
+						myMap = gameTurn.getMap();
 						repaint();
 					} else if (playerRotatingShip){
 						
@@ -135,8 +147,12 @@ public class GameUI extends JFrame {
 						results = gameTurn.shootGun(new Point(selected.getX() - 1, selected.getY() - 1));
 						playerShootingGun = false;
 						System.out.println(results[1]);
+						gameTurn.updateMap();
+						myMap = gameTurn.getMap();
 						repaint();
 					}
+					gameTurn.updateMap();
+					myMap = gameTurn.getMap();
 					repaint();
 				}
 			}
@@ -178,6 +194,8 @@ public class GameUI extends JFrame {
 				consoleText+="\nPick a square to shoot!";
 				reportWindow.setText(consoleText);
 				turnInfo.setText(gameTurn.getTurnNumber() + "/80");
+				player1Info.setText("" + gameTurn.getCurrentPlayer().getPlayerScore());
+				player2Info.setText("" + gameTurn.getOpponent().getPlayerScore());
 				playerShootingGun = true;
 				canFireGun = true;
 				repaint();
@@ -192,6 +210,8 @@ public class GameUI extends JFrame {
 				consoleText+="\n" + results[1];
 				reportWindow.setText(consoleText);
 				turnInfo.setText(gameTurn.getTurnNumber() + "/80");
+				player1Info.setText("" + gameTurn.getCurrentPlayer().getPlayerScore());
+				player2Info.setText("" + gameTurn.getOpponent().getPlayerScore());
 				repaint();
 			}
 		});
@@ -217,6 +237,8 @@ public class GameUI extends JFrame {
 				}*/
 				consoleText+="\n" + results[1];
 				reportWindow.setText(consoleText);
+				player1Info.setText("" + gameTurn.getCurrentPlayer().getPlayerScore());
+				player2Info.setText("" + gameTurn.getOpponent().getPlayerScore());
 				repaint();
 			}
 		});
@@ -234,6 +256,8 @@ public class GameUI extends JFrame {
 					myMap.setTile(selectedPoint, Occupant.WATER, null);
 				consoleText+="\n" + result[1];
 				reportWindow.setText(consoleText);
+				player1Info.setText("" + gameTurn.getCurrentPlayer().getPlayerScore());
+				player2Info.setText("" + gameTurn.getOpponent().getPlayerScore());
 				repaint();
 				}
 			}
@@ -257,6 +281,8 @@ public class GameUI extends JFrame {
 				s+="\nShip Rotated";
 				reportWindow.setText(s);
 				turnInfo.setText(gameTurn.getTurnNumber() + "/80");
+				player1Info.setText("" + gameTurn.getCurrentPlayer().getPlayerScore());
+				player2Info.setText("" + gameTurn.getOpponent().getPlayerScore());
 				canRotateShip = true;
 				repaint();
 			}
@@ -270,6 +296,8 @@ public class GameUI extends JFrame {
 				consoleText+="\n" +results[1];
 				reportWindow.setText(consoleText);
 				turnInfo.setText(gameTurn.getTurnNumber() + "/80");
+				player1Info.setText("" + gameTurn.getCurrentPlayer().getPlayerScore());
+				player2Info.setText("" + gameTurn.getOpponent().getPlayerScore());
 				repaint();
 			}
 		});
@@ -283,6 +311,8 @@ public class GameUI extends JFrame {
 				consoleText+="\n" + results[1];
 				reportWindow.setText(consoleText);
 				turnInfo.setText(gameTurn.getTurnNumber() + "/80");
+				player1Info.setText("" + gameTurn.getCurrentPlayer().getPlayerScore());
+				player2Info.setText("" + gameTurn.getOpponent().getPlayerScore());
 				repaint();
 			}
 		});
@@ -340,10 +370,9 @@ public class GameUI extends JFrame {
 				new GameMenu("Game Menu");			
 		}});
 		infoPane.add(menu);
-		JTextField player1Score = new JTextField("128");
-		infoPane.add(player1Score);
+		infoPane.add(player1Info);
 		infoPane.add(mineInfo);
-		infoPane.add(new JTextField("128"));
+		infoPane.add(player2Info);
 		infoPane.add(turnInfo);
 		infoPane.add(myCoord);
 		
@@ -384,8 +413,8 @@ public class GameUI extends JFrame {
 			myMap.drawCurrentShip(g);
 		}
 	}
-
-	/*public static void main(String[] args){
+	
+	public static void main(String[] args){
 		new GameUI();
-	}*/
+	}
 }
