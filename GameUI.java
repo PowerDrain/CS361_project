@@ -243,6 +243,8 @@ public class GameUI extends JFrame {
 					turnInfo.setText(gameTurn.getTurnNumber() + "/80");
 					player1Info.setText("" + gameTurn.getCurrentPlayer().getPlayerScore());
 					player2Info.setText("" + gameTurn.getOpponent().getPlayerScore());
+					gameTurn.swapPlayers();
+					myMap = gameTurn.getMap();
 					repaint();
 				}
 			}
@@ -276,6 +278,8 @@ public class GameUI extends JFrame {
 					reportWindow.setText(consoleText);
 					player1Info.setText("" + gameTurn.getCurrentPlayer().getPlayerScore());
 					player2Info.setText("" + gameTurn.getOpponent().getPlayerScore());
+					gameTurn.swapPlayers();
+					myMap = gameTurn.getMap();
 					repaint();
 				}
 			}
@@ -301,6 +305,8 @@ public class GameUI extends JFrame {
 						reportWindow.setText(consoleText);
 						player1Info.setText("" + gameTurn.getCurrentPlayer().getPlayerScore());
 						player2Info.setText("" + gameTurn.getOpponent().getPlayerScore());
+						gameTurn.swapPlayers();
+						myMap = gameTurn.getMap();
 						repaint();
 					}
 				}
@@ -357,6 +363,8 @@ public class GameUI extends JFrame {
 					turnInfo.setText(gameTurn.getTurnNumber() + "/80");
 					player1Info.setText("" + gameTurn.getCurrentPlayer().getPlayerScore());
 					player2Info.setText("" + gameTurn.getOpponent().getPlayerScore());
+					gameTurn.swapPlayers();
+					myMap = gameTurn.getMap();
 					repaint();
 				}
 			}
@@ -429,7 +437,7 @@ public class GameUI extends JFrame {
 		JButton menu = new JButton("Menu");
 		menu.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
-				new GameMenu("Game Menu");			
+				new GameMenu("Game Menu", gameTurn);			
 		}});
 		infoPane.add(menu);
 		infoPane.add(player1Info);

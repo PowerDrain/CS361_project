@@ -1,5 +1,6 @@
 import java.awt.*;
 import javax.swing.*;
+
 import java.awt.event.*;
 
 public class GameMenu extends JFrame{
@@ -7,8 +8,11 @@ public class GameMenu extends JFrame{
 	private JButton buttons[];             
 	private final String buttonNames[] = {"Quit Game", "Save and Quit Game", "Help Menu", "Resume Game"};
 	private ButtonHandler handler;
-	public GameMenu(String name){		
+	private Turn turnToSave;
+	
+	public GameMenu(String name, Turn turn){		
 		super(name);
+		this.turnToSave = turn;
 		this.setLocation(350, 100);
 		buttons = new JButton[buttonNames.length];
 		handler = new ButtonHandler();
@@ -51,6 +55,9 @@ public class GameMenu extends JFrame{
 				dispose();
 			}	else if(event.getActionCommand() == "Save and Quit Game"){
 				JOptionPane.showMessageDialog(GameMenu.this, "Game Is Saved");
+				
+				String myFilePath = JOptionPane.showInputDialog("Enter file path: ");	
+				turnToSave.serialize(myFilePath);
 				System.exit(0);
 			}	else if(event.getActionCommand() == "Help Menu")				
 				new HelpMenu("Help Menu");
