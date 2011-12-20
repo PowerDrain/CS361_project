@@ -357,7 +357,7 @@ public class Turn implements Serializable{
 			switch (currentPlayer.getCurrentShip().getDirection()){
 			case 'n':
 				for (int i = 1; (i <= 10)&&(yCoor >= 0); i++){
-					if (torpedoHit(xCoor, yCoor - i)){
+					if (torpedoHit(xCoor, yCoor - 1)){
 						returnValue[0] = "0";
 						returnValue[1] = "Torpedo fired...\nTorpedo hit target!";
 						turnNumber+=1;
@@ -371,7 +371,7 @@ public class Turn implements Serializable{
 				break;
 			case 'e':
 				for (int i = 1; (i <= 10)&&(xCoor <= 30); i++){
-					if (torpedoHit(xCoor + i, yCoor)){
+					if (torpedoHit(xCoor + 1, yCoor)){
 						returnValue[0] = "0";
 						returnValue[1] = "Torpedo fired...\nTorpedo hit target!";
 						turnNumber+=1;
@@ -385,7 +385,7 @@ public class Turn implements Serializable{
 				break;
 			case 's':
 				for (int i = 1; (i <= 10)&&(yCoor < 30); i++){
-					if (torpedoHit(xCoor, yCoor + i)){
+					if (torpedoHit(xCoor, yCoor + 1)){
 						returnValue[0] = "0";
 						returnValue[1] = "Torpedo fired...\nTorpedo hit target!";
 						turnNumber+=1;
@@ -399,7 +399,7 @@ public class Turn implements Serializable{
 				break;
 			case 'w':
 				for (int i = 1; (i <= 10)&&(xCoor >= 0); i++){
-					if (torpedoHit(xCoor - i, yCoor)){
+					if (torpedoHit(xCoor - 1, yCoor)){
 						returnValue[0] = "0";
 						returnValue[1] = "Torpedo fired...\nTorpedo hit target!";
 						turnNumber+=1;
