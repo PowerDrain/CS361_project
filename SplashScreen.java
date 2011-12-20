@@ -18,13 +18,13 @@ public class SplashScreen extends JFrame {
 	private JButton buttons[];
 	private final String buttonNames[] = {"New Game", "Load Game", "How To Play"};
 	private ButtonHandler handler;
+	private String myFilePath = "/";
 	
 	public SplashScreen(String name){
 		super(name);
 		this.setLocation(200, 50);
 		buttons = new JButton[buttonNames.length];
 		handler = new ButtonHandler();
-
 		JPanel controls = new JPanel();
 		controls.setLayout(new BoxLayout(controls, BoxLayout.Y_AXIS));
 		setContentPane(controls);
@@ -61,12 +61,14 @@ public class SplashScreen extends JFrame {
 	private class ButtonHandler implements ActionListener{
 		public void actionPerformed(ActionEvent event){
 			setLocation(200, 50);
+			
 			if(event.getActionCommand() == "New Game"){
 				JOptionPane.showMessageDialog(SplashScreen.this, "Starting Game. . .");
 				new GameUI();
 			} else if(event.getActionCommand() == "Load Game"){
-				JOptionPane.showMessageDialog(SplashScreen.this, "Loading Game. . .");
-				dispose();
+				//JOptionPane.showMessageDialog(SplashScreen.this, "Loading Game. . .");
+				myFilePath = JOptionPane.showInputDialog("Enter file path: ");				
+				//new GameUI(myFilePath);
 			} else if(event.getActionCommand() == "How To Play"){
 				new HowToPlayMenu("How To Play");
 			}
