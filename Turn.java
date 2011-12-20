@@ -540,6 +540,7 @@ public class Turn implements Serializable{
 		Player tempPlayer = currentPlayer;
 		currentPlayer = opponent;
 		opponent = tempPlayer;
+		currentMap = new Map(layoutFile, currentPlayer, opponent);
 	}
 	
 	public String[] repairBase(){

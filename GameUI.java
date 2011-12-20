@@ -148,12 +148,16 @@ public class GameUI extends JFrame {
 						System.out.println(results[1]);
 						gameTurn.updateMap();
 						myMap = gameTurn.getMap();
+						gameTurn.swapPlayers();
+						myMap = gameTurn.getMap();
 						repaint();
 					} else if (playerRotatingShip){
 						String[] results = gameTurn.rotateShip(new Point(selected.getX() - 1, selected.getY() - 1));
 						playerRotatingShip = false;
 						System.out.println(results[1]);
 						gameTurn.updateMap();
+						myMap = gameTurn.getMap();
+						gameTurn.swapPlayers();
 						myMap = gameTurn.getMap();
 						repaint();
 					} else if (playerShootingGun){
@@ -162,6 +166,8 @@ public class GameUI extends JFrame {
 						playerShootingGun = false;
 						System.out.println(results[1]);
 						gameTurn.updateMap();
+						myMap = gameTurn.getMap();
+						gameTurn.swapPlayers();
 						myMap = gameTurn.getMap();
 						repaint();
 					}
@@ -338,6 +344,8 @@ public class GameUI extends JFrame {
 				sconsoleText+="\n" + results[1];
 				reportWindow.setText(sconsoleText);
 				turnInfo.setText(gameTurn.getTurnNumber() + "/80");
+				gameTurn.swapPlayers();
+				myMap = gameTurn.getMap();
 				repaint();
 			}
 		});
