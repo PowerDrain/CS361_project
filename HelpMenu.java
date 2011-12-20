@@ -47,7 +47,7 @@ public class HelpMenu extends JFrame{
 		panel.add(Box.createGlue());	
 		setVisible(true);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setSize(300, 200);
+		setSize(600, 350);
 		setResizable(false);
 		
 	}//End of Constructor
