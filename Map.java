@@ -324,7 +324,9 @@ public class Map implements Serializable{
 	public boolean hasMine(Point location){
 		int x = (int)location.getX();
 		int y = (int)location.getY();
-		
+		if(x>=30 || x<0 || y>=30 || y<0){
+			return false;
+		}
 		if(_map[x][y].getOccupant() == Occupant.MINE){
 			return true;
 		}else{
@@ -340,7 +342,9 @@ public class Map implements Serializable{
 	public boolean hasShip(Point location){
 		int x = (int)location.getX();
 		int y = (int)location.getY();
-		
+		if(x>=30 || x<0 || y>=30 || y<0){
+			return false;
+		}
 		SquareTile thisTile = _map[x][y];
 		Occupant thisOccupant = thisTile.getOccupant();
 		if(thisOccupant == Occupant.ARMOREDSHIP || thisOccupant == Occupant.DAMAGEDSHIP || thisOccupant == Occupant.UNARMOREDSHIP){
@@ -358,6 +362,9 @@ public class Map implements Serializable{
 	public boolean hasBase(Point location){
 		int x = (int)location.getX();
 		int y = (int)location.getY();
+		if(x>=30 || x<0 || y>=30 || y<0){
+			return false;
+		}
 		Occupant thisOccupant = _map[x][y].getOccupant();
 		
 		if(thisOccupant == Occupant.BASE || thisOccupant == Occupant.DAMAGEDBASE){
@@ -375,6 +382,9 @@ public class Map implements Serializable{
 	public boolean hasReef(Point location){
 		int x = (int)location.getX();
 		int y = (int)location.getY();
+		if(x>=30 || x<0 || y>=30 || y<0){
+			return false;
+		}
 		Occupant thisOccupant = _map[x][y].getOccupant();
 		
 		if(thisOccupant == Occupant.REEF){
