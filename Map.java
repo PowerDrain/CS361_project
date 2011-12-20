@@ -176,9 +176,9 @@ public class Map implements Serializable{
 		int damageIndex = 0;
 		for(Point currentBaseTile : baseTiles){
 			if(baseDamage[damageIndex]==0){
-				this.setTile(currentBaseTile, Occupant.DAMAGEDBASE, null);
+				this.setTile(currentBaseTile, Occupant.DAMAGEDBASE, baseToAdd);
 			}else if(baseDamage[damageIndex]==1){
-				this.setTile(currentBaseTile, Occupant.BASE, null);
+				this.setTile(currentBaseTile, Occupant.BASE, baseToAdd);
 			}else{
 				throw new IllegalStateException("the base damage array contains invalid value.");
 			}
