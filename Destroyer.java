@@ -13,6 +13,10 @@ import java.util.ArrayList;
 
 public class Destroyer extends Ship{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private int max_dam = 1; //Max value each ship block can have
 
 	// No argument constructor
@@ -169,94 +173,82 @@ public class Destroyer extends Ship{
 		}
 	}
 	
-	private Point[] getRightRotateMobility() throws IllegalStateException {
-		ArrayList<Point> mobilityPoints = new ArrayList<Point>();
-		Point[] shipCoordinates = this.getShipCoordinates();
-		switch (this.getDirection()){
-		case 'n':
-			mobilityPoints.add(new Point(shipCoordinates[0].x + 1, shipCoordinates[0].y));
-			mobilityPoints.add(new Point(shipCoordinates[1].x + 1, shipCoordinates[1].y));
-			mobilityPoints.add(new Point(shipCoordinates[1].x - 1, shipCoordinates[1].y));
-			mobilityPoints.add(new Point(shipCoordinates[2].x - 1, shipCoordinates[2].y));
-			break;
-		case 'e':
-			mobilityPoints.add(new Point(shipCoordinates[0].x, shipCoordinates[0].y + 1));
-			mobilityPoints.add(new Point(shipCoordinates[1].x, shipCoordinates[1].y + 1));
-			mobilityPoints.add(new Point(shipCoordinates[1].x, shipCoordinates[1].y - 1));
-			mobilityPoints.add(new Point(shipCoordinates[2].x, shipCoordinates[2].y - 1));
-			break;
-		case 's':
-			mobilityPoints.add(new Point(shipCoordinates[0].x - 1, shipCoordinates[0].y));
-			mobilityPoints.add(new Point(shipCoordinates[1].x - 1, shipCoordinates[1].y));
-			mobilityPoints.add(new Point(shipCoordinates[1].x + 1, shipCoordinates[1].y));
-			mobilityPoints.add(new Point(shipCoordinates[2].x + 1, shipCoordinates[2].y));
-			break;
-		case 'w':
-			mobilityPoints.add(new Point(shipCoordinates[0].x, shipCoordinates[0].y - 1));
-			mobilityPoints.add(new Point(shipCoordinates[1].x, shipCoordinates[1].y - 1));
-			mobilityPoints.add(new Point(shipCoordinates[1].x, shipCoordinates[1].y + 1));
-			mobilityPoints.add(new Point(shipCoordinates[2].x, shipCoordinates[2].y + 1));
-			break;
-		default:
-			throw new IllegalStateException();
-		}
-		// Clean up array list, change into regular array and then return
-		mobilityPoints.trimToSize();
-		Point[] returnValue = new Point[mobilityPoints.size()];
-		returnValue = mobilityPoints.toArray(returnValue);
-		return returnValue;
-	}
-	
-	private Point[] getLeftRotateMobility() {
-		ArrayList<Point> mobilityPoints = new ArrayList<Point>();
-		Point[] shipCoordinates = this.getShipCoordinates();
-		switch (this.getDirection()){
-		case 'n':
-			mobilityPoints.add(new Point(shipCoordinates[0].x - 1, shipCoordinates[0].y));
-			mobilityPoints.add(new Point(shipCoordinates[1].x - 1, shipCoordinates[1].y));
-			mobilityPoints.add(new Point(shipCoordinates[1].x + 1, shipCoordinates[1].y));
-			mobilityPoints.add(new Point(shipCoordinates[2].x + 1, shipCoordinates[2].y));
-			break;
-		case 'e':
-			mobilityPoints.add(new Point(shipCoordinates[0].x, shipCoordinates[0].y - 1));
-			mobilityPoints.add(new Point(shipCoordinates[1].x, shipCoordinates[1].y - 1));
-			mobilityPoints.add(new Point(shipCoordinates[1].x, shipCoordinates[1].y + 1));
-			mobilityPoints.add(new Point(shipCoordinates[2].x, shipCoordinates[2].y + 1));
-			break;
-		case 's':
-			mobilityPoints.add(new Point(shipCoordinates[0].x + 1, shipCoordinates[0].y));
-			mobilityPoints.add(new Point(shipCoordinates[1].x + 1, shipCoordinates[1].y));
-			mobilityPoints.add(new Point(shipCoordinates[1].x - 1, shipCoordinates[1].y));
-			mobilityPoints.add(new Point(shipCoordinates[2].x - 1, shipCoordinates[2].y));
-			break;
-		case 'w':
-			mobilityPoints.add(new Point(shipCoordinates[0].x, shipCoordinates[0].y + 1));
-			mobilityPoints.add(new Point(shipCoordinates[1].x, shipCoordinates[1].y + 1));
-			mobilityPoints.add(new Point(shipCoordinates[1].x, shipCoordinates[1].y - 1));
-			mobilityPoints.add(new Point(shipCoordinates[2].x, shipCoordinates[2].y - 1));
-			break;
-		default:
-			throw new IllegalStateException();
-		}
-		// Clean up array list, change into regular array and then return
-		mobilityPoints.trimToSize();
-		Point[] returnValue = new Point[mobilityPoints.size()];
-		returnValue = mobilityPoints.toArray(returnValue);
-		return returnValue;
-	}
-
 	@Override
-	public String toString(){
-		return super.toString();
+	public Point[] getRightRotateMobility() throws IllegalStateException {
+		ArrayList<Point> mobilityPoints = new ArrayList<Point>();
+		Point[] shipCoordinates = this.getShipCoordinates();
+		switch (this.getDirection()){
+		case 'n':
+			mobilityPoints.add(new Point(shipCoordinates[0].x + 1, shipCoordinates[0].y));
+			mobilityPoints.add(new Point(shipCoordinates[1].x + 1, shipCoordinates[1].y));
+			mobilityPoints.add(new Point(shipCoordinates[1].x - 1, shipCoordinates[1].y));
+			mobilityPoints.add(new Point(shipCoordinates[2].x - 1, shipCoordinates[2].y));
+			break;
+		case 'e':
+			mobilityPoints.add(new Point(shipCoordinates[0].x, shipCoordinates[0].y + 1));
+			mobilityPoints.add(new Point(shipCoordinates[1].x, shipCoordinates[1].y + 1));
+			mobilityPoints.add(new Point(shipCoordinates[1].x, shipCoordinates[1].y - 1));
+			mobilityPoints.add(new Point(shipCoordinates[2].x, shipCoordinates[2].y - 1));
+			break;
+		case 's':
+			mobilityPoints.add(new Point(shipCoordinates[0].x - 1, shipCoordinates[0].y));
+			mobilityPoints.add(new Point(shipCoordinates[1].x - 1, shipCoordinates[1].y));
+			mobilityPoints.add(new Point(shipCoordinates[1].x + 1, shipCoordinates[1].y));
+			mobilityPoints.add(new Point(shipCoordinates[2].x + 1, shipCoordinates[2].y));
+			break;
+		case 'w':
+			mobilityPoints.add(new Point(shipCoordinates[0].x, shipCoordinates[0].y - 1));
+			mobilityPoints.add(new Point(shipCoordinates[1].x, shipCoordinates[1].y - 1));
+			mobilityPoints.add(new Point(shipCoordinates[1].x, shipCoordinates[1].y + 1));
+			mobilityPoints.add(new Point(shipCoordinates[2].x, shipCoordinates[2].y + 1));
+			break;
+		default:
+			throw new IllegalStateException();
+		}
+		// Clean up array list, change into regular array and then return
+		mobilityPoints.trimToSize();
+		Point[] returnValue = new Point[mobilityPoints.size()];
+		returnValue = mobilityPoints.toArray(returnValue);
+		return returnValue;
 	}
 	
-	public static Destroyer fromString(String s){
-		//TODO Figure out a way to apply the damage to the ship. . .
-		int xCoor = s.charAt(2);
-		int yCoor = s.charAt(4);
-		char direction = s.charAt(6);
-		Point startingPosition = new Point(xCoor, yCoor);
-		return new Destroyer(startingPosition, direction);
+	@Override
+	public Point[] getLeftRotateMobility() {
+		ArrayList<Point> mobilityPoints = new ArrayList<Point>();
+		Point[] shipCoordinates = this.getShipCoordinates();
+		switch (this.getDirection()){
+		case 'n':
+			mobilityPoints.add(new Point(shipCoordinates[0].x - 1, shipCoordinates[0].y));
+			mobilityPoints.add(new Point(shipCoordinates[1].x - 1, shipCoordinates[1].y));
+			mobilityPoints.add(new Point(shipCoordinates[1].x + 1, shipCoordinates[1].y));
+			mobilityPoints.add(new Point(shipCoordinates[2].x + 1, shipCoordinates[2].y));
+			break;
+		case 'e':
+			mobilityPoints.add(new Point(shipCoordinates[0].x, shipCoordinates[0].y - 1));
+			mobilityPoints.add(new Point(shipCoordinates[1].x, shipCoordinates[1].y - 1));
+			mobilityPoints.add(new Point(shipCoordinates[1].x, shipCoordinates[1].y + 1));
+			mobilityPoints.add(new Point(shipCoordinates[2].x, shipCoordinates[2].y + 1));
+			break;
+		case 's':
+			mobilityPoints.add(new Point(shipCoordinates[0].x + 1, shipCoordinates[0].y));
+			mobilityPoints.add(new Point(shipCoordinates[1].x + 1, shipCoordinates[1].y));
+			mobilityPoints.add(new Point(shipCoordinates[1].x - 1, shipCoordinates[1].y));
+			mobilityPoints.add(new Point(shipCoordinates[2].x - 1, shipCoordinates[2].y));
+			break;
+		case 'w':
+			mobilityPoints.add(new Point(shipCoordinates[0].x, shipCoordinates[0].y + 1));
+			mobilityPoints.add(new Point(shipCoordinates[1].x, shipCoordinates[1].y + 1));
+			mobilityPoints.add(new Point(shipCoordinates[1].x, shipCoordinates[1].y - 1));
+			mobilityPoints.add(new Point(shipCoordinates[2].x, shipCoordinates[2].y - 1));
+			break;
+		default:
+			throw new IllegalStateException();
+		}
+		// Clean up array list, change into regular array and then return
+		mobilityPoints.trimToSize();
+		Point[] returnValue = new Point[mobilityPoints.size()];
+		returnValue = mobilityPoints.toArray(returnValue);
+		return returnValue;
 	}
 
 }

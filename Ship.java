@@ -147,6 +147,7 @@ public abstract class Ship implements Serializable {
 		default:
 			throw new IllegalStateException();
 		}
+		temp.trimToSize();
 		Point[] shipCoordinates = this.getShipCoordinates();
 		for (int i = 0; i < shipCoordinates.length; i++){
 			temp.add(shipCoordinates[i]);
@@ -401,6 +402,132 @@ public abstract class Ship implements Serializable {
 			throw new IllegalStateException();
 		}
 	}
+	
+	public Point[] getRightRotateMobility() throws IllegalStateException {
+		ArrayList<Point> temp = new ArrayList<Point>();
+		int offset = 0;
+		switch (this.direction) {
+		case 'n':
+			for (int i = 1; i <= this.shipSize; i++){
+				if (i < this.shipSize){
+					offset = i;
+				} else {
+					offset = i - 1;
+				}
+				for (int j = 1; j <= offset; j++){
+					temp.add(new Point(this.position.x + j, this.position.y + (i - 1)));
+				}
+			}
+			break;
+		case 'e':
+			for (int i = 1; i <= this.shipSize; i++){
+				if (i < this.shipSize){
+					offset = i;
+				} else {
+					offset = i - 1;
+				}
+				for (int j = 1; j <= offset; j++){
+					temp.add(new Point(this.position.x - (i - 1), this.position.y + j));
+				}
+			}
+			break;
+		case 's':
+			for (int i = 1; i <= this.shipSize; i++){
+				if (i < this.shipSize){
+					offset = i;
+				} else {
+					offset = i - 1;
+				}
+				for (int j = 1; j <= offset; j++){
+					temp.add(new Point(this.position.x + j, this.position.y - (i - 1)));
+				}
+			}
+			break;
+		case 'w':
+			for (int i = 1; i <= this.shipSize; i++){
+				if (i < this.shipSize){
+					offset = i;
+				} else {
+					offset = i - 1;
+				}
+				for (int j = 1; j <= offset; j++){
+					temp.add(new Point(this.position.x + (i - 1), this.position.y + j));
+				}
+			}
+			break;
+		default:		
+			throw new IllegalStateException();
+		}
+
+		// Clean up array list, change into regular array and then return
+		temp.trimToSize();
+		Point[] retVal = new Point[temp.size()];
+		retVal = temp.toArray(retVal);
+		return retVal;
+	}
+	
+	public Point[] getLeftRotateMobility() throws IllegalStateException {
+		ArrayList<Point> temp = new ArrayList<Point>();
+		int offset = 0;
+		switch (this.direction) {
+		case 'n':
+			for (int i = 1; i <= this.shipSize; i++){
+				if (i < this.shipSize){
+					offset = i;
+				} else {
+					offset = i - 1;
+				}
+				for (int j = 1; j <= offset; j++){
+					temp.add(new Point(this.position.x - j, this.position.y + (i - 1)));
+				}
+			}
+			break;
+		case 'e':
+			for (int i = 1; i <= this.shipSize; i++){
+				if (i < this.shipSize){
+					offset = i;
+				} else {
+					offset = i - 1;
+				}
+				for (int j = 1; j <= offset; j++){
+					temp.add(new Point(this.position.x - (i - 1), this.position.y - j));
+				}
+			}
+			break;
+		case 's':
+			for (int i = 1; i <= this.shipSize; i++){
+				if (i < this.shipSize){
+					offset = i;
+				} else {
+					offset = i - 1;
+				}
+				for (int j = 1; j <= offset; j++){
+					temp.add(new Point(this.position.x - j, this.position.y - (i - 1)));
+				}
+			}
+			break;
+		case 'w':
+			for (int i = 1; i <= this.shipSize; i++){
+				if (i < this.shipSize){
+					offset = i;
+				} else {
+					offset = i - 1;
+				}
+				for (int j = 1; j <= offset; j++){
+					temp.add(new Point(this.position.x + (i - 1), this.position.y - j));
+				}
+			}
+			break;
+		default:		
+			throw new IllegalStateException();
+		}
+
+		// Clean up array list, change into regular array and then return
+		temp.trimToSize();
+		Point[] retVal = new Point[temp.size()];
+		retVal = temp.toArray(retVal);
+		return retVal;
+	}
 
 	public Point[] getRotationalMobility() throws IllegalStateException {
 		ArrayList<Point> temp = new ArrayList<Point>();
@@ -417,7 +544,6 @@ public abstract class Ship implements Serializable {
 					temp.add(new Point(this.position.x - j, this.position.y + (i - 1)));
 					temp.add(new Point(this.position.x + j, this.position.y + (i - 1)));
 				}
-
 			}
 			break;
 		case 'e':
@@ -431,7 +557,6 @@ public abstract class Ship implements Serializable {
 					temp.add(new Point(this.position.x - (i - 1), this.position.y - j));
 					temp.add(new Point(this.position.x - (i - 1), this.position.y + j));
 				}
-
 			}
 			break;
 		case 's':
@@ -445,7 +570,6 @@ public abstract class Ship implements Serializable {
 					temp.add(new Point(this.position.x - j, this.position.y - (i - 1)));
 					temp.add(new Point(this.position.x + j, this.position.y - (i - 1)));
 				}
-
 			}
 			break;
 		case 'w':
@@ -459,7 +583,6 @@ public abstract class Ship implements Serializable {
 					temp.add(new Point(this.position.x + (i - 1), this.position.y - j));
 					temp.add(new Point(this.position.x + (i - 1), this.position.y + j));
 				}
-
 			}
 			break;
 		default:		
@@ -756,9 +879,6 @@ public abstract class Ship implements Serializable {
 		return retVal;
 	}
 
-	private void error(String error){
-		System.out.println(error);
-	}
 
 	@Override
 	public String toString(){
