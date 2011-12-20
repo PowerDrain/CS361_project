@@ -100,15 +100,15 @@ public class Map implements Serializable{
 		int bowX = (int)bowCoordinate.getX();
 		int bowY = (int)bowCoordinate.getY();
 		char shipDirection = s.getDirection();
-		int[] myArray = s.getDamage();
+		int[] shipDamage = s.getDamage();
 		Occupant o = Occupant.WATER;
 		if(shipDirection == 'e'){
-			for(int i = myArray.length-1; i>=0; --i){
-				if(myArray[i] == 0){
+			for (int i = 0; i < shipDamage.length; i++){
+				if(shipDamage[i] == 0){
 					o = Occupant.DAMAGEDSHIP;
-				}else if(myArray[i] == 1){
+				}else if(shipDamage[i] == 1){
 					o = Occupant.UNARMOREDSHIP;
-				}else if(myArray[i] == 2){
+				}else if(shipDamage[i] == 2){
 					o = Occupant.ARMOREDSHIP;
 				}else{
 					return false;
@@ -117,12 +117,12 @@ public class Map implements Serializable{
 				--bowX;
 			}
 		}else if(shipDirection == 'w'){
-			for(int i = myArray.length-1; i>=0; --i){
-				if(myArray[i] == 0){
+			for(int i = shipDamage.length-1; i>=0; --i){
+				if(shipDamage[i] == 0){
 					o = Occupant.DAMAGEDSHIP;
-				}else if(myArray[i] == 1){
+				}else if(shipDamage[i] == 1){
 					o = Occupant.UNARMOREDSHIP;
-				}else if(myArray[i] == 2){
+				}else if(shipDamage[i] == 2){
 					o = Occupant.ARMOREDSHIP;
 				}else{
 					return false;
@@ -131,12 +131,12 @@ public class Map implements Serializable{
 				++bowX;
 			}
 		}else if(shipDirection == 'n'){
-			for(int i = myArray.length-1; i>=0; --i){
-				if(myArray[i] == 0){
+			for(int i = shipDamage.length-1; i>=0; --i){
+				if(shipDamage[i] == 0){
 					o = Occupant.DAMAGEDSHIP;
-				}else if(myArray[i] == 1){
+				}else if(shipDamage[i] == 1){
 					o = Occupant.UNARMOREDSHIP;
-				}else if(myArray[i] == 2){
+				}else if(shipDamage[i] == 2){
 					o = Occupant.ARMOREDSHIP;
 				}else{
 					return false;
@@ -145,12 +145,12 @@ public class Map implements Serializable{
 				++bowY;
 			}
 		}else if(shipDirection == 's'){
-			for(int i = myArray.length-1; i>=0; --i){
-				if(myArray[i] == 0){
+			for(int i = shipDamage.length-1; i>=0; --i){
+				if(shipDamage[i] == 0){
 					o = Occupant.DAMAGEDSHIP;
-				}else if(myArray[i] == 1){
+				}else if(shipDamage[i] == 1){
 					o = Occupant.UNARMOREDSHIP;
-				}else if(myArray[i] == 2){
+				}else if(shipDamage[i] == 2){
 					o = Occupant.ARMOREDSHIP;
 				}else{
 					return false;
