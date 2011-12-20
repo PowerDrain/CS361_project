@@ -10,6 +10,7 @@
 
 import java.awt.*;
 import javax.swing.*;
+
 import java.awt.event.*;
 
 public class SplashScreen extends JFrame {
@@ -64,11 +65,11 @@ public class SplashScreen extends JFrame {
 			
 			if(event.getActionCommand() == "New Game"){
 				JOptionPane.showMessageDialog(SplashScreen.this, "Starting Game. . .");
+				myFilePath = JOptionPane.showInputDialog("Enter file path (use double slashes in paths): ");	
 				new GameUI(myFilePath, false);
 			} else if(event.getActionCommand() == "Load Game"){
 				//JOptionPane.showMessageDialog(SplashScreen.this, "Loading Game. . .");
-				myFilePath = JOptionPane.showInputDialog("Enter file path: ");				
-				new GameUI(myFilePath, true);
+				myFilePath = JOptionPane.showInputDialog("Enter file path (use double slashes in paths): ");				new GameUI(myFilePath, true);
 			} else if(event.getActionCommand() == "How To Play"){
 				new HowToPlayMenu("How To Play");
 			}
