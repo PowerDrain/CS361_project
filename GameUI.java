@@ -210,29 +210,41 @@ public class GameUI extends JFrame {
 		JButton shootGun = new JButton("Shoot Gun");
 		shootGun.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
-				String consoleText = reportWindow.getText();
-				consoleText+="\nPick a square to shoot!";
-				reportWindow.setText(consoleText);
-				turnInfo.setText(gameTurn.getTurnNumber() + "/80");
-				player1Info.setText("" + gameTurn.getCurrentPlayer().getPlayerScore());
-				player2Info.setText("" + gameTurn.getOpponent().getPlayerScore());
-				playerShootingGun = true;
-				canFireGun = true;
-				repaint();
+				if (!(gameTurn.getCurrentPlayer().getCurrentShip().aFloat())){
+					String consoleText = reportWindow.getText();
+					consoleText+="\nCurrent ship is sunk!";
+					reportWindow.setText(consoleText);
+				} else {
+					String consoleText = reportWindow.getText();
+					consoleText+="\nPick a square to shoot!";
+					reportWindow.setText(consoleText);
+					turnInfo.setText(gameTurn.getTurnNumber() + "/80");
+					player1Info.setText("" + gameTurn.getCurrentPlayer().getPlayerScore());
+					player2Info.setText("" + gameTurn.getOpponent().getPlayerScore());
+					playerShootingGun = true;
+					canFireGun = true;
+					repaint();
+				}
 			}
 		});
 		
 		JButton launchTorpedo = new JButton("Launch Torpedo");
 		launchTorpedo.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
-				String[] results = gameTurn.launchTorpedo();
-				String consoleText = reportWindow.getText();
-				consoleText+="\n" + results[1];
-				reportWindow.setText(consoleText);
-				turnInfo.setText(gameTurn.getTurnNumber() + "/80");
-				player1Info.setText("" + gameTurn.getCurrentPlayer().getPlayerScore());
-				player2Info.setText("" + gameTurn.getOpponent().getPlayerScore());
-				repaint();
+				if (!(gameTurn.getCurrentPlayer().getCurrentShip().aFloat())){
+					String consoleText = reportWindow.getText();
+					consoleText+="\nCurrent ship is sunk!";
+					reportWindow.setText(consoleText);
+				} else {
+					String[] results = gameTurn.launchTorpedo();
+					String consoleText = reportWindow.getText();
+					consoleText+="\n" + results[1];
+					reportWindow.setText(consoleText);
+					turnInfo.setText(gameTurn.getTurnNumber() + "/80");
+					player1Info.setText("" + gameTurn.getCurrentPlayer().getPlayerScore());
+					player2Info.setText("" + gameTurn.getOpponent().getPlayerScore());
+					repaint();
+				}
 			}
 		});
 		
@@ -240,26 +252,32 @@ public class GameUI extends JFrame {
 		JButton deployMine = new JButton("Deploy Mine");
 		deployMine.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
-				Point selectedPoint = new Point(selected.getX()-1,selected.getY()-1);
-				String[] results = gameTurn.immerseMine(selectedPoint);
-				String consoleText = reportWindow.getText();
-				turnInfo.setText(gameTurn.getTurnNumber() + "/80");
-				mineInfo.setText("" + gameTurn.getMineCount());
-				if (results[0] != null){
-					myMap.setTile(selectedPoint, Occupant.MINE, null);
-				}
-				/*Original Code
-				 * if(myMap.getTile(selectedPoint).getOccupant().equals(Occupant.WATER)){
+				if (!(gameTurn.getCurrentPlayer().getCurrentShip().aFloat())){
+					String consoleText = reportWindow.getText();
+					consoleText+="\nCurrent ship is sunk!";
+					reportWindow.setText(consoleText);
+				} else {
+					Point selectedPoint = new Point(selected.getX()-1,selected.getY()-1);
+					String[] results = gameTurn.immerseMine(selectedPoint);
+					String consoleText = reportWindow.getText();
+					turnInfo.setText(gameTurn.getTurnNumber() + "/80");
+					mineInfo.setText("" + gameTurn.getMineCount());
+					if (results[0] != null){
+						myMap.setTile(selectedPoint, Occupant.MINE, null);
+					}
+					/*Original Code
+					 * if(myMap.getTile(selectedPoint).getOccupant().equals(Occupant.WATER)){
 					myMap.setTile(selectedPoint, Occupant.MINE, null);
 					consoleText+="\n";
 				}else{
 					consoleText+="\nCannot lay mine at selected coordinate.";
 				}*/
-				consoleText+="\n" + results[1];
-				reportWindow.setText(consoleText);
-				player1Info.setText("" + gameTurn.getCurrentPlayer().getPlayerScore());
-				player2Info.setText("" + gameTurn.getOpponent().getPlayerScore());
-				repaint();
+					consoleText+="\n" + results[1];
+					reportWindow.setText(consoleText);
+					player1Info.setText("" + gameTurn.getCurrentPlayer().getPlayerScore());
+					player2Info.setText("" + gameTurn.getOpponent().getPlayerScore());
+					repaint();
+				}
 			}
 		});
 		
@@ -267,18 +285,24 @@ public class GameUI extends JFrame {
 		JButton retrieveMine = new JButton("Retrieve Mine");
 		retrieveMine.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
-				Point selectedPoint = new Point(selected.getX()-1,selected.getY()-1);
-				String[] result = gameTurn.withdrawMine(selectedPoint);
-				String consoleText = reportWindow.getText();
-				turnInfo.setText(gameTurn.getTurnNumber() + "/80");
-				mineInfo.setText("" + gameTurn.getMineCount());
-				if (result[0] != null){
-					myMap.setTile(selectedPoint, Occupant.WATER, null);
-				consoleText+="\n" + result[1];
-				reportWindow.setText(consoleText);
-				player1Info.setText("" + gameTurn.getCurrentPlayer().getPlayerScore());
-				player2Info.setText("" + gameTurn.getOpponent().getPlayerScore());
-				repaint();
+				if (!(gameTurn.getCurrentPlayer().getCurrentShip().aFloat())){
+					String consoleText = reportWindow.getText();
+					consoleText+="\nCurrent ship is sunk!";
+					reportWindow.setText(consoleText);
+				} else {
+					Point selectedPoint = new Point(selected.getX()-1,selected.getY()-1);
+					String[] result = gameTurn.withdrawMine(selectedPoint);
+					String consoleText = reportWindow.getText();
+					turnInfo.setText(gameTurn.getTurnNumber() + "/80");
+					mineInfo.setText("" + gameTurn.getMineCount());
+					if (result[0] != null){
+						myMap.setTile(selectedPoint, Occupant.WATER, null);
+						consoleText+="\n" + result[1];
+						reportWindow.setText(consoleText);
+						player1Info.setText("" + gameTurn.getCurrentPlayer().getPlayerScore());
+						player2Info.setText("" + gameTurn.getOpponent().getPlayerScore());
+						repaint();
+					}
 				}
 			}
 		});
@@ -287,9 +311,15 @@ public class GameUI extends JFrame {
 		JButton moveShip = new JButton("Move Ship");
 		moveShip.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
-				playerMovingShip = true;
-				canMoveShip = true;
-				repaint();
+				if (!(gameTurn.getCurrentPlayer().getCurrentShip().aFloat())){
+					String consoleText = reportWindow.getText();
+					consoleText+="\nCurrent ship is sunk!";
+					reportWindow.setText(consoleText);
+				} else {
+					playerMovingShip = true;
+					canMoveShip = true;
+					repaint();
+				}
 			}
 		});
 		
@@ -297,26 +327,38 @@ public class GameUI extends JFrame {
 		JButton rotateShip = new JButton("Rotate Ship");
 		rotateShip.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
-				playerRotatingShip = true;
-				turnInfo.setText(gameTurn.getTurnNumber() + "/80");
-				player1Info.setText("" + gameTurn.getCurrentPlayer().getPlayerScore());
-				player2Info.setText("" + gameTurn.getOpponent().getPlayerScore());
-				canRotateShip = true;
-				repaint();
+				if (!(gameTurn.getCurrentPlayer().getCurrentShip().aFloat())){
+					String consoleText = reportWindow.getText();
+					consoleText+="\nCurrent ship is sunk!";
+					reportWindow.setText(consoleText);
+				} else {
+					playerRotatingShip = true;
+					turnInfo.setText(gameTurn.getTurnNumber() + "/80");
+					player1Info.setText("" + gameTurn.getCurrentPlayer().getPlayerScore());
+					player2Info.setText("" + gameTurn.getOpponent().getPlayerScore());
+					canRotateShip = true;
+					repaint();
+				}
 			}
 		});
 		
 		JButton repairShip = new JButton("Repair Ship");
 		repairShip.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
-				String[] results = gameTurn.repairShip();
-				String consoleText = reportWindow.getText();
-				consoleText+="\n" +results[1];
-				reportWindow.setText(consoleText);
-				turnInfo.setText(gameTurn.getTurnNumber() + "/80");
-				player1Info.setText("" + gameTurn.getCurrentPlayer().getPlayerScore());
-				player2Info.setText("" + gameTurn.getOpponent().getPlayerScore());
-				repaint();
+				if (!(gameTurn.getCurrentPlayer().getCurrentShip().aFloat())){
+					String consoleText = reportWindow.getText();
+					consoleText+="\nCurrent ship is sunk!";
+					reportWindow.setText(consoleText);
+				} else {
+					String[] results = gameTurn.repairShip();
+					String consoleText = reportWindow.getText();
+					consoleText+="\n" +results[1];
+					reportWindow.setText(consoleText);
+					turnInfo.setText(gameTurn.getTurnNumber() + "/80");
+					player1Info.setText("" + gameTurn.getCurrentPlayer().getPlayerScore());
+					player2Info.setText("" + gameTurn.getOpponent().getPlayerScore());
+					repaint();
+				}
 			}
 		});
 		
