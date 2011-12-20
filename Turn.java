@@ -134,6 +134,9 @@ public class Turn implements Serializable{
 			}
 			if (shipCanMove){
 				return actuallyMoveShip(pointToMove);
+			} else {
+				returnValue[0] = null;
+				returnValue[1] = "This ship is unable to move backward.";
 			}
 		}
 
@@ -200,12 +203,13 @@ public class Turn implements Serializable{
 		}
 		if (moveForward){
 			for (int i = 0; i < frontOfShip.length; i++){
+				System.out.println(currentMap.hasReef(frontOfShip[i]) + "" + frontOfShip[i]);
 				if (currentMap.hasBase(frontOfShip[i]) || currentMap.hasReef(frontOfShip[i]) || currentMap.hasShip(frontOfShip[i])){
 					if (i == 0){
 						returnValue[0] = null;
 						returnValue[1] = "Object directly in front of ship.\nShip cannot move.";
 						return returnValue;
-					} else if(frontOfShip[i].equals(pointToMove)){
+					} else {
 						return actuallyMoveShip(frontOfShip[i - 1]);
 					}
 				} else if (frontOfShip[i].equals(pointToMove)){
