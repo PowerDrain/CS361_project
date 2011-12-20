@@ -1,4 +1,3 @@
-
 import java.awt.Point;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -510,6 +509,12 @@ public class Turn implements Serializable{
 	
 	public Player getOpponent(){
 		return opponent;
+	}
+	
+	public void swapPlayers(){
+		Player tempPlayer = currentPlayer;
+		currentPlayer = opponent;
+		opponent = tempPlayer;
 	}
 	
 	public String[] repairBase(){
