@@ -18,7 +18,7 @@ public class SplashScreen extends JFrame {
 	private JButton buttons[];
 	private final String buttonNames[] = {"New Game", "Load Game", "How To Play"};
 	private ButtonHandler handler;
-	private String myFilePath = "/";
+	private String myFilePath = "C:\\test";
 	
 	public SplashScreen(String name){
 		super(name);
@@ -64,11 +64,11 @@ public class SplashScreen extends JFrame {
 			
 			if(event.getActionCommand() == "New Game"){
 				JOptionPane.showMessageDialog(SplashScreen.this, "Starting Game. . .");
-				new GameUI();
+				new GameUI(myFilePath, false);
 			} else if(event.getActionCommand() == "Load Game"){
 				//JOptionPane.showMessageDialog(SplashScreen.this, "Loading Game. . .");
 				myFilePath = JOptionPane.showInputDialog("Enter file path: ");				
-				//new GameUI(myFilePath);
+				new GameUI(myFilePath, true);
 			} else if(event.getActionCommand() == "How To Play"){
 				new HowToPlayMenu("How To Play");
 			}
