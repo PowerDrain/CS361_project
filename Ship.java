@@ -124,7 +124,7 @@ public abstract class Ship implements Serializable {
 			break;
 		case 's':
 			for (int i = 1; i <= this.shipSize + 1; i++){
-				temp.add(new Point(this.position.x, this.position.y));
+				temp.add(new Point(this.position.x, this.position.y + i));
 				temp.add(new Point(this.position.x - 1, this.position.y + i));
 				temp.add(new Point(this.position.x + 1, this.position.y + i));
 			}

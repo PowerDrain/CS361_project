@@ -31,6 +31,7 @@ public class Turn implements Serializable{
 		returnValue[0] = null;
 		returnValue[1] = null;
 		boolean pointInRange = false;
+		boolean canRotateRight = false;
 		Point[] possibleRotatePoints = currentPlayer.getCurrentShip().getRotationalMobility();
 		Point[] rotateRightPoint = currentPlayer.getCurrentShip().getRightRotateMobility();
 		Point[] rotateLeftPoint = currentPlayer.getCurrentShip().getLeftRotateMobility();
@@ -45,25 +46,36 @@ public class Turn implements Serializable{
 		}
 		if (pointInRange){
 			for (int i = 0; i < rotateRightPoint.length; i++){
-				if (currentMap.hasBase(rotateRightPoint[i]) || currentMap.hasReef(rotateRightPoint[i]) || currentMap.hasShip(rotateRightPoint[i])) {
-					returnValue[0] = null;
-					returnValue[1] = "Cannot rotate ship to point " + pointToRotate + "\nThere is something in the way.";
-					return returnValue;
-				} else if (currentMap.hasMine(rotateRightPoint[i])){
-					returnValue[0] = null;
-					returnValue[1] = "Rotating ship into mine at point" + pointToRotate + " implemnt this.";
-					return returnValue;
+				if (rotateRightPoint[i].equals(pointToRotate)){
+					canRotateRight = true;
+					break;
+				} else {
+					canRotateRight = false;
 				}
 			}
-			for (int i = 0; i < rotateLeftPoint.length; i++){
-				if (currentMap.hasBase(rotateLeftPoint[i]) || currentMap.hasReef(rotateLeftPoint[i]) || currentMap.hasShip(rotateLeftPoint[i])) {
-					returnValue[0] = null;
-					returnValue[1] = "Cannot rotate ship to point " + pointToRotate + "\nThere is something in the way.";
-					return returnValue;
-				} else if (currentMap.hasMine(rotateLeftPoint[i])){
-					returnValue[0] = null;
-					returnValue[1] = "Rotating ship into mine at point" + pointToRotate + " implemnt this.";
-					return returnValue;
+			if (canRotateRight){
+				for (int i = 0; i < rotateRightPoint.length; i++){
+					if (currentMap.hasBase(rotateRightPoint[i]) || currentMap.hasReef(rotateRightPoint[i]) || currentMap.hasShip(rotateRightPoint[i])) {
+						returnValue[0] = null;
+						returnValue[1] = "Cannot rotate ship to point " + pointToRotate + "\nThere is something in the way.";
+						return returnValue;
+					} else if (currentMap.hasMine(rotateRightPoint[i])){
+						returnValue[0] = null;
+						returnValue[1] = "Rotating ship into mine at point" + pointToRotate + " implemnt this.";
+						return returnValue;
+					}
+				}
+			} else {
+				for (int i = 0; i < rotateLeftPoint.length; i++){
+					if (currentMap.hasBase(rotateLeftPoint[i]) || currentMap.hasReef(rotateLeftPoint[i]) || currentMap.hasShip(rotateLeftPoint[i])) {
+						returnValue[0] = null;
+						returnValue[1] = "Cannot rotate ship to point " + pointToRotate + "\nThere is something in the way.";
+						return returnValue;
+					} else if (currentMap.hasMine(rotateLeftPoint[i])){
+						returnValue[0] = null;
+						returnValue[1] = "Rotating ship into mine at point" + pointToRotate + " implemnt this.";
+						return returnValue;
+					}
 				}
 			}
 			currentPlayer.getCurrentShip().rotateShip(pointToRotate);
