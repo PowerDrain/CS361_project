@@ -63,6 +63,20 @@ public class Map implements Serializable{
 		addBase(_opponent);
 	}
 	
+	public void updateMap(String txtFile,Player currentPlayer, Player opponent){
+		if(_map == null){
+			System.out.println("_map must not be null when updateMap is called.");
+		    return;
+		}
+		clearShipsFromMap();
+		_currentPlayer = currentPlayer;
+		_opponent = opponent;
+		addShips(_currentPlayer);
+		addShips(_opponent);
+		addBase(_currentPlayer);
+		addBase(_opponent);
+	}
+	
 	private void clearShipsFromMap(){
 		for(int i =0; i<30; ++i){
 			for(int j=0; j<30; ++j){
