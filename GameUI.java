@@ -51,24 +51,15 @@ public class GameUI extends JFrame {
 	private boolean playerMovingShip = false;
 	private boolean playerRotatingShip = false;
 	private boolean playerShootingGun = false;
-	private String gameFile = "";
 
-	
-	
-	public GameUI(String fileName, boolean load){
-		gameFile = fileName;
+	public GameUI(){
 		setTitle("Naval WhoopAss");
-		if(load == true){
-			gameTurn = Turn.unserialize(gameFile);
-		}else{
-			gameTurn = new Turn(layoutFile);
-		}
-		gameTurn.serialize("gamefile");
-		myMap = gameTurn.getMap();
+		gameTurn = new Turn(layoutFile);
+		myMap = gameTurn.getMap(); 
 		setSize(WIDTH, HEIGHT);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
-		//gameTurn.serialize(gameFile);
-		//gameTurn = Turn.unserialize(gameFile);
+		gameTurn.serialize("mygamefile");
+		gameTurn = Turn.unserialize("mygamefile");
 		createContents();
 		setVisible(true);
 	}
@@ -150,7 +141,12 @@ public class GameUI extends JFrame {
 						myMap = gameTurn.getMap();
 						repaint();
 					} else if (playerRotatingShip){
-						
+						String[] results = gameTurn.rotateShip(new Point(selected.getX() - 1, selected.getY() - 1));
+						playerRotatingShip = false;
+						System.out.println(results[1]);
+						gameTurn.updateMap();
+						myMap = gameTurn.getMap();
+						repaint();
 					} else if (playerShootingGun){
 						String[] results;
 						results = gameTurn.shootGun(new Point(selected.getX() - 1, selected.getY() - 1));
@@ -420,11 +416,10 @@ public class GameUI extends JFrame {
 				canRotateShip = false;
 			}
 			myMap.drawCurrentShip(g);
-			myMap.drawCurrentPlayerBows(g);
 		}
 	}
 	
-	/*public static void main(String[] args){
+	public static void main(String[] args){
 		new GameUI();
-	}*/
+	}
 }
