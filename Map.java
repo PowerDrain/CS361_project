@@ -117,7 +117,7 @@ public class Map implements Serializable{
 				--bowX;
 			}
 		}else if(shipDirection == 'w'){
-			for(int i = shipDamage.length-1; i>=0; --i){
+			for(int i = 0; i < shipDamage.length; i++){
 				if(shipDamage[i] == 0){
 					o = Occupant.DAMAGEDSHIP;
 				}else if(shipDamage[i] == 1){
@@ -131,7 +131,7 @@ public class Map implements Serializable{
 				++bowX;
 			}
 		}else if(shipDirection == 'n'){
-			for(int i = shipDamage.length-1; i>=0; --i){
+			for(int i = 0; i < shipDamage.length; i++){
 				if(shipDamage[i] == 0){
 					o = Occupant.DAMAGEDSHIP;
 				}else if(shipDamage[i] == 1){
@@ -145,7 +145,7 @@ public class Map implements Serializable{
 				++bowY;
 			}
 		}else if(shipDirection == 's'){
-			for(int i = shipDamage.length-1; i>=0; --i){
+			for(int i = 0; i < shipDamage.length; i++){
 				if(shipDamage[i] == 0){
 					o = Occupant.DAMAGEDSHIP;
 				}else if(shipDamage[i] == 1){
