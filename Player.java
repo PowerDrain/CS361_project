@@ -156,7 +156,7 @@ private String _name;
 			
 			shipPoint = new Point(27, 17);
 			_dredger1 = new Dredger(shipPoint, 'w');
-			shipPoint.setLocation(27, 18);
+			shipPoint = new Point(27, 18);
 			_dredger2 = new Dredger(shipPoint, 'w');
 	   }
 	this._shipCount=9;
