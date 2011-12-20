@@ -372,7 +372,7 @@ public abstract class Ship implements Serializable {
 			}
 			break;
 		case 'e':
-			if (position.y < this.position.y){
+			if (position.y > this.position.y){
 				this.setPosition(new Point(this.position.x - (this.shipSize - 1), this.position.y + (this.shipSize - 1)));
 				this.setDirection('s');
 			} else {
@@ -390,7 +390,7 @@ public abstract class Ship implements Serializable {
 			}
 			break;
 		case 'w':
-			if (position.y < this.position.y){
+			if (position.y > this.position.y){
 				this.setPosition(new Point(this.position.x + (this.shipSize - 1), this.position.y + (this.shipSize - 1)));
 				this.setDirection('s');
 			} else {

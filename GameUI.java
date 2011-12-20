@@ -291,9 +291,7 @@ public class GameUI extends JFrame {
 		JButton rotateShip = new JButton("Rotate Ship");
 		rotateShip.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
-				String s = reportWindow.getText();
-				s+="\nShip Rotated";
-				reportWindow.setText(s);
+				playerRotatingShip = true;
 				turnInfo.setText(gameTurn.getTurnNumber() + "/80");
 				player1Info.setText("" + gameTurn.getCurrentPlayer().getPlayerScore());
 				player2Info.setText("" + gameTurn.getOpponent().getPlayerScore());
