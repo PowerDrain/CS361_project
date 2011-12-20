@@ -12,6 +12,10 @@ import java.awt.Point;
 
 public class Torpedo extends Ship{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private int max_dam = 1; //Max value each ship block can have
 
 	// No argument constructor
