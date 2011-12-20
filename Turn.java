@@ -32,6 +32,8 @@ public class Turn implements Serializable{
 		returnValue[1] = null;
 		boolean pointInRange = false;
 		Point[] possibleRotatePoints = currentPlayer.getCurrentShip().getRotationalMobility();
+		Point[] rotateRightPoint = currentPlayer.getCurrentShip().getRightRotateMobility();
+		Point[] rotateLeftPoint = currentPlayer.getCurrentShip().getLeftRotateMobility();
 
 		for (int i = 0; i < possibleRotatePoints.length; i++){
 			if (pointToRotate.equals(possibleRotatePoints[i])){
@@ -42,12 +44,23 @@ public class Turn implements Serializable{
 			}
 		}
 		if (pointInRange){
-			for (int i = 0; i < possibleRotatePoints.length; i++){
-				if (currentMap.hasBase(possibleRotatePoints[i]) || currentMap.hasReef(possibleRotatePoints[i]) || currentMap.hasShip(possibleRotatePoints[i])) {
+			for (int i = 0; i < rotateRightPoint.length; i++){
+				if (currentMap.hasBase(rotateRightPoint[i]) || currentMap.hasReef(rotateRightPoint[i]) || currentMap.hasShip(rotateRightPoint[i])) {
 					returnValue[0] = null;
 					returnValue[1] = "Cannot rotate ship to point " + pointToRotate + "\nThere is something in the way.";
 					return returnValue;
-				} else if (currentMap.hasMine(possibleRotatePoints[i])){
+				} else if (currentMap.hasMine(rotateRightPoint[i])){
+					returnValue[0] = null;
+					returnValue[1] = "Rotating ship into mine at point" + pointToRotate + " implemnt this.";
+					return returnValue;
+				}
+			}
+			for (int i = 0; i < rotateLeftPoint.length; i++){
+				if (currentMap.hasBase(rotateLeftPoint[i]) || currentMap.hasReef(rotateLeftPoint[i]) || currentMap.hasShip(rotateLeftPoint[i])) {
+					returnValue[0] = null;
+					returnValue[1] = "Cannot rotate ship to point " + pointToRotate + "\nThere is something in the way.";
+					return returnValue;
+				} else if (currentMap.hasMine(rotateLeftPoint[i])){
 					returnValue[0] = null;
 					returnValue[1] = "Rotating ship into mine at point" + pointToRotate + " implemnt this.";
 					return returnValue;
